@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  job-scraper:
+    build: .
+    container_name: job_scraper
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount configuration files
+      - ./config.json:/app/config.json
+      - ./job_searches.json:/app/job_searches.json
+      - ./profile.txt:/app/profile.txt
+      # Mount data directory for persistence
+      - ./data:/app/data
+    environment:
+      - TZ=Australia/Perth
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,33 @@
+{
+  "openrouter_api_key": "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",
+  "jsearch_api_key": "ak_ynd1her6chva6lqf3bi2ff2sqsveoiqioeixl1ao3ffyoe",
+  "email_smtp_host": "smtp.gmail.com",
+  "email_smtp_port": 587,
+  "email_from": "gptstealer@gmail.com",
+  "email_password": "djri cicp ugpm djjg",
+  "email_to": "sravankumar.nnv@gmail.com",
+  "match_threshold": 30,
+  "check_interval_hours": 24,
+  "timezone": "Australia/Perth",
+  "ai_models": {
+    "primary": "deepseek/deepseek-chat",
+    "fallbacks": [
+      "anthropic/claude-3.5-haiku"
+    ]
+  },
+  "rescore_threshold_min": 70,
+  "rescore_threshold_max": 79,
+  "rescore_max_age_days": 7,
+  "hide_jobs_older_than_days": 30,
+  "dashboard_default_days": 7,
+  "linkedin_max_pages": 3,
+  "optimization": {
+    "enable_title_filtering": true,
+    "enable_description_filtering": true,
+    "enable_deduplication": true,
+    "optimization_level": "balanced",
+    "dedup_check_days": 90,
+    "description_min_length": 100,
+    "title_must_contain_keywords": true
+  }
+}

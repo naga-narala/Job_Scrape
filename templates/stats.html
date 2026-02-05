@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics - Job Scraper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f9fafb;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .back-link {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #111827;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+        
+        .company-list {
+            list-style: none;
+        }
+        
+        .company-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .company-item:last-child {
+            border-bottom: none;
+        }
+        
+        .distribution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .dist-item {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .dist-item .label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        
+        .dist-item .count {
+            font-size: 28px;
+            font-weight: bold;
+            color: #111827;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Statistics</h1>
+            <a href="/" class="back-link">← Back to Dashboard</a>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Jobs Tracked</h3>
+                <div class="value">{{ stats.total_jobs }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>High Matches ({{ stats.threshold }}%+)</h3>
+                <div class="value">{{ stats.total_matches }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Average Score</h3>
+                <div class="value">{{ stats.avg_score }}%</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Score Distribution</h2>
+            <div class="distribution-grid">
+                <div class="dist-item">
+                    <div class="label">90-100% (Excellent)</div>
+                    <div class="count" style="color: #22c55e;">{{ stats.score_distribution.score_90_plus or 0 }}</div>
+                </div>
+                <div class="dist-item">
+                    <div class="label">80-89% (Good)</div>
+                    <div class="count" style="color: #eab308;">{{ stats.score_distribution.score_80_89 or 0 }}</div>
+                </div>
+                <div class="dist-item">
+                    <div class="label">75-79% (Fair)</div>
+                    <div class="count" style="color: #6b7280;">{{ stats.score_distribution.score_75_79 or 0 }}</div>
+                </div>
+                <div class="dist-item">
+                    <div class="label">Below 75%</div>
+                    <div class="count" style="color: #9ca3af;">{{ stats.score_distribution.score_below_75 or 0 }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Top Companies</h2>
+            {% if stats.top_companies %}
+            <ul class="company-list">
+                {% for company in stats.top_companies %}
+                <li class="company-item">
+                    <span>{{ company.company }}</span>
+                    <span style="font-weight: bold; color: #0066cc;">{{ company.count }} job{{ 's' if company.count != 1 else '' }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p style="color: #6b7280;">No company data available yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

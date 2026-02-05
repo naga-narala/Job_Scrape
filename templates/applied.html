@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applied Jobs Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f9fafb;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+        
+        .nav-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0052a3;
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .timeline-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .timeline-item {
+            border-left: 3px solid #e5e7eb;
+            padding-left: 30px;
+            padding-bottom: 30px;
+            position: relative;
+        }
+        
+        .timeline-item:last-child {
+            padding-bottom: 0;
+            border-left-color: transparent;
+        }
+        
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e5e7eb;
+            position: absolute;
+            left: -10px;
+            top: 0;
+        }
+        
+        .timeline-dot.applied {
+            border-color: #3b82f6;
+            background: #3b82f6;
+        }
+        
+        .timeline-dot.interview {
+            border-color: #8b5cf6;
+            background: #8b5cf6;
+        }
+        
+        .timeline-dot.rejected {
+            border-color: #ef4444;
+            background: #ef4444;
+        }
+        
+        .timeline-dot.selected {
+            border-color: #22c55e;
+            background: #22c55e;
+        }
+        
+        .job-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+        
+        .job-title h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .job-title h3 a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .job-title h3 a:hover {
+            text-decoration: underline;
+        }
+        
+        .job-meta {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-new {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-applied {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-interview {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+        
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-selected {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+        
+        .score-90 {
+            color: #22c55e;
+        }
+        
+        .score-80 {
+            color: #eab308;
+        }
+        
+        .score-75 {
+            color: #6b7280;
+        }
+        
+        .status-update-form {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+        
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        .remarks {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #4b5563;
+            font-style: italic;
+        }
+        
+        .dates {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 10px;
+        }
+        
+        .empty-state {
+            background: white;
+            padding: 60px 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: #6b7280;
+        }
+        
+        .empty-state h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Applied Jobs Tracker</h1>
+            <div class="nav-buttons">
+                <a href="/" class="btn btn-primary">← Back to Dashboard</a>
+                <a href="/stats" class="btn btn-secondary">Statistics</a>
+            </div>
+        </div>
+
+        {% if jobs %}
+            <div class="timeline-container">
+                {% for job in jobs %}
+                <div class="timeline-item">
+                    <div class="timeline-dot {{ job.status }}"></div>
+                    
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div class="job-title">
+                                <h3><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></h3>
+                                <div class="job-meta">
+                                    <strong>{{ job.company }}</strong> · {{ job.location }}
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-badge status-{{ job.status }}">{{ job.status }}</span>
+                                <div class="score {% if job.score >= 90 %}score-90{% elif job.score >= 80 %}score-80{% else %}score-75{% endif %}">
+                                    {{ job.score }}%
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dates">
+                            Applied: {{ job.applied_date or job.first_seen_date }} | 
+                            First Seen: {{ job.first_seen_date }}
+                        </div>
+                        
+                        {% if job.remarks %}
+                        <div class="remarks">
+                            📌 {{ job.remarks }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="status-update-form">
+                            <form method="POST" action="/update-status/{{ job.id }}">
+                                <div class="form-group">
+                                    <label for="status-{{ job.id }}">Update Status</label>
+                                    <select name="status" id="status-{{ job.id }}">
+                                        <option value="applied" {% if job.status == 'applied' %}selected{% endif %}>Applied</option>
+                                        <option value="interview" {% if job.status == 'interview' %}selected{% endif %}>Interview Scheduled</option>
+                                        <option value="rejected" {% if job.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                        <option value="selected" {% if job.status == 'selected' %}selected{% endif %}>Offer Received / Selected</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="remarks-{{ job.id }}">Remarks / Notes</label>
+                                    <textarea name="remarks" id="remarks-{{ job.id }}" placeholder="Add notes about interview date, feedback, etc.">{{ job.remarks or '' }}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{{ job.url }}" target="_blank" class="btn btn-secondary">View Job</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>No Applications Yet</h2>
+                <p>Mark jobs as "Applied" from the main dashboard to track them here!</p>
+                <div style="margin-top: 20px;">
+                    <a href="/" class="btn btn-primary">Go to Dashboard</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

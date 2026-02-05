@@ -1,0 +1,174 @@
+# ============================================
+# JOB SCRAPER - TARGET ROLES CONFIGURATION
+# ============================================
+# This file defines what jobs you're looking for.
+# The entire workflow adapts based on this file.
+#
+# FUTURE OPTIMIZATION:
+# By providing detailed dealbreakers and preferences,
+# the workflow can optimize runtime and API costs by:
+# - Skipping irrelevant jobs faster (saves 20-40% runtime)
+# - Reducing AI scoring costs (saves 30-50% API calls)
+# - Improving match quality (context-aware filtering)
+# ============================================
+
+# --------------------------------------------
+# TARGET JOB TITLES (Required)
+# --------------------------------------------
+# List all job titles you're interested in, separated by commas.
+# The system will automatically extract relevant keywords and skills.
+#
+# Examples:
+# - AI/ML Roles: Graduate AI Engineer, Junior ML Engineer, Data Scientist
+# - Finance Roles: Graduate Financial Analyst, Junior Accountant
+# - Marketing Roles: Junior Marketing Analyst, Social Media Coordinator
+# - Software Roles: Graduate Full Stack Developer, Junior Backend Engineer
+#
+# YOUR ROLES (edit below):
+
+Graduate Artificial Intelligence Engineer, Junior AI Engineer, Graduate Machine Learning Engineer, Junior Machine Learning Engineer, AI Graduate, ML Graduate Engineer, Associate AI Engineer, Associate Machine Learning Engineer, Graduate Deep Learning Engineer, Junior Deep Learning Engineer, Graduate Computer Vision Engineer, Junior Computer Vision Engineer, Computer Vision Analyst, Graduate NLP Engineer, Junior NLP Engineer, Language AI Engineer (Graduate), Vision & Perception Engineer (Graduate), Graduate Data Scientist, Junior Data Scientist, Associate Data Scientist, Data Analyst (AI / ML Focused), Graduate Data Analyst, Junior Data Analyst, Graduate Analytics Consultant, Decision Science Analyst (Graduate), Graduate MLOps Engineer, Junior MLOps Engineer, ML Platform Engineer (Graduate), AI Infrastructure Engineer (Graduate), AI Systems Engineer (Graduate), Machine Learning Operations Analyst, Graduate Software Engineer (AI), Junior Software Engineer (AI / ML), AI Software Developer, Graduate Backend Engineer (ML Integration), AI Application Developer (Graduate), Intelligent Systems Developer (Graduate), Graduate Generative AI Engineer, Junior Generative AI Engineer, LLM Engineer (Graduate), AI Agent Developer (Graduate), Prompt Engineer (Graduate / Junior), AI Automation Engineer (Graduate), Graduate Research Assistant (AI), Research Assistant (Machine Learning), AI Research Engineer (Graduate), Applied AI Researcher (Graduate), Junior Research Engineer (AI), Graduate AI Consultant, Graduate Analytics Consultant, Technology Consultant (AI / Data), AI Business Analyst (Graduate), Digital Transformation Analyst (AI), Junior AI Solutions Consultant, Graduate Data Scientist (Government), Graduate AI Analyst, Graduate ICT Data Specialist, Policy Data Analyst (AI-assisted), Graduate Technology Officer (AI), AI Engineer Intern, Machine Learning Intern, Data Science Intern, AI Graduate Intern, AI Developer Intern, AI Innovation Associate
+
+
+# --------------------------------------------
+# DEALBREAKERS (Optional but Recommended)
+# --------------------------------------------
+# Specify requirements that automatically disqualify jobs.
+# If not specified, general search applies (less optimized).
+#
+# NOTE: Providing these details enables smart pre-filtering,
+# reducing wasted time on unsuitable jobs by 40-60%.
+
+[DEALBREAKERS]
+
+# Maximum years of experience you have (e.g., 0, 1, 2)
+# Jobs requiring more will be auto-rejected
+# Leave empty if you have 5+ years experience
+max_experience: 2
+
+# Seniority levels to exclude (comma-separated)
+# Common: Senior, Lead, Principal, Manager, Director, Head of, Chief, VP, C-Level
+exclude_seniority: Senior, Lead, Principal, Manager, Director, Head of, Chief, VP, C-Level, Executive
+
+# Visa/citizenship requirements to exclude (comma-separated)
+# Examples: PR Required, Citizenship Required, US Citizen Only, Security Clearance
+# Leave empty if you have PR/citizenship
+exclude_visa: PR Required, Permanent Resident Required, Citizenship Required, Australian Citizen, US Citizen Only, Security Clearance Required, Must be eligible to work
+
+# Education requirements to exclude if you don't have them
+# Examples: PhD Required, Doctorate Required, Medical Degree
+# Leave empty if you have PhD or willing to apply anyway
+exclude_education: PhD Required, Doctorate Required, PhD Preferred
+
+# Professional certifications to exclude if you don't have them
+# Examples: CPA Required, Bar Admission, PMP Certified, AWS Certified
+# Leave empty if you have certifications or not applicable
+exclude_certifications: 
+
+
+# --------------------------------------------
+# SEARCH PREFERENCES (Optional)
+# --------------------------------------------
+# Customize where and how to search for jobs
+
+[PREFERENCES]
+
+# Regions to search (comma-separated)
+# Options: australia, us, uk, canada, singapore, india, global
+# Default: australia
+regions: australia, us
+
+# Preferred locations (comma-separated)
+# Examples: Perth, Melbourne, Sydney, Remote, San Francisco, New York
+# Use "All Australia" or "All US" for nationwide
+# Use "Remote" for remote-only positions
+locations: Perth, Melbourne, Remote
+
+# Job boards to scrape (comma-separated)
+# Available: linkedin, seek, jora
+# Default: linkedin
+job_boards: linkedin
+
+# Job posting age (in hours)
+# Only fetch jobs posted within this time
+# Default: 24 (last 24 hours)
+# Use 168 for last week, 720 for last month
+max_job_age_hours: 24
+
+
+# --------------------------------------------
+# OPTIMIZATION SETTINGS (Optional)
+# --------------------------------------------
+# Fine-tune workflow performance vs quality tradeoff
+#
+# NOTE: These settings help optimize runtime and costs.
+# Recommended: Keep defaults unless you know what you're doing.
+
+[OPTIMIZATION]
+
+# Enable title filtering (check job title before full scrape)
+# Saves: 20-30% runtime by skipping obviously irrelevant jobs
+# Risk: May miss ~1-2% of creatively-titled relevant jobs
+# Options: true, false
+# Default: true
+enable_title_filtering: true
+
+# Enable description filtering (quick keyword check before AI scoring)
+# Saves: 10-15% API costs by skipping non-technical descriptions
+# Risk: May miss ~0.5% of jobs with unusual descriptions
+# Options: true, false
+# Default: true
+enable_description_filtering: true
+
+# Enable deduplication (skip jobs already in database)
+# Saves: 40-50% time/costs by avoiding re-scraping same jobs
+# Risk: Zero (no downside, always recommended)
+# Options: true, false
+# Default: true
+enable_deduplication: true
+
+# Overall optimization level
+# - conservative: Maximum job coverage, slower, more API costs (~$0.50/run)
+# - balanced: Good coverage, optimized speed/cost (~$0.30/run)
+# - aggressive: Fast, cheap, may miss some edge cases (~$0.15/run)
+# Default: balanced
+optimization_level: balanced
+
+
+# ============================================
+# ADVANCED CONFIGURATION (Expert Users Only)
+# ============================================
+# Uncomment and customize if needed
+
+# [ADVANCED]
+
+# Custom keywords to always include in title/description filtering
+# Useful for niche roles or specific technologies
+# custom_include_keywords: quantum computing, blockchain, web3
+
+# Custom keywords to always exclude
+# Useful for avoiding specific industries or roles
+# custom_exclude_keywords: gambling, tobacco, weapons
+
+# Minimum technical keyword count in description
+# Jobs with fewer technical terms are skipped
+# Default: 3
+# min_technical_keywords: 3
+
+# Enable AI keyword generation (uses API)
+# Auto-generates keywords from job titles
+# Cost: ~$0.01 per generation (only when jobs.txt changes)
+# Options: true, false
+# Default: true
+# enable_ai_keywords: true
+
+
+# ============================================
+# COMMENTS & NOTES
+# ============================================
+# Use this section for your personal notes
+#
+# Example:
+# - Updated job titles on 2026-02-04
+# - Focusing on Perth and Melbourne only
+# - Disabled Seek scraper temporarily (fix needed)
+# - Increased max_experience to 2 (got more skills now)

@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# Logs
+*.log
+data/logs/*.log
+
+# Database
+*.db
+data/*.db
+
+# Cookies
+*.pkl
+linkedin_cookies.pkl
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Temporary test files
+test_*.py
+test_*.txt
+test_*.md
+*_debug.py
+check_*.py
+
+# Output
+/tmp/
+*.html.bak
+*.png.bak

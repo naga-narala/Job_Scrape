@@ -1,0 +1,216 @@
+=== CANDIDATE PROFILE ===
+
+Name: Naga Narala
+Location: Melbourne, Australia
+Email: sravankumar.nnv@gmail.com
+Phone: +61 460766511
+LinkedIn: linkedin.com/in/naga-narala
+GitHub: github.com/naga-narala
+Website: naganarala.me
+Visa Status: Subclass 485 Full Australian Work Rights (valid until August 2028)
+
+=== PROFESSIONAL SUMMARY ===
+
+AI Engineer skilled in building intelligent agentic workflows using LangChain, CrewAI, and n8n, with hands-on expertise in ML, Computer Vision, and NLP. Passionate about deploying scalable AI solutions and driving real-world impact through production-grade systems and multi-agent orchestration.
+
+Currently pursuing Master of Artificial Intelligence at Monash University (July 2023 - June 2025, graduated with credit average). Strong track record in building end-to-end ML/AI systems from research to production deployment.
+
+=== EDUCATION ===
+
+Master of Artificial Intelligence
+Monash University, Clayton, Australia (July 2023 - June 2025)
+- Graduated with Credit Average
+- Relevant Coursework: Machine Learning, Deep Learning, Intelligent Image Analysis, Multi-Agent Systems, Data Analytics
+- Academic Achievement: Final Semester Project Expo Winner, High Distinction in Machine Learning Computing
+
+=== CORE TECHNICAL SKILLS ===
+
+AGENTIC AI & LLM (STRONGEST EXPERTISE):
+- LangChain (Expert) - Building complex multi-agent workflows
+- CrewAI (Expert) - Multi-agent system orchestration
+- n8n (Expert) - Workflow automation and integration
+- RAG Pipelines - Vector databases (Pinecone, Chroma), retrieval systems
+- LLM Integration - OpenAI API, Claude, Gemini, custom model deployment
+- Prompt Engineering - Advanced prompt optimization and chain-of-thought
+- Multi-Agent Orchestration - Agent collaboration, task delegation, LangGraph
+- LlamaIndex - Document indexing and retrieval
+- Hugging Face - Model fine-tuning and deployment
+
+MACHINE LEARNING & DEEP LEARNING:
+- Frameworks: PyTorch (Expert), TensorFlow (Expert), Scikit-learn (Expert)
+- Computer Vision: YOLOv8, OpenCV, object detection, image segmentation
+- Model Development: Transfer learning, fine-tuning, model optimization
+- Training: Distributed training, GPU optimization (CUDA), batch processing
+- Evaluation: Cross-validation, hyperparameter tuning, A/B testing
+
+MLOPS & DEPLOYMENT:
+- Containerization: Docker (Expert), microservices architecture
+- CI/CD: GitHub Actions, GitLab CI/CD, automated testing and deployment
+- API Development: FastAPI (Expert), Flask, REST APIs
+- Model Serving: MLflow, model versioning, monitoring, and evaluation
+- Infrastructure: AWS (SageMaker, Lambda, basic), GCP (basic), Azure (basic)
+- Orchestration: Multi-container orchestration, Docker Compose
+
+PROGRAMMING & DATA ENGINEERING:
+- Languages: Python (Expert), SQL (Expert)
+- Data Processing: Pandas, NumPy, Matplotlib, Seaborn
+- Databases: PostgreSQL, Vector databases (Pinecone, Chroma), NoSQL basics
+- ETL: Data pipelines, preprocessing, feature engineering
+- Version Control: Git, GitHub (Expert)
+
+ADDITIONAL TECHNICAL SKILLS:
+- PyTorch, OpenAI API, Streamlit, Jupyter Notebook, NLP
+- Model Training & Evaluation, Data Analysis, Statistical Analysis
+- Web Scraping, Automation, CI/CD pipelines
+
+=== MAJOR PROJECTS ===
+
+1. PulseLab - Privacy-First Health Analytics Platform (Multi-Agent AI | SQL-Alchemy | Live)
+   Duration: Jul - Oct 2025
+   - Built agent-driven Cardio/Gastro/Neuro ML solution for hospital EHR analysis processing 700K+ records in <3 minutes using streaming algorithms, z-score outlier detection, and LLMs (Claude/GPT-4) achieving 85%+ confidence with automated retry logic
+   - Architected secure multi-agent pipeline with FastAPI backend for HIPAA-aligned privacy architecture handling up to 1GB of sensitive data, with stateless architecture and zero database storage
+   - Engineered production infrastructure with FastAPI backend, multi-agent orchestration, Docker containerization, and 15+ interactive analytics dashboards
+
+2. RipCatch-v2.0 - AI-Powered Rip Current Detection (YOLOv8 | PyTorch | CUDA | OpenCV | Live)
+   Duration: Feb - Jun 2025
+   - Engineered production-grade computer vision system detecting rip currents from beach surveillance footage with 88.64% mAP@50 accuracy and 96.78% recall, delivering <100ms real-time video alerts via global beach camera integration
+   - Optimized YOLOv8n deep learning model (25M parameters) on 16,907-image dataset achieving 89.03% precision and 89.51% recall, delivering 12-15 FPS real-time video inference
+   - Implemented advanced YOLO training optimization (effective batch 64), mixed precision (AMP), cosine LR scheduling, and early stopping achieving 65% training time reduction (7.15h → 4.5h) and +9.64% accuracy improvement over v1.0
+
+3. FirePrint - AI-Powered Wildfire Pattern Analysis (TensorFlow | CNN | GeoPandas | GitHub)
+   Duration: Oct - Dec 2024
+   - Developed computer vision system analyzing 324,741 Australian bushfires (1898-2024) using novel 4-channel fingerprint encoding (density/shape/distance/proximity) with geospatial binning achieving >92% accuracy for pattern classification and wildfire forensics
+   - Built multi-task CNN achieving 71% accuracy across 4 classification heads (fire type, ignition cause, location, size) with 500 fires/minute inference
+   - Engineered 23-feature extraction pipeline achieving 0.72 CV accuracy with geospatial analysis
+
+=== ACHIEVEMENTS & CERTIFICATIONS ===
+
+- MLOps: Machine Learning Operations Specialization - Duke University (Coursera)
+- Introduction to Data Analytics - IBM (Coursera)
+- Generative AI with LLMs - IBM (Coursera)
+- CrewAI Initial Course - Certified in building multi-agent systems for AI automation workflows
+- Completed multiple AI & automation mini-projects applying LangChain, n8n, and CrewAI for real-world workflows
+- Final Semester Project Expo Winner
+- High Distinction in Machine Learning Computing
+
+=== ADDITIONAL BACKGROUND ===
+
+Prior Experience (Pre-Masters):
+- 3 years as Data Assistant working with government services
+- Data visualization experience: Tableau, Power BI, Advanced Excel
+- Handled 500+ public service requests, data analysis, and reporting
+- Note: Seeking graduate-level AI/ML roles post-Master's degree (not senior data roles)
+
+=== SKILLS I'M ACTIVELY DEVELOPING ===
+
+Currently learning/improving:
+- Azure ecosystem (Azure ML, Azure OpenAI, Azure DevOps)
+- Databricks and Spark/PySpark for large-scale data processing
+- Kubernetes for container orchestration
+- Advanced NLP with Transformers and model fine-tuning
+- Data modeling and warehousing (Star Schema, Dimensional Modeling)
+
+=== JOB PREFERENCES & REQUIREMENTS ===
+
+TARGET ROLES (Ranked by Preference):
+1. Junior/Entry-Level AI Engineer (Agentic AI focused)
+2. Junior ML Engineer (Computer Vision specialization)
+3. Graduate AI/ML Engineer (Multi-agent systems)
+4. Junior Data Scientist (ML/AI focus)
+5. MLOps Engineer (Entry/Junior level)
+6. Computer Vision Engineer (Junior roles)
+7. Junior Full-Stack AI Engineer
+8. Graduate Data Engineer
+9. AI/ML Research Engineer (Junior level)
+
+LOCATION PREFERENCES:
+- Current Location: Melbourne, Australia (relocating to Perth in coming months)
+- Open to: Australia-wide and international remote opportunities
+- Work Mode Flexibility:
+  * Perth-based roles: Onsite, Hybrid, or Remote (all acceptable)
+  * Australia-wide: Remote or Hybrid (1-2 days onsite acceptable, can travel)
+  * International: Remote only
+- Geographic Preference: Perth > Australia-wide > International Remote
+
+SALARY EXPECTATIONS:
+- Negotiable (open to competitive offers matching entry-level AI/ML engineer market rates)
+- Prioritizing learning opportunities and career growth over maximum salary for first role
+
+COMPANY PREFERENCES:
+- Company Size: No preference (Startup, Scale-up, or Enterprise all acceptable)
+- Prioritizing: Strong AI/ML team, mentorship, and growth opportunities over company size
+- Industry Focus: AI/ML, Tech, Healthcare, Research, Startups
+- Looking for: Companies investing in AI/ML innovation, agentic AI, production ML systems
+
+VISA STATUS & REQUIREMENTS:
+- Current Visa: Subclass 485 Post-Study Work Visa (FULL work rights until August 2028)
+- NO PR REQUIRED - Can start immediately with existing work rights
+- Open to sponsorship discussions for long-term opportunities
+- Have pathway to PR independently
+
+MUST-HAVE REQUIREMENTS:
+- Technical Stack: Must involve Python and ML/AI technologies
+- Growth: Opportunities to work with LLMs, agentic systems, or production ML
+- Entry-level/Junior/Graduate role appropriate for fresh AI/ML graduate
+- Job must NOT require PR or Citizenship (485 visa acceptable)
+
+DEAL-BREAKERS:
+- Jobs requiring Australian PR or Citizenship (I have 485 visa with full work rights)
+- Roles explicitly requiring 3+ years of professional AI/ML experience
+- Otherwise flexible to gain industry experience in AI/ML field
+
+NICE-TO-HAVE:
+- Work with cutting-edge AI technologies (LangChain, multi-agent systems, RAG)
+- Computer vision or NLP projects
+- MLOps and production deployment opportunities
+- Collaborative team environment with mentorship
+- Opportunities to contribute to open-source
+- Flexible work arrangements
+
+STRENGTHS TO HIGHLIGHT:
+- Deep expertise in agentic AI workflows (LangChain, CrewAI, multi-agent orchestration)
+- Strong computer vision background (YOLOv8, real-time detection systems)
+- Production deployment experience (Docker, FastAPI, CI/CD)
+- End-to-end ML pipeline development (data → model → deployment → monitoring)
+- Fast learner with proven ability to quickly adopt new technologies
+- Strong communication and collaboration skills
+
+AREAS OF INTEREST:
+- Building intelligent agent systems
+- Production ML deployment and MLOps
+- Computer vision applications (safety, healthcare, automation)
+- RAG systems and LLM applications
+- Healthcare AI and s/Graduate positions (fresh AI/ML graduate seeking first role in field)
+5. Companies building production AI systems, not just research
+6. Opportunities in Perth, Melbourne, Australia-wide remote, or international remote
+7. Jobs that accept 485 visa holders (NO PR/Citizenship required)
+
+Red flags / Automatic rejection / Score 0-30%:
+- Jobs explicitly requiring "Australian PR" or "Australian Citizenship" or "Security Clearance"
+- Roles requiring 3+ years of professional AI/ML experience
+- Jobs stating "PR holders only" or "Citizens only"
+
+Lower priority / Score 40-60%:
+- Heavy focus on Azure/Databricks/Snowflake (I'm learning these but not expert yet)
+- Pure data engineering roles without ML/AI component
+- Roles requiring full-stack web development as primary skill
+- Senior/Mid-level positions (3+ years required)
+- Jobs that don't mention visa sponsorship options
+
+Score higher (70-100%) for:
+- Keywords: LangChain, CrewAI, n8n, Multi-agent, Agentic AI, RAG, LLM
+- Keywords: PyTorch, Computer Vision, YOLOv8, Object Detection
+- Keywords: MLOps, Docker, FastAPI, CI/CD, Model Deployment
+- Junior/Graduate/Entry-level positions explicitly mentioned
+- "Visa sponsorship available" or "485 visa acceptable" or no visa requirements mentioned
+- Perth, Melbourne, Australia-wide remote opportunities
+- Companies with strong AI/ML teams and learning culture
+- "Graduate program" or "Early career" roles
+
+Score higher for:
+- Keywords: LangChain, CrewAI, n8n, Multi-agent, Agentic AI, RAG, LLM
+- Keywords: PyTorch, Computer Vision, YOLOv8, Object Detection
+- Keywords: MLOps, Docker, FastAPI, CI/CD, Model Deployment
+- Junior/Graduate/Entry-level positions
+- Melbourne-based or remote opportunities
+- Companies with strong AI/ML teams and learning culture
