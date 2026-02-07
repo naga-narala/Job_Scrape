@@ -1,0 +1,41 @@
+{
+  "linkedin": [
+    {
+      "id": "linkedin_graduate_ai_engineer_australia",
+      "url": "https://www.linkedin.com/jobs/search/?keywords=Graduate Artificial Intelligence Engineer&f_TPR=r86400&geoId=101452733",
+      "source": "linkedin",
+      "keyword": "Graduate Artificial Intelligence Engineer",
+      "location": "Australia",
+      "search_id": "linkedin_graduate_artificial_intelligence_engineer_australia",
+      "name": "Graduate AI Engineer - Australia",
+      "enabled": true,
+      "region": "australia"
+    }
+  ],
+  "seek": [
+    {
+      "id": "seek_graduate_ai_engineer_australia",
+      "url": "https://www.seek.com.au/graduate-artificial-intelligence-engineer-jobs/in-All-Australia?daterange=7",
+      "source": "seek",
+      "keyword": "Graduate Artificial Intelligence Engineer",
+      "location": "Australia",
+      "search_id": "seek_graduate_artificial_intelligence_engineer_australia",
+      "name": "Graduate AI Engineer - Australia",
+      "enabled": true,
+      "region": "australia"
+    }
+  ],
+  "jora": [
+    {
+      "id": "jora_graduate_ai_engineer_australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7d&q=graduate%20artificial%20intelligence%20engineer&l=Australia",
+      "source": "jora",
+      "keyword": "Graduate Artificial Intelligence Engineer",
+      "location": "Australia",
+      "search_id": "jora_graduate_artificial_intelligence_engineer_australia",
+      "name": "Graduate AI Engineer - Australia",
+      "enabled": true,
+      "region": "australia"
+    }
+  ]
+}

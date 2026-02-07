@@ -15,6 +15,8 @@ from datetime import datetime
 import logging
 import json
 import re
+import pickle
+from pathlib import Path
 
 try:
     from optimization import OptimizationManager
@@ -23,19 +25,23 @@ except ImportError:
     logging.getLogger(__name__).warning("Optimization module not available - running without 3-tier optimization")
     OPTIMIZATION_AVAILABLE = False
 
+# Cookie storage
+COOKIES_FILE = Path(__file__).parent.parent / 'data' / 'seek_cookies.pkl'
+
 
 class SeekScraper:
     """Scraper for Seek job board"""
     
     BASE_URL = "https://www.seek.com.au"
     
-    def __init__(self, cookies=None, delay_range=(2, 5)):
+    def __init__(self, cookies=None, delay_range=(2, 5), auto_load_cookies=True):
         """
         Initialize Seek scraper
         
         Args:
-            cookies: Dictionary of cookies from browser session
+            cookies: Dictionary of cookies from browser session (optional)
             delay_range: Tuple of (min, max) seconds to wait between requests
+            auto_load_cookies: Automatically load saved cookies if available
         """
         self.delay_range = delay_range
         self.logger = logging.getLogger(__name__)
@@ -61,8 +67,41 @@ class SeekScraper:
         self.session = requests.Session()
         self.session.headers.update(self.headers)
         
+        # Load cookies: priority order: 1) provided, 2) auto-load from file
         if cookies:
             self.session.cookies.update(cookies)
+            self.logger.info("Using provided cookies")
+        elif auto_load_cookies:
+            loaded = self._load_cookies()
+            if loaded:
+                self.logger.info("Loaded saved cookies from file")
+            else:
+                self.logger.warning("No saved cookies found. Run seek_login.py first!")
+    
+    def _load_cookies(self):
+        """Load cookies from saved file"""
+        try:
+            if not COOKIES_FILE.exists():
+                return False
+            
+            with open(COOKIES_FILE, 'rb') as f:
+                cookies = pickle.load(f)
+            
+            # Convert Selenium cookie format to requests format
+            for cookie in cookies:
+                cookie_dict = {
+                    'name': cookie['name'],
+                    'value': cookie['value'],
+                    'domain': cookie.get('domain', '.seek.com.au'),
+                    'path': cookie.get('path', '/')
+                }
+                self.session.cookies.set(**cookie_dict)
+            
+            self.logger.info(f"Loaded {len(cookies)} cookies from {COOKIES_FILE}")
+            return True
+        except Exception as e:
+            self.logger.error(f"Failed to load cookies: {e}")
+            return False
     
     def _delay(self):
         """Random delay between requests"""
@@ -103,15 +142,15 @@ class SeekScraper:
         # Default to All-Australia if not recognized
         return 'All-Australia'
     
-    def search_jobs(self, keyword, location="Perth", time_filter="1", page=1):
+    def search_jobs(self, keyword, location="Perth", time_filter="1", max_pages=3):
         """
-        Search for jobs on Seek
+        Search for jobs on Seek with multi-page pagination
         
         Args:
             keyword: Search keyword (e.g., "AI Engineer", "Machine Learning")
             location: Location filter (default: "Perth")
             time_filter: Days since posted - "1", "3", "7", "14", "31" (default: "1")
-            page: Page number (default: 1)
+            max_pages: Maximum pages to scrape (default: 3)
         
         Returns:
             List of job dictionaries with keys:
@@ -123,6 +162,43 @@ class SeekScraper:
             - posted_date: Posted date (if available)
             - employment_type: Full-time, Part-time, etc.
             - source: "seek"
+        """
+        all_jobs = []
+        
+        # Scrape multiple pages
+        for page in range(1, max_pages + 1):
+            jobs = self._search_single_page(keyword, location, time_filter, page)
+            
+            if not jobs:
+                self.logger.info(f"No jobs scraped from page {page} (all filtered), continuing to next page")
+                # Don't break - continue to check other pages for potential jobs
+            
+            all_jobs.extend(jobs)
+            
+            # If we got less than 20 jobs, likely the last page
+            if len(jobs) < 20:
+                self.logger.info(f"Page {page} returned {len(jobs)} jobs (< 20), likely last page")
+                break
+            
+            # Delay between page requests
+            if page < max_pages:
+                self._delay()
+        
+        self.logger.info(f"Total jobs scraped across {page} pages: {len(all_jobs)}")
+        return all_jobs
+    
+    def _search_single_page(self, keyword, location="Perth", time_filter="1", page=1):
+        """
+        Search a single page on Seek
+        
+        Args:
+            keyword: Search keyword
+            location: Location filter
+            time_filter: Days since posted
+            page: Page number
+        
+        Returns:
+            List of jobs from this page
         """
         jobs = []
         
@@ -162,6 +238,7 @@ class SeekScraper:
             tier1_filtered = 0
             tier2_skipped = 0
             tier3_filtered = 0
+            filtered_jobs = []  # Track filtered jobs for detailed logging
             
             for card in job_cards:
                 try:
@@ -175,6 +252,12 @@ class SeekScraper:
                         should_scrape, reason = self.optimizer.tier1_should_scrape_title(job['title'])
                         if not should_scrape:
                             tier1_filtered += 1
+                            filtered_jobs.append({
+                                'tier': 1,
+                                'reason': reason,
+                                'title': job['title'],
+                                'company': job['company']
+                            })
                             continue
                     
                     # TIER 2: Deduplication check
@@ -182,6 +265,12 @@ class SeekScraper:
                         is_duplicate, reason = self.optimizer.tier2_is_duplicate(job['url'], job['title'], job['company'], [])
                         if is_duplicate:
                             tier2_skipped += 1
+                            filtered_jobs.append({
+                                'tier': 2,
+                                'reason': reason,
+                                'title': job['title'],
+                                'company': job['company']
+                            })
                             continue
                     
                     # TIER 3: Description quality check (before AI scoring)
@@ -189,6 +278,12 @@ class SeekScraper:
                         has_quality, reason = self.optimizer.tier3_has_quality_description(job['description'])
                         if not has_quality:
                             tier3_filtered += 1
+                            filtered_jobs.append({
+                                'tier': 3,
+                                'reason': reason,
+                                'title': job['title'],
+                                'company': job['company']
+                            })
                             continue
                     
                     print(f"   📋 Found job: {job['title']} at {job['company']}")
@@ -198,10 +293,19 @@ class SeekScraper:
                     self.logger.error(f"Error parsing job card: {e}")
                     continue
             
+            # Log detailed filtering analysis
+            if self.optimizer and filtered_jobs:
+                print(f"\n📋 DETAILED FILTERING ANALYSIS (Page {page}):")
+                for filtered in filtered_jobs:
+                    tier_name = {1: "TITLE", 2: "DEDUP", 3: "QUALITY"}[filtered['tier']]
+                    print(f"   ❌ TIER {filtered['tier']} ({tier_name}): {filtered['title']} at {filtered['company']}")
+                    print(f"      Reason: {filtered['reason']}")
+                print()
+            
             # Log optimization metrics
             if self.optimizer:
                 self.logger.info(f"""
-3-TIER OPTIMIZATION METRICS (SEEK):
+3-TIER OPTIMIZATION METRICS (SEEK - Page {page}):
   Total cards seen: {total_cards}
   Tier 1 (Title): {tier1_filtered} filtered ({tier1_filtered/total_cards*100:.1f}%)
   Tier 2 (Dedup): {tier2_skipped} skipped ({tier2_skipped/total_cards*100:.1f}%)

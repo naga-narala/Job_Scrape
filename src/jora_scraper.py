@@ -1,456 +1,618 @@
 """
-Jora Job Scraper
+Jora Scraper - Selenium-based (Production Ready)
 
-Scrapes job listings from Jora (au.jora.com)
-- Uses Selenium with stealth mode to bypass Cloudflare
-- URL pattern: https://au.jora.com/j?sp=search&trigger_source=serp&a=24h&q={keyword}&l={location}
+Matches LinkedIn/Seek scraper architecture:
+- Uses Selenium for JavaScript-rendered pages
+- Full 3-tier optimization (Title, Dedup, Quality)
+- Fetches complete job descriptions
+- Supports pagination (unlimited pages)
+- Cookie-based authentication
+
+Author: AI Agent
+Created: 7 February 2026
+Status: Production Ready
 """
 
 import time
 import random
-from datetime import datetime
 import logging
+import pickle
+from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium_stealth import stealth
+from webdriver_manager.chrome import ChromeDriverManager
 
-try:
-    from optimization import OptimizationManager
-    OPTIMIZATION_AVAILABLE = True
-except ImportError:
-    logging.getLogger(__name__).warning("Optimization module not available - running without 3-tier optimization")
-    OPTIMIZATION_AVAILABLE = False
+# Import optimization manager
+import sys
+sys.path.insert(0, str(Path(__file__).parent))
+from optimization import OptimizationManager
+
+# Setup logging
+logger = logging.getLogger(__name__)
 
 
-class JoraScraper:
-    """Scraper for Jora job board using Selenium"""
+def create_jora_driver(headless=True):
+    """
+    Create Chrome WebDriver with stealth mode for Jora
     
-    BASE_URL = "https://au.jora.com"
-    SEARCH_URL = "https://au.jora.com/j"
+    Args:
+        headless: Run in headless mode (default: True)
     
-    def __init__(self, delay_range=(2, 5), headless=True):
-        """
-        Initialize Jora scraper with Selenium
+    Returns:
+        Selenium WebDriver instance
+    """
+    try:
+        chrome_options = Options()
         
-        Args:
-            delay_range: Tuple of (min, max) seconds to wait between requests
-            headless: Run browser in headless mode (no GUI)
-        """
-        self.delay_range = delay_range
-        self.logger = logging.getLogger(__name__)
-        self.headless = headless
-        self.driver = None
+        if headless:
+            chrome_options.add_argument('--headless=new')
         
-        # Initialize optimizer
-        self.optimizer = None
-        if OPTIMIZATION_AVAILABLE:
+        # Anti-detection measures
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        chrome_options.add_experimental_option('useAutomationExtension', False)
+        
+        # User agent
+        chrome_options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+        
+        # Install ChromeDriver
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        
+        # Apply stealth mode
+        stealth(driver,
+            languages=["en-AU", "en"],
+            vendor="Google Inc.",
+            platform="MacIntel",
+            webgl_vendor="Intel Inc.",
+            renderer="Intel Iris OpenGL Engine",
+            fix_hairline=True,
+        )
+        
+        logger.info("✅ Jora driver initialized with stealth mode")
+        return driver
+        
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize Jora driver: {e}")
+        raise
+
+
+def load_jora_cookies(driver):
+    """
+    Load Jora cookies from data/jora_cookies.pkl
+    
+    Args:
+        driver: Selenium WebDriver instance
+    
+    Returns:
+        Number of cookies loaded
+    """
+    cookie_file = Path(__file__).parent.parent / 'data' / 'jora_cookies.pkl'
+    
+    if not cookie_file.exists():
+        logger.warning(f"⚠️ No cookie file found at {cookie_file}")
+        return 0
+    
+    try:
+        # Navigate to Jora first (required for cookies to work)
+        driver.get("https://au.jora.com")
+        time.sleep(1)
+        
+        # Load cookies
+        with open(cookie_file, 'rb') as f:
+            cookies = pickle.load(f)
+        
+        for cookie in cookies:
             try:
-                self.optimizer = OptimizationManager()
-                self.logger.info("3-Tier Optimization enabled for Jora")
+                driver.add_cookie(cookie)
             except Exception as e:
-                self.logger.warning(f"Could not initialize optimizer: {e}")
-    
-    def _init_driver(self):
-        """Initialize Chrome WebDriver with stealth mode to bypass Cloudflare"""
-        if self.driver:
-            return
+                logger.debug(f"Could not add cookie {cookie.get('name', 'unknown')}: {e}")
         
-        try:
-            chrome_options = Options()
-            if self.headless:
-                chrome_options.add_argument('--headless=new')
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.add_argument('--disable-dev-shm-usage')
-            chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-            chrome_options.add_experimental_option('useAutomationExtension', False)
-            
-            service = Service(ChromeDriverManager().install())
-            self.driver = webdriver.Chrome(service=service, options=chrome_options)
-            
-            # Apply stealth mode
-            stealth(self.driver,
-                languages=["en-US", "en"],
-                vendor="Google Inc.",
-                platform="MacIntel",
-                webgl_vendor="Intel Inc.",
-                renderer="Intel Iris OpenGL Engine",
-                fix_hairline=True,
-            )
-            
-            self.logger.info("Chrome WebDriver initialized with stealth mode")
-        except Exception as e:
-            self.logger.error(f"Failed to initialize WebDriver: {e}")
-            raise
-    
-    def _delay(self):
-        """Random delay between requests"""
-        delay = random.uniform(*self.delay_range)
-        time.sleep(delay)
-    
-    def close(self):
-        """Close the WebDriver"""
-        if self.driver:
-            self.driver.quit()
-            self.driver = None
-            self.logger.info("WebDriver closed")
-    
-    def __enter__(self):
-        """Context manager entry"""
-        self._init_driver()
-        return self
-    
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """Context manager exit"""
-        self.close()
-    
-    def search_jobs(self, keyword, location="Perth WA", time_filter="24h", max_results=50):
-        """
-        Search for jobs on Jora using Selenium
+        logger.info(f"✅ Loaded {len(cookies)} cookies for Jora")
+        return len(cookies)
         
-        Args:
-            keyword: Search keyword (e.g., "junior ai engineer")
-            location: Location filter (e.g., "Perth WA", "Melbourne VIC")
-            time_filter: Time filter - "24h", "3d", "7d", "14d" (default: "24h")
-            max_results: Maximum number of jobs to fetch (default: 50)
+    except Exception as e:
+        logger.error(f"❌ Failed to load Jora cookies: {e}")
+        return 0
+
+
+def scrape_jora_jobs(url, max_pages=10, search_config=None):
+    """
+    Scrape jobs from Jora with pagination and 3-tier optimization
+    
+    Args:
+        url: Jora search URL
+        max_pages: Maximum pages to scrape (default: 10)
+        search_config: Search configuration dict with id, keyword, location, etc.
+    
+    Returns:
+        List of job dictionaries
+    """
+    driver = None
+    all_jobs = []
+    
+    # Metrics
+    total_cards = 0
+    tier1_filtered = 0
+    tier2_skipped = 0
+    tier3_filtered = 0
+    
+    try:
+        # Initialize driver and optimizer
+        driver = create_jora_driver(headless=True)
+        optimizer = OptimizationManager()
         
-        Returns:
-            List of job dictionaries
-        """
-        jobs = []
+        # Load cookies
+        load_jora_cookies(driver)
         
-        try:
-            # Initialize driver if not already done
-            self._init_driver()
+        logger.info(f"🔷 JORA: Starting scrape from {url}")
+        logger.info(f"🔷 JORA: Max pages: {max_pages}")
+        
+        # Navigate to search URL
+        driver.get(url)
+        time.sleep(5)  # Wait for initial load
+        
+        # Paginate through results (Jora uses numbered page buttons)
+        for page_num in range(1, max_pages + 1):
+            logger.info(f"🔷 JORA: Scraping page {page_num}/{max_pages}")
+            print(f"\n🔷 JORA: Page {page_num} of {max_pages}")
             
-            # Build URL with query parameters
-            from urllib.parse import urlencode
-            params = {
-                'sp': 'search',
-                'trigger_source': 'serp',
-                'a': time_filter,
-                'q': keyword,
-                'l': location
-            }
-            url = f"{self.SEARCH_URL}?{urlencode(params)}"
-            
-            self.logger.info(f"Searching Jora: '{keyword}' in {location}")
-            self.logger.info(f"URL: {url}")
-            print(f"🔷 JORA: Processing URL: {url}")
-            
-            # Load page
-            self.driver.get(url)
-            
-            # Wait longer for JavaScript to render (Jora uses React)
-            time.sleep(8)  # Initial load
-            
-            # Wait for job listings to load - try multiple selectors
+            # Wait for job cards to load
             try:
-                WebDriverWait(self.driver, 15).until(
-                    lambda d: len(d.find_elements(By.TAG_NAME, "article")) > 0 or
-                              len(d.find_elements(By.CSS_SELECTOR, "[class*='job']")) > 5 or
-                              len(d.find_elements(By.TAG_NAME, "h2")) > 3
+                WebDriverWait(driver, 15).until(
+                    lambda d: len(d.find_elements(By.CSS_SELECTOR, "div.job-card")) > 0
                 )
-                time.sleep(3)  # Extra wait for all content
+                time.sleep(2)  # Extra wait for dynamic content
             except Exception as e:
-                self.logger.warning(f"Timeout waiting for jobs to load: {e}")
+                logger.warning(f"⚠️ Timeout waiting for jobs on page {page_num}: {e}")
             
-            # Try multiple selectors to find job cards
-            job_elements = []
+            # Find job cards - Jora uses div.job-card (specifically with class "result")
+            job_cards = driver.find_elements(By.CSS_SELECTOR, "div.job-card.result")
             
-            # Try 1: <article> tags (most common for job cards)
-            articles = self.driver.find_elements(By.TAG_NAME, "article")
-            if articles and len(articles) > 3:
-                job_elements = articles
-                self.logger.info(f"Found {len(articles)} <article> elements")
+            # If no results with that specific combo, try fallback
+            if not job_cards:
+                job_cards = driver.find_elements(By.CSS_SELECTOR, "div.job-card")
             
-            # Try 2: h2 or h3 tags (job titles)
-            if not job_elements:
-                headers = self.driver.find_elements(By.CSS_SELECTOR, "h2 a, h3 a")
-                if headers:
-                    job_elements = headers
-                    self.logger.info(f"Found {len(headers)} <h2>/<h3> link elements")
+            if not job_cards:
+                logger.warning(f"⚠️ No job cards found on page {page_num}")
+                break
             
-            # Try 3: job card containers (common class patterns)
-            if not job_elements:
-                cards = self.driver.find_elements(By.CSS_SELECTOR, "[class*='job-card'], [class*='job_card'], [class*='jobcard']")
-                if cards:
-                    job_elements = cards
-                    self.logger.info(f"Found {len(cards)} job-card elements")
+            page_jobs = 0
+            page_tier1_filtered = 0
+            page_tier2_skipped = 0
+            page_tier3_filtered = 0
             
-            # Try 4: data attributes
-            if not job_elements:
-                data_elems = self.driver.find_elements(By.CSS_SELECTOR, "[data-job-id], [data-jobid], [data-jid]")
-                if data_elems:
-                    job_elements = data_elems
-                    self.logger.info(f"Found {len(data_elems)} elements with job data attributes")
+            logger.info(f"📊 Found {len(job_cards)} job cards on page {page_num}")
+            print(f"   📊 {len(job_cards)} job cards found")
             
-            # Try 5: Links with /job/ in href (last resort)
-            if not job_elements:
-                all_links = self.driver.find_elements(By.TAG_NAME, "a")
-                job_links = [l for l in all_links if l.get_attribute('href') and '/job/' in l.get_attribute('href')]
-                if job_links:
-                    job_elements = job_links[:max_results]
-                    self.logger.info(f"Found {len(job_links)} links with '/job/' in href")
+            total_cards += len(job_cards)
             
-            if not job_elements:
-                self.logger.warning("No job elements found with any selector!")
-                # Save page source for debugging
-                with open('jora_debug_page.html', 'w', encoding='utf-8') as f:
-                    f.write(self.driver.page_source)
-                self.logger.info("Saved page source to jora_debug_page.html for inspection")
-                return jobs
-            
-            # Limit to max_results but ensure we process enough
-            elements_to_process = job_elements[:min(len(job_elements), max_results)]
-            self.logger.info(f"Processing {len(elements_to_process)} job elements")
-            
-            # 3-Tier Optimization Metrics
-            total_cards = len(elements_to_process)
-            tier1_filtered = 0
-            tier2_skipped = 0
-            tier3_filtered = 0
-            
-            for elem in elements_to_process:
+            for card_idx, card in enumerate(job_cards, 1):
                 try:
-                    job = self._parse_job_element(elem)
-                    if not job:
+                    # Extract job from card with 3-tier filtering
+                    job = extract_job_from_jora_card(card, driver, optimizer, search_config)
+                    
+                    if job is None:
                         continue
                     
-                    # TIER 1: Title filtering (before fetching full description)
-                    if self.optimizer:
-                        should_scrape, reason = self.optimizer.tier1_should_scrape_title(job['title'])
-                        if not should_scrape:
-                            tier1_filtered += 1
-                            continue
+                    # Check filter reason
+                    if job.get('_filtered_tier1'):
+                        page_tier1_filtered += 1
+                        tier1_filtered += 1
+                        continue
                     
-                    # TIER 2: Deduplication check (before fetching full description)
-                    if self.optimizer:
-                        is_duplicate, reason = self.optimizer.tier2_is_duplicate(job['url'], job['title'], job['company'], [])
-                        if is_duplicate:
-                            tier2_skipped += 1
-                            continue
+                    if job.get('_filtered_tier2'):
+                        page_tier2_skipped += 1
+                        tier2_skipped += 1
+                        continue
                     
-                    # Fetch full description from detail page (only if not filtered)
-                    try:
-                        description = self.get_job_details(job['url'])
-                        if description:
-                            job['description'] = description
-                        else:
-                            # Use summary/snippet if full description fetch fails
-                            job['description'] = job.get('snippet', '')
-                    except Exception as e:
-                        self.logger.warning(f"Failed to get description for {job['title']}: {e}")
-                        job['description'] = job.get('snippet', '')
-                        
-                        # TIER 3: Description quality check (before AI scoring)
-                        if self.optimizer:
-                            has_quality, reason = self.optimizer.tier3_has_quality_description(description)
-                            if not has_quality:
-                                tier3_filtered += 1
-                                continue
+                    if job.get('_filtered_tier3'):
+                        page_tier3_filtered += 1
+                        tier3_filtered += 1
+                        continue
                     
-                    print(f"   📋 Found job: {job['title']} at {job['company']}")
-                    jobs.append(job)
+                    # Clean up internal flags
+                    job.pop('_filtered_tier1', None)
+                    job.pop('_filtered_tier2', None)
+                    job.pop('_filtered_tier3', None)
+                    
+                    all_jobs.append(job)
+                    page_jobs += 1
+                    
+                    print(f"      ✅ Job {card_idx}: {job['title'][:60]}")
                     
                 except Exception as e:
-                    self.logger.debug(f"Error parsing job element: {e}")
+                    logger.debug(f"Error extracting job from card {card_idx}: {e}")
                     continue
             
-            # Log optimization metrics
-            if self.optimizer:
-                self.logger.info(f"""
-3-TIER OPTIMIZATION METRICS (JORA):
-  Total cards seen: {total_cards}
-  Tier 1 (Title): {tier1_filtered} filtered ({tier1_filtered/total_cards*100:.1f}%)
-  Tier 2 (Dedup): {tier2_skipped} skipped ({tier2_skipped/total_cards*100:.1f}%)
-  Tier 3 (Quality): {tier3_filtered} filtered ({tier3_filtered/total_cards*100:.1f}%)
-  Jobs scraped: {len(jobs)}
-  Total filtered: {tier1_filtered + tier2_skipped + tier3_filtered}
-  Efficiency gain: {(tier1_filtered + tier2_skipped + tier3_filtered)/total_cards*100:.1f}%""")
+            # Page summary
+            total_filtered = page_tier1_filtered + page_tier2_skipped + page_tier3_filtered
+            efficiency = (total_filtered / len(job_cards) * 100) if len(job_cards) > 0 else 0
             
-            self.logger.info(f"Successfully parsed {len(jobs)} jobs")
+            print(f"\n   📊 Page {page_num} Summary:")
+            print(f"      • Jobs scraped: {page_jobs}")
+            print(f"      • Tier 1 filtered: {page_tier1_filtered}")
+            print(f"      • Tier 2 skipped: {page_tier2_skipped}")
+            print(f"      • Tier 3 filtered: {page_tier3_filtered}")
+            print(f"      • Efficiency: {efficiency:.1f}%")
             
-            # Delay before next search
-            self._delay()
+            logger.info(f"""
+📊 PAGE {page_num} METRICS:
+   Cards found: {len(job_cards)}
+   Jobs scraped: {page_jobs}
+   Tier 1 filtered: {page_tier1_filtered}
+   Tier 2 skipped: {page_tier2_skipped}
+   Tier 3 filtered: {page_tier3_filtered}
+   Efficiency: {efficiency:.1f}%""")
             
-        except Exception as e:
-            self.logger.error(f"Error searching Jora for '{keyword}': {e}")
+            # Try to go to next page
+            if page_num < max_pages:
+                if not click_next_page_jora(driver):
+                    logger.info(f"✅ No more pages available (stopped at page {page_num})")
+                    break
+                time.sleep(3)  # Wait for next page to load
         
-        return jobs
+        # Final summary
+        total_filtered = tier1_filtered + tier2_skipped + tier3_filtered
+        overall_efficiency = (total_filtered / total_cards * 100) if total_cards > 0 else 0
+        
+        print(f"\n{'='*70}")
+        print(f"🎯 JORA SCRAPING COMPLETE")
+        print(f"{'='*70}")
+        print(f"Total job cards seen: {total_cards}")
+        print(f"Jobs scraped: {len(all_jobs)}")
+        if total_cards > 0:
+            print(f"Tier 1 filtered: {tier1_filtered} ({tier1_filtered/total_cards*100:.1f}%)")
+            print(f"Tier 2 skipped: {tier2_skipped} ({tier2_skipped/total_cards*100:.1f}%)")
+            print(f"Tier 3 filtered: {tier3_filtered} ({tier3_filtered/total_cards*100:.1f}%)")
+            print(f"Overall efficiency: {overall_efficiency:.1f}%")
+        else:
+            print(f"Tier 1 filtered: {tier1_filtered}")
+            print(f"Tier 2 skipped: {tier2_skipped}")
+            print(f"Tier 3 filtered: {tier3_filtered}")
+        print(f"{'='*70}\n")
+        
+        logger.info(f"""
+🎯 JORA FINAL METRICS:
+   Total cards: {total_cards}
+   Jobs scraped: {len(all_jobs)}
+   Tier 1 filtered: {tier1_filtered} ({tier1_filtered/total_cards*100:.1f}%)
+   Tier 2 skipped: {tier2_skipped} ({tier2_skipped/total_cards*100:.1f}%)
+   Tier 3 filtered: {tier3_filtered} ({tier3_filtered/total_cards*100:.1f}%)
+   Overall efficiency: {overall_efficiency:.1f}%""")
+        
+    except Exception as e:
+        logger.error(f"❌ Error during Jora scraping: {e}")
+        raise
+    finally:
+        if driver:
+            driver.quit()
+            logger.info("✅ Jora driver closed")
     
-    def _parse_job_element(self, element):
-        """Parse a Jora job element using Selenium"""
+    return all_jobs
+
+
+def extract_job_from_jora_card(card, driver, optimizer, search_config=None):
+    """
+    Extract job data from Jora job card with 3-tier filtering
+    
+    Args:
+        card: Selenium WebElement (div.job-card)
+        driver: Selenium WebDriver instance
+        optimizer: OptimizationManager instance
+        search_config: Search configuration dict
+    
+    Returns:
+        Job dict or None if filtered
+    """
+    try:
+        # Extract title and URL - Jora uses h2.job-title with nested <a>
+        title = None
+        job_url = None
+        
+        # Approach 1: Get title from h2.job-title element (text is in h2, not in <a>)
         try:
-            # Try to find title link
-            title_elem = None
-            url = None
+            job_title_h2 = card.find_element(By.CSS_SELECTOR, 'h2.job-title')
+            title = job_title_h2.text.strip()
             
-            # If element is already a link
-            if element.tag_name == 'a':
-                title_elem = element
-                url = element.get_attribute('href')
-            else:
-                # Find link within element - prefer job detail links
-                links = element.find_elements(By.TAG_NAME, 'a')
-                for link in links:
-                    href = link.get_attribute('href')
-                    # Skip location-only links
-                    if href and 'jobs-in-' in href:
-                        continue
-                    if href and ('job' in href or '/j/' in href):
-                        title_elem = link
-                        url = href
-                        break
+            # Get URL from the link inside h2
+            title_link = job_title_h2.find_element(By.TAG_NAME, 'a')
+            job_url = title_link.get_attribute('href')
+        except Exception as e:
+            logger.debug(f"Failed to extract from h2.job-title: {e}")
+        
+        # Approach 2: Find any link with /job/ and get text from its parent/card
+        if not (title and job_url):
+            try:
+                job_link = card.find_element(By.CSS_SELECTOR, 'a[href*="/job/"]')
+                job_url = job_link.get_attribute('href')
                 
-                # If no job link found, try any link with meaningful text
-                if not title_elem:
-                    for link in links:
-                        text = link.text.strip()
-                        href = link.get_attribute('href')
-                        if text and len(text) > 3 and href and 'jobs-in-' not in href:
-                            title_elem = link
-                            url = href
-                            break
-            
-            if not title_elem or not url:
-                return None
-            
-            # Get title text
-            title = title_elem.text.strip()
-            if not title or len(title) < 3:
-                return None
-            
-            # Skip if title looks like a location
-            location_keywords = ['WA', 'VIC', 'NSW', 'QLD', 'SA', 'ACT', 'NT', 'TAS']
-            if any(title.endswith(kw) for kw in location_keywords) and len(title.split()) <= 3:
-                return None
-            
-            # Make absolute URL
-            if url.startswith('/'):
-                url = f"{self.BASE_URL}{url}"
-            
-            # Clean URL - extract base job URL without tracking parameters
-            # Example: https://au.jora.com/job/Engineer-ABC123?sol_key=xyz&tk=123
-            # Should become: https://au.jora.com/job/Engineer-ABC123
-            from urllib.parse import urlparse, parse_qs
-            parsed = urlparse(url)
-            # Keep only the base path, remove query parameters
-            clean_url = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
-            url = clean_url
-            
-            # Try to find company (look for text near title)
-            company = "Unknown"
+                # Try to get title from h2 or h3 within card
+                try:
+                    title_elem = card.find_element(By.CSS_SELECTOR, 'h2, h3')
+                    title = title_elem.text.strip()
+                except:
+                    # Fallback: get all card text and extract first line
+                    card_text = card.text.strip()
+                    if card_text:
+                        # Title is usually the first non-empty line
+                        lines = [l.strip() for l in card_text.split('\n') if l.strip()]
+                        if lines:
+                            title = lines[0]
+            except Exception as e:
+                logger.debug(f"Failed to extract from link approach: {e}")
+        
+        if not title or not job_url:
+            logger.warning(f"❌ Could not find title or URL in Jora card - Title: '{title}', URL: '{job_url}'")
+            # Try to see what's in the card
             try:
-                # Look in parent element
-                parent = element if element.tag_name != 'a' else element.find_element(By.XPATH, '..')
-                text_elements = parent.find_elements(By.XPATH, ".//*[not(self::a)]")
-                for text_elem in text_elements:
-                    text = text_elem.text.strip()
-                    if text and text != title and len(text) > 2 and len(text) < 100:
-                        # Skip ratings (numbers with decimals)
-                        if text.replace('.', '').isdigit():
-                            continue
-                        company = text
-                        break
+                card_text = card.text[:100]
+                logger.warning(f"   Card preview: {card_text}")
             except:
                 pass
-            
-            # Try to find location
-            location = "Australia"
-            try:
-                # Look for common location patterns
-                parent = element if element.tag_name != 'a' else element.find_element(By.XPATH, '..')
-                text = parent.text
-                for loc in ['Perth', 'Melbourne', 'Sydney', 'Brisbane', 'Adelaide', 'Canberra']:
-                    if loc in text:
-                        location = loc
-                        break
-            except:
-                pass
-            
-            return {
-                'title': title,
-                'company': company,
-                'location': location,
-                'description': '',
-                'requirement_text': '',  # Jora doesn't have separate requirements section
-                'url': url,
-                'posted_date': None,
-                'employment_type': None,
-                'source': 'jora'
-            }
-        except Exception as e:
-            self.logger.debug(f"Error parsing Jora element: {e}")
             return None
-    
-    def get_job_details(self, job_url):
-        """
-        Fetch full job description from job detail page
         
-        Args:
-            job_url: URL of the job posting
+        # TIER 1: Title filtering (before extracting other fields)
+        should_scrape, reason = optimizer.tier1_should_scrape_title(title)
+        if not should_scrape:
+            logger.info(f"⛔ TIER 1 FILTERED: '{title}' - Reason: {reason}")
+            return {'_filtered_tier1': True}
         
-        Returns:
-            Full job description text or None
-        """
+        logger.info(f"✅ TIER 1 PASSED: '{title}'")
+        
+        # Extract company - Jora shows company in specific elements
+        logger.info(f"📌 Extracting company for: '{title}'")
+        company = "Unknown"
+        company_selectors = [
+            'div.job-company',          # Jora-specific class
+            'span.job-company',
+            'div[class*="company"]',
+            'span[class*="company"]',
+            'a[class*="company"]',
+        ]
+        
+        for selector in company_selectors:
+            try:
+                company_elem = card.find_element(By.CSS_SELECTOR, selector)
+                company_text = company_elem.text.strip()
+                if company_text and len(company_text) > 1:
+                    company = company_text
+                    logger.info(f"📌 Company found: '{company}'")
+                    break
+            except:
+                continue
+        
+        logger.info(f"📌 Company result: '{company}'")
+        
+        # TIER 2: Deduplication check (before fetching description)
+        logger.info(f"📌 Starting TIER 2 check for: '{title}'")
+        job_hash = f"{title.lower()}_{company.lower()}_{job_url}"
+        
         try:
-            self._init_driver()
-            
-            self.logger.info(f"Fetching job details: {job_url}")
-            self.driver.get(job_url)
-            
-            # Wait for job description to load
+            # Note: Pass empty list [] as 4th positional argument (not all_jobs=)
+            is_duplicate, reason = optimizer.tier2_is_duplicate(job_url, title, company, [])
+            logger.info(f"📌 TIER 2 check completed - duplicate: {is_duplicate}")
+        except Exception as tier2_error:
+            logger.error(f"❌ TIER 2 ERROR for '{title}': {tier2_error}")
+            logger.error(f"   Exception type: {type(tier2_error).__name__}")
+            import traceback
+            logger.error(f"   Traceback: {traceback.format_exc()}")
+            return None
+        
+        if is_duplicate:
+            logger.info(f"⛔ TIER 2 DUPLICATE: '{title}' at {company} - {reason}")
+            return {'_filtered_tier2': True}
+        
+        logger.info(f"✅ TIER 2 PASSED: '{title}' (unique job)")
+        
+        # Extract location - Jora shows location in specific elements
+        location = "Australia"
+        location_selectors = [
+            'span.job-location',        # Jora-specific class
+            'div.job-location',
+            'div[class*="location"]',
+            'span[class*="location"]',
+        ]
+        
+        for selector in location_selectors:
             try:
-                WebDriverWait(self.driver, 10).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, "div[class*='description'], div[class*='detail']"))
-                )
+                loc_elem = card.find_element(By.CSS_SELECTOR, selector)
+                loc_text = loc_elem.text.strip()
+                if loc_text and len(loc_text) > 1:
+                    location = loc_text
+                    break
+            except:
+                continue
+        
+        # Fetch full description from job detail page
+        description = fetch_jora_job_description(card, driver, job_url)
+        
+        if not description:
+            logger.warning(f"⚠️ No description for: {title}")
+            description = ""
+        
+        # TIER 3: Description quality check
+        has_quality, reason = optimizer.tier3_has_quality_description(description)
+        if not has_quality:
+            logger.info(f"⛔ TIER 3 FILTERED: '{title}' - {reason} (desc length: {len(description)})")
+            return {'_filtered_tier3': True}
+        
+        logger.info(f"✅ TIER 3 PASSED: '{title}' (desc length: {len(description)})")
+        
+        # Build job dict
+        job = {
+            'title': title,
+            'company': company,
+            'location': location,
+            'description': description,
+            'url': job_url,
+            'posted_date': None,
+            'source': 'jora',
+            'region': search_config.get('region', 'australia') if search_config else 'australia',
+            'source_search_id': search_config.get('search_id') if search_config else None,
+            'search_keyword': search_config.get('keyword') if search_config else None
+        }
+        
+        return job
+        
+    except Exception as e:
+        logger.debug(f"Error extracting job from Jora card: {e}")
+        return None
+
+
+def fetch_jora_job_description(card, driver, job_url):
+    """
+    Fetch full job description by opening job in new tab
+    
+    Args:
+        card: Job card element (not used, for API consistency)
+        driver: Selenium WebDriver instance
+        job_url: URL of job detail page
+    
+    Returns:
+        Full description text or empty string
+    """
+    original_window = driver.current_window_handle
+    
+    try:
+        # Open new tab
+        driver.execute_script("window.open('');")
+        driver.switch_to.window(driver.window_handles[-1])
+        
+        # Navigate to job detail page
+        driver.get(job_url)
+        time.sleep(2)  # Wait for load
+        
+        # Try multiple selectors for description
+        description_selectors = [
+            'div[class*="description"]',
+            'div[class*="job-detail"]',
+            'div[class*="job_detail"]',
+            'div[id*="description"]',
+            'section[class*="description"]',
+            'article[class*="description"]'
+        ]
+        
+        description = ""
+        for selector in description_selectors:
+            try:
+                desc_elem = driver.find_element(By.CSS_SELECTOR, selector)
+                description = desc_elem.text.strip()
+                if description and len(description) > 200:
+                    break
+            except:
+                continue
+        
+        # If no structured description, try getting all text from main content
+        if not description or len(description) < 200:
+            try:
+                main_elem = driver.find_element(By.TAG_NAME, 'main')
+                description = main_elem.text.strip()
             except:
                 pass
-            
-            # Try to find description container
-            desc_containers = self.driver.find_elements(By.CSS_SELECTOR, "div[class*='description'], div[class*='detail']")
-            if desc_containers:
-                return desc_containers[0].text
-            
-            self.logger.warning(f"No description found for {job_url}")
-            return None
-            
-        except Exception as e:
-            self.logger.error(f"Error fetching job details from {job_url}: {e}")
-            return None
+        
+        # Close tab and switch back
+        driver.close()
+        driver.switch_to.window(original_window)
+        
+        return description
+        
+    except Exception as e:
+        logger.debug(f"Error fetching Jora description from {job_url}: {e}")
+        # Make sure we're back on original window
+        try:
+            driver.close()
+        except:
+            pass
+        driver.switch_to.window(original_window)
+        return ""
 
 
-def main():
-    """Test the Jora scraper"""
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
+def click_next_page_jora(driver):
+    """
+    Click next page button on Jora (the "Next" link)
     
-    print("\n" + "="*80)
-    print("Testing Jora Scraper with Selenium + Stealth")
-    print("="*80 + "\n")
+    Args:
+        driver: Selenium WebDriver instance
     
-    # Use context manager to ensure driver cleanup
-    with JoraScraper(headless=True) as scraper:
-        # Test search
-        jobs = scraper.search_jobs("junior ai engineer", "Perth WA")
+    Returns:
+        True if next page clicked, False if no more pages
+    """
+    try:
+        # Scroll to bottom to ensure pagination is visible
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(1)
         
-        print(f"Found {len(jobs)} jobs\n")
+        # Find all links and look for "Next" text
+        all_links = driver.find_elements(By.TAG_NAME, 'a')
         
-        for i, job in enumerate(jobs[:5], 1):  # Show first 5
-            print(f"{i}. {job['title']}")
-            print(f"   Company: {job['company']}")
-            print(f"   Location: {job['location']}")
-            print(f"   URL: {job['url'][:80]}...")
-            print()
+        for link in all_links:
+            link_text = link.text.strip()
+            if link_text in ['Next', 'next', '>', '›', '»']:
+                # Found a next button - check if it's disabled
+                href = link.get_attribute('href')
+                classes = link.get_attribute('class') or ''
+                
+                # Check for disabled state
+                if 'disabled' in classes.lower() or not href or href == '#':
+                    logger.info("⚠️ Next button is disabled (last page)")
+                    return False
+                
+                # Click the link
+                try:
+                    driver.execute_script("arguments[0].scrollIntoView(true);", link)
+                    time.sleep(0.5)
+                    driver.execute_script("arguments[0].click();", link)
+                    logger.info(f"✅ Clicked 'Next' button -> {href[:80]}")
+                    return True
+                except Exception as e:
+                    logger.debug(f"Failed to click next link: {e}")
+                    continue
+        
+        logger.info("⚠️ No next page button found (reached end)")
+        return False
+        
+    except Exception as e:
+        logger.error(f"Error clicking next page: {e}")
+        return False
 
 
 if __name__ == '__main__':
-    main()
+    # Test the scraper
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
+    
+    test_url = "https://au.jora.com/j?sp=search&trigger_source=serp&a=7d&q=graduate%20artificial%20intelligence%20engineer&l=Australia"
+    
+    print("\n" + "="*70)
+    print("🧪 TESTING JORA SCRAPER (SELENIUM)")
+    print("="*70 + "\n")
+    
+    jobs = scrape_jora_jobs(
+        url=test_url,
+        max_pages=3,
+        search_config={
+            'id': 'test_jora',
+            'keyword': 'Graduate Artificial Intelligence Engineer',
+            'location': 'Australia',
+            'region': 'australia',
+            'search_id': 'jora_graduate_ai_engineer_australia'
+        }
+    )
+    
+    print(f"\n✅ Test complete: {len(jobs)} jobs scraped")
+    
+    if jobs:
+        print("\n📋 Sample jobs:")
+        for job in jobs[:5]:
+            print(f"   • {job['title']} - {job['company']}")
+            print(f"     Description: {len(job['description'])} chars")

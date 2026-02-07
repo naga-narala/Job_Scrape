@@ -81,12 +81,12 @@ def index():
     
     config = load_config()
     hide_old_days = config.get('hide_jobs_older_than_days', 30)
-    threshold = config.get('match_threshold', 75)
+    threshold = config.get('match_threshold', 50)  # Show jobs ≥50%
     
     # Get jobs within date range
     jobs = db.get_jobs_by_date_range(days, hide_old_days)
     
-    # Filter to only high-scoring jobs
+    # Filter to only high-scoring jobs (≥50%)
     jobs = [j for j in jobs if j.get('score', 0) >= threshold]
     
     # Apply region filter

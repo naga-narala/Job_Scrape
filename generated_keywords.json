@@ -296,7 +296,7 @@
   "source_file": "jobs.txt",
   "dealbreakers": {
     "max_experience": "2",
-    "exclude_seniority": "Senior, Lead, Principal, Manager, Director, Head of, Chief, VP, C-Level, Executive, Staff",
+    "exclude_seniority": "Senior, Lead, Principal, Manager, Director, Head of, Chief, VP, C-Level, Executive",
     "exclude_visa": "PR Required, Permanent Resident Required, Citizenship Required, Australian Citizen Only, US Citizen Only, Security Clearance Required, Must be eligible to work permanently",
     "exclude_education": "PhD Required, Doctorate Required, PhD Preferred",
     "exclude_certifications": ""

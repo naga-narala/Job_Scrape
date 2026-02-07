@@ -78,9 +78,30 @@ def load_config():
 
 def load_job_searches():
     """
-    Load job searches from generated_search_urls.json
+    Load job searches from test_url.json (if exists), otherwise generated_search_urls.json
     Falls back to job_searches.json if generation hasn't run yet
     """
+    # TEST MODE: Check for test_url.json first
+    test_path = Path(__file__).parent.parent / 'test_url.json'
+    if test_path.exists():
+        logger.info("🧪 TEST MODE: Loading from test_url.json")
+        print("\n⚠️  TEST MODE DETECTED - Using test_url.json (3 URLs only)")
+        try:
+            with open(test_path, 'r') as f:
+                test_data = json.load(f)
+            
+            # Flatten test URLs into search format
+            searches = []
+            for source, urls in test_data.items():
+                if isinstance(urls, list):
+                    searches.extend(urls)
+            
+            logger.info(f"Loaded {len(searches)} test URLs")
+            print(f"   Loaded {len(searches)} test URLs\n")
+            return searches
+        except Exception as e:
+            logger.warning(f"Could not load test URLs: {e}, falling back to production URLs")
+    
     # Try new generated URLs first
     generated_path = Path(__file__).parent.parent / 'generated_search_urls.json'
     if generated_path.exists():
@@ -220,7 +241,7 @@ def run_daily_job():
             source_stats['linkedin'] = len(linkedin_jobs)
             logger.info(f"LinkedIn: {len(linkedin_jobs)} jobs, Strategy: {strategy_stats}")
         
-        # Fetch from Seek
+        # Fetch from Seek (with pagination: 3 pages per search)
         if seek_searches and SEEK_AVAILABLE:
             logger.info(f"Fetching from Seek: {len(seek_searches)} searches")
             seek_scraper = SeekScraper()
@@ -229,7 +250,8 @@ def run_daily_job():
                 try:
                     jobs = seek_scraper.search_jobs(
                         search['keyword'],
-                        search['location']
+                        search['location'],
+                        max_pages=3  # Scrape 3 pages per search
                     )
                     for job in jobs:
                         job['source_search_id'] = search['id']
@@ -242,7 +264,7 @@ def run_daily_job():
         elif seek_searches:
             logger.warning("Seek searches configured but SeekScraper not available")
         
-        # Fetch from Jora
+        # Fetch from Jora (with max_results=100)
         if jora_searches and JORA_AVAILABLE:
             logger.info(f"Fetching from Jora: {len(jora_searches)} searches")
             jora_scraper = JoraScraper()
@@ -251,7 +273,8 @@ def run_daily_job():
                 try:
                     jobs = jora_scraper.search_jobs(
                         search['keyword'],
-                        search['location']
+                        search['location'],
+                        max_results=100  # Increased from default 50
                     )
                     for job in jobs:
                         job['source_search_id'] = search['id']

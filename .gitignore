@@ -24,6 +24,9 @@ linkedin_cookies.pkl
 # Environment
 .env
 
+# Configuration with secrets (DO NOT COMMIT)
+config.json
+
 # IDE
 .vscode/
 .idea/

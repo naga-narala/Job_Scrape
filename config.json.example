@@ -1,0 +1,29 @@
+{
+  "openrouter_api_key": "your_openrouter_api_key_here",
+  "jsearch_api_key": "your_jsearch_api_key_here",
+  "email_smtp_host": "smtp.gmail.com",
+  "email_smtp_port": 587,
+  "email_from": "your_email@gmail.com",
+  "email_password": "your_app_password_here",
+  "email_to": "recipient@email.com",
+  "match_threshold": 30,
+  "check_interval_hours": 24,
+  "timezone": "Australia/Perth",
+  "ai_models": {
+    "primary": "deepseek/deepseek-chat",
+    "fallbacks": [
+      "anthropic/claude-3.5-haiku"
+    ]
+  },
+  "rescore_threshold_min": 70,
+  "rescore_threshold_max": 79,
+  "rescore_max_age_days": 7,
+  "notification_threshold": 70,
+  "linkedin_max_pages": 3,
+  "linkedin": {
+    "enabled": true,
+    "geoId_australia": "101452733",
+    "geoId_perth": "104769905",
+    "time_filter": "r604800"
+  }
+}

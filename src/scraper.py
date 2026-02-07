@@ -502,10 +502,10 @@ def extract_job_from_card(card, search_config, driver, optimizer=None):
         return None
 
 
-def fetch_jobs_from_url(url, search_config, driver, max_pages=3):
+def fetch_jobs_from_url(url, search_config, driver, max_pages=None):
     """
     Fetch jobs from LinkedIn with pagination support and 3-tier optimization
-    max_pages: Number of pages to scrape (default 3 = 75 jobs max)
+    max_pages: Number of pages to scrape (None = unlimited, reads from config)
     LinkedIn shows ~25 jobs per page, uses &start=0, &start=25, &start=50, etc.
     """
     all_jobs = []
@@ -676,13 +676,20 @@ def fetch_jobs_from_url(url, search_config, driver, max_pages=3):
     return all_jobs
 
 
-def fetch_all_jobs(searches, api_key=None, headless=True, max_pages=3):
+def fetch_all_jobs(searches, api_key=None, headless=True, max_pages=None, config=None):
     """
     Fetch jobs from all search configurations with pagination
-    max_pages: Number of pages to scrape per search (default 3)
+    max_pages: Number of pages to scrape per search (None = read from config)
+    config: Configuration dict (for max_pages setting)
     """
     all_jobs = []
     strategy_stats = {'Selenium': 0, 'Failed': 0}
+    
+    # Get max_pages from config if not specified
+    if max_pages is None and config:
+        max_pages = config.get('linkedin_max_pages', 3)
+    elif max_pages is None:
+        max_pages = 3  # Fallback default
     
     if not COOKIES_FILE.exists():
         logger.warning("No LinkedIn session. Run: python src/scraper.py --login")
