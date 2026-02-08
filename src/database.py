@@ -5,7 +5,12 @@ from datetime import datetime, timedelta
 from pathlib import Path
 import pytz
 
-DB_PATH = Path(__file__).parent.parent / 'data' / 'jobs.db'
+# Load database path from config
+config_path = Path(__file__).parent.parent / 'config.json'
+with open(config_path, 'r') as f:
+    _DB_CONFIG = json.load(f)
+
+DB_PATH = Path(__file__).parent.parent / _DB_CONFIG.get('database', {}).get('path', 'data/jobs.db')
 
 
 def get_perth_now():
@@ -19,9 +24,77 @@ def get_perth_date():
     return get_perth_now().date()
 
 
-def generate_job_hash(title, company, url):
-    """Generate unique hash for job deduplication"""
-    content = f"{title}|{company}|{url}".lower()
+def normalize_company_name(company):
+    """
+    Normalize company name for better deduplication
+    
+    Removes common suffixes and standardizes format:
+    - "Company Pty Ltd" → "company"
+    - "Company Inc." → "company"
+    - "Company    Name" → "company name" (normalize whitespace)
+    
+    Args:
+        company: Raw company name
+    
+    Returns:
+        Normalized company name (lowercase, no suffixes, clean whitespace)
+    """
+    if not company:
+        return ''
+    
+    # Convert to lowercase
+    normalized = company.lower().strip()
+    
+    # Remove common company suffixes (Australian, US, UK formats)
+    suffixes = [
+        r'\s+pty\.?\s+ltd\.?$',  # Pty Ltd, Pty. Ltd.
+        r'\s+pty$',               # Pty
+        r'\s+ltd\.?$',           # Ltd, Ltd.
+        r'\s+limited$',           # Limited
+        r'\s+inc\.?$',           # Inc, Inc.
+        r'\s+incorporated$',      # Incorporated
+        r'\s+corp\.?$',          # Corp, Corp.
+        r'\s+corporation$',       # Corporation
+        r'\s+llc$',               # LLC
+        r'\s+llp$',               # LLP
+        r'\s+plc$',               # PLC
+        r'\s+gmbh$',              # GmbH (German)
+        r'\s+pty\s+limited$',    # Pty Limited
+    ]
+    
+    import re
+    for suffix_pattern in suffixes:
+        normalized = re.sub(suffix_pattern, '', normalized)
+    
+    # Normalize whitespace (multiple spaces → single space)
+    normalized = re.sub(r'\s+', ' ', normalized).strip()
+    
+    return normalized
+
+
+def generate_job_hash(title, company, url, include_url=True):
+    """
+    Generate unique hash for job deduplication
+    
+    Args:
+        title: Job title
+        company: Company name (will be normalized)
+        url: Job URL
+        include_url: If True, include URL in hash (platform-specific dedup)
+                    If False, hash only title+company (cross-platform dedup)
+    
+    Returns:
+        SHA256 hash string
+    """
+    # Normalize company name for consistent matching
+    company_normalized = normalize_company_name(company)
+    
+    if include_url:
+        content = f"{title}|{company_normalized}|{url}".lower()
+    else:
+        # Cross-platform deduplication: ignore URL, hash only title+company
+        content = f"{title}|{company_normalized}".lower()
+    
     return hashlib.sha256(content.encode()).hexdigest()
 
 
@@ -543,6 +616,28 @@ def count_jobs_above_threshold(threshold):
     count = cursor.fetchone()['count']
     conn.close()
     return count
+
+
+def get_jobs_above_threshold(threshold, limit=None):
+    """Get jobs scoring above threshold with details"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    query = '''
+        SELECT j.title, j.company, s.score
+        FROM jobs j
+        JOIN scores s ON j.id = s.job_id
+        WHERE s.score >= ?
+        ORDER BY s.score DESC, j.first_seen_date DESC
+    '''
+    
+    if limit:
+        query += f' LIMIT {limit}'
+    
+    cursor.execute(query, (threshold,))
+    jobs = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return jobs
 
 
 def get_average_score():

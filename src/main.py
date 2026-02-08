@@ -222,7 +222,8 @@ def run_daily_job():
         print(f"   Expected jobs: ~{len(enabled) * 20}")
         print(f"   Estimated time: ~{len(enabled) * 1.5:.0f} minutes")
         print(f"\nStarting in 3 seconds...")
-        time.sleep(3)
+        workflow_config = config.get('workflow', {})
+        time.sleep(workflow_config.get('delay_between_phases', 3))
         
         # Initialize database
         db.init_database()
@@ -355,14 +356,35 @@ def run_daily_job():
         # Get existing jobs for deduplication
         existing_jobs = db.get_all_jobs()
         
+        # Track jobs within this run for cross-platform deduplication
+        seen_jobs_this_run = []  # List of (normalized_title, normalized_company, source)
+        
         for job in all_jobs:
             job_title = job.get('title', '')
             job_desc = job.get('description', '')
             job_url = job.get('url', '')
             job_company = job.get('company', '')
+            job_source = job.get('source', 'unknown')
             job_hash = db.generate_job_hash(job_title, job_company, job_url)
             
-            # TIER 2: Deduplication check (check database first - cheapest operation)
+            # TIER 2a: Cross-platform deduplication within current run
+            from database import normalize_company_name
+            norm_title = job_title.lower().strip()
+            norm_company = normalize_company_name(job_company)
+            
+            # Check if same job already scraped from different platform this run
+            cross_platform_dup = False
+            for seen_title, seen_company, seen_source in seen_jobs_this_run:
+                if norm_title == seen_title and norm_company == seen_company:
+                    tier2_filtered += 1
+                    logger.info(f"🔄 Cross-platform duplicate: '{job_title}' from {job_source} already scraped from {seen_source}")
+                    cross_platform_dup = True
+                    break
+            
+            if cross_platform_dup:
+                continue
+            
+            # TIER 2b: Deduplication check against database
             if opt_manager:
                 is_duplicate, dup_reason = opt_manager.tier2_is_duplicate(
                     job_url, job_title, job_company, existing_jobs
@@ -388,6 +410,8 @@ def run_daily_job():
             if job_id:
                 job['id'] = job_id
                 new_jobs.append(job)
+                # Track for cross-platform dedup
+                seen_jobs_this_run.append((norm_title, norm_company, job_source))
             else:
                 duplicate_count += 1
                 # Update last_seen_date for duplicate
@@ -402,6 +426,14 @@ def run_daily_job():
             total_processed = len(all_jobs)
             savings_pct = (total_filtered / total_processed * 100) if total_processed > 0 else 0
             print(f"💰 Optimization savings: {total_filtered}/{total_processed} ({savings_pct:.1f}%)")
+        
+        # Problem 12: Accounting validation
+        total_accounted = len(new_jobs) + duplicate_count + tier2_filtered + tier3_filtered
+        if total_accounted != len(all_jobs):
+            logger.error(f"⚠️ ACCOUNTING MISMATCH: Processed {total_accounted} but fetched {len(all_jobs)} (diff: {len(all_jobs) - total_accounted})")
+        else:
+            logger.info(f"✓ Accounting valid: {total_accounted} = {len(new_jobs)} new + {duplicate_count} dups + {tier2_filtered} T2 + {tier3_filtered} T3")
+        
         logger.info(f"New jobs: {len(new_jobs)}, Duplicates: {duplicate_count}, Tier2: {tier2_filtered}, Tier3: {tier3_filtered}")
         
         # Step 4: Mark jobs as inactive if not seen
@@ -435,9 +467,10 @@ def run_daily_job():
             )
             
             print(f"\n✅ Scoring complete:")
-            print(f"   ✓ Scored: {score_summary.get('scored', 0)}")
+            print(f"   ✓ AI Scored: {score_summary.get('ai_scored', 0)}")
+            print(f"   ❌ Parser Rejected: {score_summary.get('parser_rejected', 0)}")
             print(f"   ❌ Failed: {score_summary.get('failed', 0)}")
-            print(f"   📊 Average score: {score_summary.get('average_score', 0):.1f}%")
+            print(f"   📊 Average score: {score_summary.get('avg_score', 0):.1f}%")
             
             # Insert scores into database
             profile_hash = db.get_profile_hash()
@@ -445,7 +478,7 @@ def run_daily_job():
                 if score_data.get('job_id'):
                     db.insert_score(score_data['job_id'], score_data, profile_hash)
             
-            logger.info(f"Scored: {score_summary['scored']}, Failed: {score_summary['failed']}, Avg: {score_summary['avg_score']}%")
+            logger.info(f"AI Scored: {score_summary['ai_scored']}, Parser Rejected: {score_summary['parser_rejected']}, Failed: {score_summary['failed']}, Avg: {score_summary['avg_score']}%")
         else:
             print(f"\n✓ No new jobs to score")
             logger.info("No new jobs to score")
@@ -470,19 +503,29 @@ def run_daily_job():
             print(f"ℹ️  No new matches to notify")
         
         # Step 7: Log summary
-        high_matches = db.count_jobs_above_threshold(config.get('match_threshold', 75))
+        match_threshold = config.get('match_threshold', 30)
+        high_matches = db.count_jobs_above_threshold(match_threshold)
+        
+        # Log which jobs met the threshold for observability
+        if high_matches > 0:
+            matching_jobs = db.get_jobs_above_threshold(match_threshold)
+            logger.info(f"Jobs meeting threshold (≥{match_threshold}%):")
+            for job in matching_jobs[:10]:  # Show first 10
+                logger.info(f"  • {job['score']}% - {job['title']} at {job['company']}")
+            if len(matching_jobs) > 10:
+                logger.info(f"  ... and {len(matching_jobs) - 10} more")
         
         print(f"\n{'=' * 70}")
         print("✅ RUN COMPLETE")
         print(f"{'=' * 70}")
-        print(f"📊 Total matches (≥50%): {high_matches}")
+        print(f"📊 Total matches (≥{match_threshold}%): {high_matches}")
         print(f"📅 Next run: {get_next_run_time(config.get('check_interval_hours', 24))}")
         print(f"🌐 View dashboard: http://localhost:8000")
         print(f"{'=' * 70}\n")
         
         logger.info("=" * 70)
         logger.info("Daily run completed successfully")
-        logger.info(f"Total matches (75%+): {high_matches}")
+        logger.info(f"Total matches (≥{match_threshold}%): {high_matches}")
         logger.info(f"Next run: {get_next_run_time(config.get('check_interval_hours', 24))}")
         logger.info("=" * 70)
         
@@ -542,7 +585,9 @@ def run_test_mode():
             )
             
             if jobs:
-                jobs = jobs[:10]  # Limit to 10 for testing
+                workflow_config = config.get('workflow', {})
+                test_limit = workflow_config.get('test_mode_max_jobs', 10)
+                jobs = jobs[:test_limit]  # Limit to configured amount for testing
                 print(f"   ✓ Fetched {len(jobs)} sample job(s)")
                 
                 # Insert jobs into database for testing
@@ -644,7 +689,10 @@ def start_daemon():
     try:
         while True:
             schedule.run_pending()
-            time.sleep(60)  # Check every minute
+            config = load_config()
+            workflow_config = config.get('workflow', {})
+            check_interval = workflow_config.get('scheduler_check_interval', 60)
+            time.sleep(check_interval)  # Check every configured interval
     except KeyboardInterrupt:
         logger.info("Daemon stopped by user")
         sys.exit(0)

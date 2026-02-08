@@ -34,16 +34,29 @@ class SeekScraper:
     
     BASE_URL = "https://www.seek.com.au"
     
-    def __init__(self, cookies=None, delay_range=(2, 5), auto_load_cookies=True):
+    def __init__(self, cookies=None, delay_range=None, auto_load_cookies=True):
         """
         Initialize Seek scraper
         
         Args:
             cookies: Dictionary of cookies from browser session (optional)
-            delay_range: Tuple of (min, max) seconds to wait between requests
+            delay_range: Tuple of (min, max) seconds to wait between requests (optional, loads from config)
             auto_load_cookies: Automatically load saved cookies if available
         """
-        self.delay_range = delay_range
+        # Load config
+        config_path = Path(__file__).parent.parent / 'config.json'
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        
+        # Set delay range from config or parameter
+        if delay_range is None:
+            seek_config = config.get('seek', {})
+            delay_min = seek_config.get('delay_min', 2)
+            delay_max = seek_config.get('delay_max', 5)
+            self.delay_range = (delay_min, delay_max)
+        else:
+            self.delay_range = delay_range
+        
         self.logger = logging.getLogger(__name__)
         
         # Initialize optimizer
@@ -56,8 +69,10 @@ class SeekScraper:
                 self.logger.warning(f"Could not initialize optimizer: {e}")
         
         # User agent to match browser
+        selenium_config = config.get('selenium', {})
+        user_agent = selenium_config.get('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'User-Agent': user_agent,
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.5',
             'Connection': 'keep-alive',
@@ -558,7 +573,33 @@ class SeekScraper:
                     self.logger.info(f"Page {page} has < 20 cards, likely last page")
                     break
             
-            self.logger.info(f"Total jobs scraped across {cumulative_stats['pages_scraped']} pages: {len(all_jobs)}")
+            # Set optimizer metrics before final display
+            if self.optimizer:
+                self.optimizer.metrics['jobs_scraped'] = len(all_jobs)
+            
+            # Display comprehensive final metrics
+            total = cumulative_stats['total_cards_seen']
+            tier1 = cumulative_stats['tier1_filtered']
+            tier2 = cumulative_stats['tier2_skipped']
+            tier3 = cumulative_stats['tier3_filtered']
+            final_jobs = len(all_jobs)
+            total_filtered = tier1 + tier2 + tier3
+            
+            self.logger.info(f"""
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                         SEEK FINAL SCRAPING METRICS                          ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+  
+  Total cards seen: {total}
+  Tier 1 (Title filter): {tier1} filtered ({tier1/total*100 if total > 0 else 0:.1f}%)
+  Tier 2 (Deduplication): {tier2} skipped ({tier2/total*100 if total > 0 else 0:.1f}%)
+  Tier 3 (Quality filter): {tier3} filtered ({tier3/total*100 if total > 0 else 0:.1f}%)
+  ✓ Jobs scraped: {final_jobs} ({final_jobs/total*100 if total > 0 else 0:.1f}%)
+  
+  Total filtered: {total_filtered} ({total_filtered/total*100 if total > 0 else 0:.1f}%)
+  Pages scraped: {cumulative_stats['pages_scraped']}
+""")
+            
             return all_jobs, cumulative_stats
             
         except Exception as e:

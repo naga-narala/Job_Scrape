@@ -81,7 +81,7 @@ def index():
     
     config = load_config()
     hide_old_days = config.get('hide_jobs_older_than_days', 30)
-    threshold = config.get('match_threshold', 50)  # Show jobs ≥50%
+    threshold = config.get('match_threshold', 30)  # Show jobs ≥threshold
     
     # Get jobs within date range
     jobs = db.get_jobs_by_date_range(days, hide_old_days)
@@ -138,7 +138,7 @@ def show_all():
     region_filter = request.args.get('region', 'all')
     
     config = load_config()
-    threshold = config.get('match_threshold', 75)
+    threshold = config.get('match_threshold', 30)
     
     jobs = db.get_all_jobs(include_inactive=False)
     
@@ -186,7 +186,7 @@ def show_all():
 def stats():
     """Statistics page"""
     config = load_config()
-    threshold = config.get('match_threshold', 75)
+    threshold = config.get('match_threshold', 30)
     
     stats_data = {
         'total_jobs': db.count_all_jobs(),

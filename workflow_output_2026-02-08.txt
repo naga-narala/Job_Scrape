@@ -1,0 +1,2132 @@
+
+2026-02-08 02:59:45,406 - __main__ - INFO - ======================================================================
+2026-02-08 02:59:45,448 - __main__ - INFO - Starting daily job run - 2026-02-07 23:59:45 AWST
+2026-02-08 02:59:45,448 - __main__ - INFO - ======================================================================
+2026-02-08 02:59:45,448 - __main__ - INFO - Keywords up-to-date - no regeneration needed
+2026-02-08 02:59:45,448 - __main__ - INFO - 🧪 TEST MODE: Loading from test_url.json
+2026-02-08 02:59:45,448 - __main__ - INFO - Loaded 3 test URLs
+2026-02-08 02:59:48,462 - rescore_manager - INFO - Profile unchanged
+2026-02-08 02:59:48,462 - __main__ - INFO - Fetching jobs from all sources...
+2026-02-08 02:59:48,462 - __main__ - INFO - Fetching from Seek: 1 searches
+2026-02-08 02:59:49,383 - optimization - INFO - Optimization enabled: True
+2026-02-08 02:59:49,383 - optimization - INFO - Title keywords: 50
+2026-02-08 02:59:49,383 - optimization - INFO - Technical skills: 61
+2026-02-08 02:59:49,383 - optimization - INFO - Strong keywords: 25
+2026-02-08 02:59:53,664 - seek_scraper_selenium - INFO - Loaded 30 cookies
+2026-02-08 02:59:53,665 - seek_scraper_selenium - INFO - Loading Seek search URL: https://www.seek.com.au/ai-application-developer-(graduate)-jobs/in-All-Australia?daterange=7
+2026-02-08 02:59:59,237 - seek_scraper_selenium - INFO - Scraping Seek page 1/3
+2026-02-08 03:00:01,275 - seek_scraper_selenium - INFO - Found 22 job cards using selector: article[data-card-type='JobCard']
+2026-02-08 03:01:04,133 - seek_scraper_selenium - INFO - Clicked next page button
+2026-02-08 03:01:07,139 - seek_scraper_selenium - INFO - Scraping Seek page 2/3
+2026-02-08 03:01:09,172 - seek_scraper_selenium - INFO - Found 22 job cards using selector: article[data-card-type='JobCard']
+2026-02-08 03:02:17,939 - seek_scraper_selenium - INFO - Clicked next page button
+2026-02-08 03:02:20,945 - seek_scraper_selenium - INFO - Scraping Seek page 3/3
+2026-02-08 03:02:22,994 - seek_scraper_selenium - INFO - Found 22 job cards using selector: article[data-card-type='JobCard']
+2026-02-08 03:03:19,260 - seek_scraper_selenium - INFO - Total jobs scraped: 64
+2026-02-08 03:03:19,511 - __main__ - INFO - Seek: 64 jobs
+2026-02-08 03:03:19,511 - __main__ - INFO - Fetching from Jora: 1 searches
+2026-02-08 03:03:19,511 - WDM - INFO - ====== WebDriver manager ======
+2026-02-08 03:03:19,750 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2026-02-08 03:03:19,830 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2026-02-08 03:03:19,890 - WDM - INFO - Driver [/Users/b/.wdm/drivers/chromedriver/mac64/144.0.7559.133/chromedriver-mac-arm64/chromedriver] found in cache
+2026-02-08 03:03:20,697 - jora_scraper - INFO - ✅ Jora driver initialized with stealth mode
+2026-02-08 03:03:20,697 - optimization - INFO - Optimization enabled: True
+2026-02-08 03:03:20,697 - optimization - INFO - Title keywords: 50
+2026-02-08 03:03:20,697 - optimization - INFO - Technical skills: 61
+2026-02-08 03:03:20,697 - optimization - INFO - Strong keywords: 25
+2026-02-08 03:03:20,697 - jora_scraper - WARNING - ⚠️ No cookie file found at /Users/b/Desktop/Projects/Job_Scrape/data/jora_cookies.pkl
+2026-02-08 03:03:20,697 - jora_scraper - INFO - 🔷 JORA: Starting scrape from https://au.jora.com/j?sp=search&trigger_source=serp&a=7d&q=Ai+Engineer+%28graduate%29&l=Australia
+2026-02-08 03:03:20,697 - jora_scraper - INFO - 🔷 JORA: Max pages: 3
+2026-02-08 03:03:27,352 - jora_scraper - INFO - 🔷 JORA: Scraping page 1/3
+2026-02-08 03:03:29,387 - jora_scraper - INFO - 📊 Found 15 job cards on page 1
+2026-02-08 03:03:29,423 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'AI Engineer - Consulting (Graduate), BCG X'
+2026-02-08 03:03:29,423 - jora_scraper - INFO - 📌 Extracting company for: 'AI Engineer - Consulting (Graduate), BCG X'
+2026-02-08 03:03:29,441 - jora_scraper - INFO - 📌 Company found: 'The Boston Consulting Group'
+2026-02-08 03:03:29,441 - jora_scraper - INFO - 📌 Company result: 'The Boston Consulting Group'
+2026-02-08 03:03:29,441 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'AI Engineer - Consulting (Graduate), BCG X'
+2026-02-08 03:03:29,441 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:29,441 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'AI Engineer - Consulting (Graduate), BCG X' (unique job)
+2026-02-08 03:03:32,823 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'AI Engineer - Consulting (Graduate), BCG X' (desc length: 6776)
+2026-02-08 03:03:32,839 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'AI Engineer - FDE (Forward Deployed Engineer)'
+2026-02-08 03:03:32,840 - jora_scraper - INFO - 📌 Extracting company for: 'AI Engineer - FDE (Forward Deployed Engineer)'
+2026-02-08 03:03:32,853 - jora_scraper - INFO - 📌 Company found: 'Databricks'
+2026-02-08 03:03:32,853 - jora_scraper - INFO - 📌 Company result: 'Databricks'
+2026-02-08 03:03:32,853 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'AI Engineer - FDE (Forward Deployed Engineer)'
+2026-02-08 03:03:32,853 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:32,853 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'AI Engineer - FDE (Forward Deployed Engineer)' (unique job)
+2026-02-08 03:03:36,512 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'AI Engineer - FDE (Forward Deployed Engineer)' (desc length: 5441)
+2026-02-08 03:03:36,528 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Junior AI Engineer'
+2026-02-08 03:03:36,528 - jora_scraper - INFO - 📌 Extracting company for: 'Junior AI Engineer'
+2026-02-08 03:03:36,542 - jora_scraper - INFO - 📌 Company found: 'Kablamo'
+2026-02-08 03:03:36,542 - jora_scraper - INFO - 📌 Company result: 'Kablamo'
+2026-02-08 03:03:36,542 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Junior AI Engineer'
+2026-02-08 03:03:36,542 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:36,543 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Junior AI Engineer' (unique job)
+2026-02-08 03:03:39,057 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Junior AI Engineer' (desc length: 6906)
+2026-02-08 03:03:39,074 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Enterprise AI Architect — Generative AI & Data, Flexible'
+2026-02-08 03:03:39,074 - jora_scraper - INFO - 📌 Extracting company for: 'Enterprise AI Architect — Generative AI & Data, Flexible'
+2026-02-08 03:03:39,086 - jora_scraper - INFO - 📌 Company found: 'EY'
+2026-02-08 03:03:39,087 - jora_scraper - INFO - 📌 Company result: 'EY'
+2026-02-08 03:03:39,087 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Enterprise AI Architect — Generative AI & Data, Flexible'
+2026-02-08 03:03:39,087 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:39,087 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Enterprise AI Architect — Generative AI & Data, Flexible' (unique job)
+2026-02-08 03:03:42,885 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Enterprise AI Architect — Generative AI & Data, Flexible' (desc length: 1041)
+2026-02-08 03:03:42,902 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Robotics Engineer'
+2026-02-08 03:03:42,902 - jora_scraper - INFO - 📌 Extracting company for: 'Robotics Engineer'
+2026-02-08 03:03:42,915 - jora_scraper - INFO - 📌 Company found: 'Anduril'
+2026-02-08 03:03:42,915 - jora_scraper - INFO - 📌 Company result: 'Anduril'
+2026-02-08 03:03:42,915 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Robotics Engineer'
+2026-02-08 03:03:42,915 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:42,915 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Robotics Engineer' (unique job)
+2026-02-08 03:03:45,445 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Robotics Engineer' (desc length: 9042)
+2026-02-08 03:03:45,460 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Accenture Industry X - Early Careers Opportunities 2026'
+2026-02-08 03:03:45,460 - jora_scraper - INFO - 📌 Extracting company for: 'Accenture Industry X - Early Careers Opportunities 2026'
+2026-02-08 03:03:45,473 - jora_scraper - INFO - 📌 Company found: 'Accenture'
+2026-02-08 03:03:45,474 - jora_scraper - INFO - 📌 Company result: 'Accenture'
+2026-02-08 03:03:45,474 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Accenture Industry X - Early Careers Opportunities 2026'
+2026-02-08 03:03:45,474 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:45,474 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Accenture Industry X - Early Careers Opportunities 2026' (unique job)
+2026-02-08 03:03:48,837 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Accenture Industry X - Early Careers Opportunities 2026' (desc length: 8198)
+2026-02-08 03:03:48,852 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Machine Learning Engineer, Generative AI Innovation Center'
+2026-02-08 03:03:48,852 - jora_scraper - INFO - 📌 Extracting company for: 'Machine Learning Engineer, Generative AI Innovation Center'
+2026-02-08 03:03:48,865 - jora_scraper - INFO - 📌 Company found: 'Amazon'
+2026-02-08 03:03:48,865 - jora_scraper - INFO - 📌 Company result: 'Amazon'
+2026-02-08 03:03:48,865 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Machine Learning Engineer, Generative AI Innovation Center'
+2026-02-08 03:03:48,865 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:48,865 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Machine Learning Engineer, Generative AI Innovation Center' (unique job)
+2026-02-08 03:03:51,811 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Machine Learning Engineer, Generative AI Innovation Center' (desc length: 7693)
+2026-02-08 03:03:51,828 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Software Development Graduate (2026, AWS), Sydney'
+2026-02-08 03:03:51,828 - jora_scraper - INFO - 📌 Extracting company for: 'Software Development Graduate (2026, AWS), Sydney'
+2026-02-08 03:03:51,842 - jora_scraper - INFO - 📌 Company found: 'Amazon'
+2026-02-08 03:03:51,842 - jora_scraper - INFO - 📌 Company result: 'Amazon'
+2026-02-08 03:03:51,842 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Software Development Graduate (2026, AWS), Sydney'
+2026-02-08 03:03:51,842 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:51,842 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Software Development Graduate (2026, AWS), Sydney' (unique job)
+2026-02-08 03:03:55,177 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Software Development Graduate (2026, AWS), Sydney' (desc length: 4615)
+2026-02-08 03:03:55,194 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Software Development Engineer'
+2026-02-08 03:03:55,194 - jora_scraper - INFO - 📌 Extracting company for: 'Software Development Engineer'
+2026-02-08 03:03:55,206 - jora_scraper - INFO - 📌 Company found: 'AMD'
+2026-02-08 03:03:55,206 - jora_scraper - INFO - 📌 Company result: 'AMD'
+2026-02-08 03:03:55,206 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Software Development Engineer'
+2026-02-08 03:03:55,206 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:55,206 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Software Development Engineer' (unique job)
+2026-02-08 03:03:58,286 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Software Development Engineer' (desc length: 4356)
+2026-02-08 03:03:58,303 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'David Irvine Postgraduate Scholarships'
+2026-02-08 03:03:58,303 - jora_scraper - INFO - 📌 Extracting company for: 'David Irvine Postgraduate Scholarships'
+2026-02-08 03:03:58,316 - jora_scraper - INFO - 📌 Company found: 'CSIRO'
+2026-02-08 03:03:58,316 - jora_scraper - INFO - 📌 Company result: 'CSIRO'
+2026-02-08 03:03:58,316 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'David Irvine Postgraduate Scholarships'
+2026-02-08 03:03:58,316 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:03:58,316 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'David Irvine Postgraduate Scholarships' (unique job)
+2026-02-08 03:04:00,843 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'David Irvine Postgraduate Scholarships' (desc length: 7697)
+2026-02-08 03:04:00,857 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Software Development Graduate (2026, Stores), Brisbane'
+2026-02-08 03:04:00,857 - jora_scraper - INFO - 📌 Extracting company for: 'Software Development Graduate (2026, Stores), Brisbane'
+2026-02-08 03:04:00,870 - jora_scraper - INFO - 📌 Company found: 'Amazon'
+2026-02-08 03:04:00,870 - jora_scraper - INFO - 📌 Company result: 'Amazon'
+2026-02-08 03:04:00,870 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Software Development Graduate (2026, Stores), Brisbane'
+2026-02-08 03:04:00,870 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:00,870 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Software Development Graduate (2026, Stores), Brisbane' (unique job)
+2026-02-08 03:04:03,812 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Software Development Graduate (2026, Stores), Brisbane' (desc length: 5149)
+2026-02-08 03:04:03,827 - jora_scraper - INFO - ⛔ TIER 1 FILTERED: 'Staff Robotics Engineer' - Reason: Title contains senior/leadership keyword: \bstaff\b
+2026-02-08 03:04:03,842 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Graduate Software Engineer'
+2026-02-08 03:04:03,842 - jora_scraper - INFO - 📌 Extracting company for: 'Graduate Software Engineer'
+2026-02-08 03:04:03,854 - jora_scraper - INFO - 📌 Company found: 'Resmed'
+2026-02-08 03:04:03,854 - jora_scraper - INFO - 📌 Company result: 'Resmed'
+2026-02-08 03:04:03,854 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Graduate Software Engineer'
+2026-02-08 03:04:03,854 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:03,854 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Graduate Software Engineer' (unique job)
+2026-02-08 03:04:06,851 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Graduate Software Engineer' (desc length: 3894)
+2026-02-08 03:04:06,866 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Graduate Engineer - Simulation - Perth (2027)'
+2026-02-08 03:04:06,866 - jora_scraper - INFO - 📌 Extracting company for: 'Graduate Engineer - Simulation - Perth (2027)'
+2026-02-08 03:04:06,878 - jora_scraper - INFO - 📌 Company found: 'Hatch'
+2026-02-08 03:04:06,878 - jora_scraper - INFO - 📌 Company result: 'Hatch'
+2026-02-08 03:04:06,878 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Graduate Engineer - Simulation - Perth (2027)'
+2026-02-08 03:04:06,878 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:06,878 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Graduate Engineer - Simulation - Perth (2027)' (unique job)
+2026-02-08 03:04:09,423 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Graduate Engineer - Simulation - Perth (2027)' (desc length: 4989)
+2026-02-08 03:04:09,440 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Computer Vision Engineer'
+2026-02-08 03:04:09,440 - jora_scraper - INFO - 📌 Extracting company for: 'Computer Vision Engineer'
+2026-02-08 03:04:09,453 - jora_scraper - INFO - 📌 Company found: 'AIM Defence'
+2026-02-08 03:04:09,453 - jora_scraper - INFO - 📌 Company result: 'AIM Defence'
+2026-02-08 03:04:09,454 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Computer Vision Engineer'
+2026-02-08 03:04:09,454 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:09,454 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Computer Vision Engineer' (unique job)
+2026-02-08 03:04:11,978 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Computer Vision Engineer' (desc length: 2438)
+2026-02-08 03:04:11,978 - jora_scraper - INFO - 
+📊 PAGE 1 METRICS:
+   Cards found: 15
+   Jobs scraped: 14
+   Tier 1 filtered: 1
+   Tier 2 skipped: 0
+   Tier 3 filtered: 0
+   Efficiency: 6.7%
+2026-02-08 03:04:14,811 - jora_scraper - INFO - ✅ Clicked 'Next' button -> https://au.jora.com/j?a=7d&disallow=true&l=Australia&p=2&q=Ai+Engineer+%28gradua
+2026-02-08 03:04:17,816 - jora_scraper - INFO - 🔷 JORA: Scraping page 2/3
+2026-02-08 03:04:19,844 - jora_scraper - INFO - 📊 Found 15 job cards on page 2
+2026-02-08 03:04:19,864 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Freelance Automotive Engineer with Python Experience - AI Trainer'
+2026-02-08 03:04:19,864 - jora_scraper - INFO - 📌 Extracting company for: 'Freelance Automotive Engineer with Python Experience - AI Trainer'
+2026-02-08 03:04:19,878 - jora_scraper - INFO - 📌 Company found: 'Mindrift'
+2026-02-08 03:04:19,878 - jora_scraper - INFO - 📌 Company result: 'Mindrift'
+2026-02-08 03:04:19,878 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Freelance Automotive Engineer with Python Experience - AI Trainer'
+2026-02-08 03:04:19,878 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:19,878 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Freelance Automotive Engineer with Python Experience - AI Trainer' (unique job)
+2026-02-08 03:04:22,902 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Freelance Automotive Engineer with Python Experience - AI Trainer' (desc length: 2631)
+2026-02-08 03:04:22,918 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Machine Learning Engineer'
+2026-02-08 03:04:22,918 - jora_scraper - INFO - 📌 Extracting company for: 'Machine Learning Engineer'
+2026-02-08 03:04:22,930 - jora_scraper - INFO - 📌 Company found: 'Seeing Machines'
+2026-02-08 03:04:22,930 - jora_scraper - INFO - 📌 Company result: 'Seeing Machines'
+2026-02-08 03:04:22,930 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Machine Learning Engineer'
+2026-02-08 03:04:22,930 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:22,930 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Machine Learning Engineer' (unique job)
+2026-02-08 03:04:25,909 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Machine Learning Engineer' (desc length: 5306)
+2026-02-08 03:04:25,923 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'AI Automation'
+2026-02-08 03:04:25,923 - jora_scraper - INFO - 📌 Extracting company for: 'AI Automation'
+2026-02-08 03:04:25,936 - jora_scraper - INFO - 📌 Company found: 'Studyandwork'
+2026-02-08 03:04:25,936 - jora_scraper - INFO - 📌 Company result: 'Studyandwork'
+2026-02-08 03:04:25,936 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'AI Automation'
+2026-02-08 03:04:25,936 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:25,936 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'AI Automation' (unique job)
+2026-02-08 03:04:29,377 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'AI Automation' (desc length: 3660)
+2026-02-08 03:04:29,393 - jora_scraper - INFO - ⛔ TIER 1 FILTERED: 'Senior Engineer - Applied AI' - Reason: Title contains senior/leadership keyword: \bsenior\b
+2026-02-08 03:04:29,408 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Computer Vision Scientist , International Machine Learning, Australia'
+2026-02-08 03:04:29,408 - jora_scraper - INFO - 📌 Extracting company for: 'Computer Vision Scientist , International Machine Learning, Australia'
+2026-02-08 03:04:29,421 - jora_scraper - INFO - 📌 Company found: 'Amazon'
+2026-02-08 03:04:29,421 - jora_scraper - INFO - 📌 Company result: 'Amazon'
+2026-02-08 03:04:29,421 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Computer Vision Scientist , International Machine Learning, Australia'
+2026-02-08 03:04:29,421 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:29,421 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Computer Vision Scientist , International Machine Learning, Australia' (unique job)
+2026-02-08 03:04:32,711 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Computer Vision Scientist , International Machine Learning, Australia' (desc length: 4510)
+2026-02-08 03:04:32,728 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'AI Ops/IT Engineer - Graduate - 3-month contract'
+2026-02-08 03:04:32,728 - jora_scraper - INFO - 📌 Extracting company for: 'AI Ops/IT Engineer - Graduate - 3-month contract'
+2026-02-08 03:04:32,740 - jora_scraper - INFO - 📌 Company found: 'Moose Toys'
+2026-02-08 03:04:32,740 - jora_scraper - INFO - 📌 Company result: 'Moose Toys'
+2026-02-08 03:04:32,740 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'AI Ops/IT Engineer - Graduate - 3-month contract'
+2026-02-08 03:04:32,740 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:32,740 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'AI Ops/IT Engineer - Graduate - 3-month contract' (unique job)
+2026-02-08 03:04:35,645 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'AI Ops/IT Engineer - Graduate - 3-month contract' (desc length: 4746)
+2026-02-08 03:04:35,661 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Freelance Mechanical Engineer with Python Experience - AI Trainer'
+2026-02-08 03:04:35,661 - jora_scraper - INFO - 📌 Extracting company for: 'Freelance Mechanical Engineer with Python Experience - AI Trainer'
+2026-02-08 03:04:35,673 - jora_scraper - INFO - 📌 Company found: 'Mindrift'
+2026-02-08 03:04:35,673 - jora_scraper - INFO - 📌 Company result: 'Mindrift'
+2026-02-08 03:04:35,673 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Freelance Mechanical Engineer with Python Experience - AI Trainer'
+2026-02-08 03:04:35,673 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:35,674 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Freelance Mechanical Engineer with Python Experience - AI Trainer' (unique job)
+2026-02-08 03:04:39,025 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Freelance Mechanical Engineer with Python Experience - AI Trainer' (desc length: 2612)
+2026-02-08 03:04:39,041 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Ai engineer'
+2026-02-08 03:04:39,041 - jora_scraper - INFO - 📌 Extracting company for: 'Ai engineer'
+2026-02-08 03:04:39,054 - jora_scraper - INFO - 📌 Company found: 'Optiver'
+2026-02-08 03:04:39,054 - jora_scraper - INFO - 📌 Company result: 'Optiver'
+2026-02-08 03:04:39,054 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Ai engineer'
+2026-02-08 03:04:39,054 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:39,054 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Ai engineer' (unique job)
+2026-02-08 03:04:42,411 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Ai engineer' (desc length: 4595)
+2026-02-08 03:04:42,429 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Scientist/Technical Graduate (Start ASAP)'
+2026-02-08 03:04:42,429 - jora_scraper - INFO - 📌 Extracting company for: 'Scientist/Technical Graduate (Start ASAP)'
+2026-02-08 03:04:42,441 - jora_scraper - INFO - 📌 Company found: 'Axxin'
+2026-02-08 03:04:42,441 - jora_scraper - INFO - 📌 Company result: 'Axxin'
+2026-02-08 03:04:42,441 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Scientist/Technical Graduate (Start ASAP)'
+2026-02-08 03:04:42,441 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:42,441 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Scientist/Technical Graduate (Start ASAP)' (unique job)
+2026-02-08 03:04:45,760 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Scientist/Technical Graduate (Start ASAP)' (desc length: 2515)
+2026-02-08 03:04:45,779 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Mechanical Engineering - AI Data Trainer'
+2026-02-08 03:04:45,780 - jora_scraper - INFO - 📌 Extracting company for: 'Mechanical Engineering - AI Data Trainer'
+2026-02-08 03:04:45,794 - jora_scraper - INFO - 📌 Company found: 'Alignerr'
+2026-02-08 03:04:45,794 - jora_scraper - INFO - 📌 Company result: 'Alignerr'
+2026-02-08 03:04:45,794 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Mechanical Engineering - AI Data Trainer'
+2026-02-08 03:04:45,794 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:45,794 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Mechanical Engineering - AI Data Trainer' (unique job)
+2026-02-08 03:04:48,822 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Mechanical Engineering - AI Data Trainer' (desc length: 3029)
+2026-02-08 03:04:48,838 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Graduate Engineer - Digital - Brisbane (Start ASAP)'
+2026-02-08 03:04:48,838 - jora_scraper - INFO - 📌 Extracting company for: 'Graduate Engineer - Digital - Brisbane (Start ASAP)'
+2026-02-08 03:04:48,850 - jora_scraper - INFO - 📌 Company found: 'Hatch'
+2026-02-08 03:04:48,850 - jora_scraper - INFO - 📌 Company result: 'Hatch'
+2026-02-08 03:04:48,850 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Graduate Engineer - Digital - Brisbane (Start ASAP)'
+2026-02-08 03:04:48,850 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:48,850 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Graduate Engineer - Digital - Brisbane (Start ASAP)' (unique job)
+2026-02-08 03:04:51,920 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Graduate Engineer - Digital - Brisbane (Start ASAP)' (desc length: 2460)
+2026-02-08 03:04:51,936 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'AI Solutions Engineer'
+2026-02-08 03:04:51,936 - jora_scraper - INFO - 📌 Extracting company for: 'AI Solutions Engineer'
+2026-02-08 03:04:51,948 - jora_scraper - INFO - 📌 Company found: 'Nexted Group Limited'
+2026-02-08 03:04:51,948 - jora_scraper - INFO - 📌 Company result: 'Nexted Group Limited'
+2026-02-08 03:04:51,948 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'AI Solutions Engineer'
+2026-02-08 03:04:51,948 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:51,948 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'AI Solutions Engineer' (unique job)
+2026-02-08 03:04:55,199 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'AI Solutions Engineer' (desc length: 3546)
+2026-02-08 03:04:55,214 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Graduate Software Engineer (Start ASAP)'
+2026-02-08 03:04:55,214 - jora_scraper - INFO - 📌 Extracting company for: 'Graduate Software Engineer (Start ASAP)'
+2026-02-08 03:04:55,226 - jora_scraper - INFO - 📌 Company found: 'Fivecast'
+2026-02-08 03:04:55,226 - jora_scraper - INFO - 📌 Company result: 'Fivecast'
+2026-02-08 03:04:55,226 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Graduate Software Engineer (Start ASAP)'
+2026-02-08 03:04:55,226 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:55,226 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Graduate Software Engineer (Start ASAP)' (unique job)
+2026-02-08 03:04:58,334 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Graduate Software Engineer (Start ASAP)' (desc length: 1771)
+2026-02-08 03:04:58,352 - jora_scraper - INFO - ⛔ TIER 1 FILTERED: 'Heidi Entry Program' - Reason: Title doesn't contain target keywords
+2026-02-08 03:04:58,367 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'AI Engineer'
+2026-02-08 03:04:58,367 - jora_scraper - INFO - 📌 Extracting company for: 'AI Engineer'
+2026-02-08 03:04:58,381 - jora_scraper - INFO - 📌 Company found: 'Mineral Resources'
+2026-02-08 03:04:58,382 - jora_scraper - INFO - 📌 Company result: 'Mineral Resources'
+2026-02-08 03:04:58,382 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'AI Engineer'
+2026-02-08 03:04:58,382 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:04:58,382 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'AI Engineer' (unique job)
+2026-02-08 03:05:01,667 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'AI Engineer' (desc length: 3677)
+2026-02-08 03:05:01,667 - jora_scraper - INFO - 
+📊 PAGE 2 METRICS:
+   Cards found: 15
+   Jobs scraped: 13
+   Tier 1 filtered: 2
+   Tier 2 skipped: 0
+   Tier 3 filtered: 0
+   Efficiency: 13.3%
+2026-02-08 03:05:04,857 - jora_scraper - INFO - ✅ Clicked 'Next' button -> https://au.jora.com/j?a=7d&disallow=true&l=Australia&p=3&q=Ai+Engineer+%28gradua
+2026-02-08 03:05:07,859 - jora_scraper - INFO - 🔷 JORA: Scraping page 3/3
+2026-02-08 03:05:09,899 - jora_scraper - INFO - 📊 Found 15 job cards on page 3
+2026-02-08 03:05:09,926 - jora_scraper - INFO - ✅ TIER 1 PASSED: '2027 Sydney Engineering New Analyst Program (Jan 2027)'
+2026-02-08 03:05:09,926 - jora_scraper - INFO - 📌 Extracting company for: '2027 Sydney Engineering New Analyst Program (Jan 2027)'
+2026-02-08 03:05:09,943 - jora_scraper - INFO - 📌 Company found: 'Goldman Sachs'
+2026-02-08 03:05:09,943 - jora_scraper - INFO - 📌 Company result: 'Goldman Sachs'
+2026-02-08 03:05:09,943 - jora_scraper - INFO - 📌 Starting TIER 2 check for: '2027 Sydney Engineering New Analyst Program (Jan 2027)'
+2026-02-08 03:05:09,943 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:09,943 - jora_scraper - INFO - ✅ TIER 2 PASSED: '2027 Sydney Engineering New Analyst Program (Jan 2027)' (unique job)
+2026-02-08 03:05:13,075 - jora_scraper - INFO - ✅ TIER 3 PASSED: '2027 Sydney Engineering New Analyst Program (Jan 2027)' (desc length: 1799)
+2026-02-08 03:05:13,090 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Graduate Software / Computer Systems Engineer (Feb 2027)'
+2026-02-08 03:05:13,090 - jora_scraper - INFO - 📌 Extracting company for: 'Graduate Software / Computer Systems Engineer (Feb 2027)'
+2026-02-08 03:05:13,102 - jora_scraper - INFO - 📌 Company found: 'Glencore'
+2026-02-08 03:05:13,102 - jora_scraper - INFO - 📌 Company result: 'Glencore'
+2026-02-08 03:05:13,103 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Graduate Software / Computer Systems Engineer (Feb 2027)'
+2026-02-08 03:05:13,103 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:13,103 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Graduate Software / Computer Systems Engineer (Feb 2027)' (unique job)
+2026-02-08 03:05:16,074 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Graduate Software / Computer Systems Engineer (Feb 2027)' (desc length: 2278)
+2026-02-08 03:05:16,090 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Machine Learning Engineer'
+2026-02-08 03:05:16,090 - jora_scraper - INFO - 📌 Extracting company for: 'Machine Learning Engineer'
+2026-02-08 03:05:16,103 - jora_scraper - INFO - 📌 Company found: 'The Onset'
+2026-02-08 03:05:16,103 - jora_scraper - INFO - 📌 Company result: 'The Onset'
+2026-02-08 03:05:16,103 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Machine Learning Engineer'
+2026-02-08 03:05:16,103 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:16,103 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Machine Learning Engineer' (unique job)
+2026-02-08 03:05:19,595 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Machine Learning Engineer' (desc length: 519)
+2026-02-08 03:05:19,611 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Internship Resume Submission – Australia only'
+2026-02-08 03:05:19,612 - jora_scraper - INFO - 📌 Extracting company for: 'Internship Resume Submission – Australia only'
+2026-02-08 03:05:19,623 - jora_scraper - INFO - 📌 Company found: 'PsiQuantum'
+2026-02-08 03:05:19,624 - jora_scraper - INFO - 📌 Company result: 'PsiQuantum'
+2026-02-08 03:05:19,624 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Internship Resume Submission – Australia only'
+2026-02-08 03:05:19,624 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:19,624 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Internship Resume Submission – Australia only' (unique job)
+2026-02-08 03:05:22,902 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Internship Resume Submission – Australia only' (desc length: 5414)
+2026-02-08 03:05:22,922 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Data & AI Engineer'
+2026-02-08 03:05:22,922 - jora_scraper - INFO - 📌 Extracting company for: 'Data & AI Engineer'
+2026-02-08 03:05:22,935 - jora_scraper - INFO - 📌 Company found: 'HorizonOne Recruitment'
+2026-02-08 03:05:22,935 - jora_scraper - INFO - 📌 Company result: 'HorizonOne Recruitment'
+2026-02-08 03:05:22,935 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Data & AI Engineer'
+2026-02-08 03:05:22,935 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:22,935 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Data & AI Engineer' (unique job)
+2026-02-08 03:05:26,005 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Data & AI Engineer' (desc length: 4670)
+2026-02-08 03:05:26,022 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Technology Graduate Program (Feb 2027)'
+2026-02-08 03:05:26,022 - jora_scraper - INFO - 📌 Extracting company for: 'Technology Graduate Program (Feb 2027)'
+2026-02-08 03:05:26,036 - jora_scraper - INFO - 📌 Company found: 'Western Power WA'
+2026-02-08 03:05:26,037 - jora_scraper - INFO - 📌 Company result: 'Western Power WA'
+2026-02-08 03:05:26,037 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Technology Graduate Program (Feb 2027)'
+2026-02-08 03:05:26,037 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:26,037 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Technology Graduate Program (Feb 2027)' (unique job)
+2026-02-08 03:05:28,577 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Technology Graduate Program (Feb 2027)' (desc length: 7031)
+2026-02-08 03:05:28,594 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Physics Masters - AI Data Trainer'
+2026-02-08 03:05:28,594 - jora_scraper - INFO - 📌 Extracting company for: 'Physics Masters - AI Data Trainer'
+2026-02-08 03:05:28,606 - jora_scraper - INFO - 📌 Company found: 'Alignerr'
+2026-02-08 03:05:28,606 - jora_scraper - INFO - 📌 Company result: 'Alignerr'
+2026-02-08 03:05:28,606 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Physics Masters - AI Data Trainer'
+2026-02-08 03:05:28,606 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:28,606 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Physics Masters - AI Data Trainer' (unique job)
+2026-02-08 03:05:31,928 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Physics Masters - AI Data Trainer' (desc length: 2339)
+2026-02-08 03:05:31,944 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Graduate Engineer - Digital - Perth (Start ASAP)'
+2026-02-08 03:05:31,945 - jora_scraper - INFO - 📌 Extracting company for: 'Graduate Engineer - Digital - Perth (Start ASAP)'
+2026-02-08 03:05:31,957 - jora_scraper - INFO - 📌 Company found: 'Hatch'
+2026-02-08 03:05:31,957 - jora_scraper - INFO - 📌 Company result: 'Hatch'
+2026-02-08 03:05:31,957 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Graduate Engineer - Digital - Perth (Start ASAP)'
+2026-02-08 03:05:31,957 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:31,957 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Graduate Engineer - Digital - Perth (Start ASAP)' (unique job)
+2026-02-08 03:05:34,957 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Graduate Engineer - Digital - Perth (Start ASAP)' (desc length: 2397)
+2026-02-08 03:05:34,973 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Electrical Engineering - AI Data Trainer'
+2026-02-08 03:05:34,973 - jora_scraper - INFO - 📌 Extracting company for: 'Electrical Engineering - AI Data Trainer'
+2026-02-08 03:05:34,986 - jora_scraper - INFO - 📌 Company found: 'Alignerr'
+2026-02-08 03:05:34,986 - jora_scraper - INFO - 📌 Company result: 'Alignerr'
+2026-02-08 03:05:34,986 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Electrical Engineering - AI Data Trainer'
+2026-02-08 03:05:34,986 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:34,986 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Electrical Engineering - AI Data Trainer' (unique job)
+2026-02-08 03:05:38,330 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Electrical Engineering - AI Data Trainer' (desc length: 2818)
+2026-02-08 03:05:38,347 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'AI & ML Engineer / Permanent / up to $160,000 + super / Sydney'
+2026-02-08 03:05:38,347 - jora_scraper - INFO - 📌 Extracting company for: 'AI & ML Engineer / Permanent / up to $160,000 + super / Sydney'
+2026-02-08 03:05:38,359 - jora_scraper - INFO - 📌 Company found: 'Allura Partners'
+2026-02-08 03:05:38,359 - jora_scraper - INFO - 📌 Company result: 'Allura Partners'
+2026-02-08 03:05:38,359 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'AI & ML Engineer / Permanent / up to $160,000 + super / Sydney'
+2026-02-08 03:05:38,359 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:38,359 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'AI & ML Engineer / Permanent / up to $160,000 + super / Sydney' (unique job)
+2026-02-08 03:05:40,917 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'AI & ML Engineer / Permanent / up to $160,000 + super / Sydney' (desc length: 3278)
+2026-02-08 03:05:40,935 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Associate Solutions Engineer'
+2026-02-08 03:05:40,935 - jora_scraper - INFO - 📌 Extracting company for: 'Associate Solutions Engineer'
+2026-02-08 03:05:40,947 - jora_scraper - INFO - 📌 Company found: 'Give A Grad A Go'
+2026-02-08 03:05:40,948 - jora_scraper - INFO - 📌 Company result: 'Give A Grad A Go'
+2026-02-08 03:05:40,948 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Associate Solutions Engineer'
+2026-02-08 03:05:40,948 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:40,948 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Associate Solutions Engineer' (unique job)
+2026-02-08 03:05:43,928 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Associate Solutions Engineer' (desc length: 3510)
+2026-02-08 03:05:43,945 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Machine Learning Engineer'
+2026-02-08 03:05:43,945 - jora_scraper - INFO - 📌 Extracting company for: 'Machine Learning Engineer'
+2026-02-08 03:05:43,957 - jora_scraper - INFO - 📌 Company found: 'The Onset'
+2026-02-08 03:05:43,957 - jora_scraper - INFO - 📌 Company result: 'The Onset'
+2026-02-08 03:05:43,957 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Machine Learning Engineer'
+2026-02-08 03:05:43,957 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:43,957 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Machine Learning Engineer' (unique job)
+2026-02-08 03:05:46,965 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Machine Learning Engineer' (desc length: 4234)
+2026-02-08 03:05:46,983 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Graduate Engineer - Digital - Brisbane (2027)'
+2026-02-08 03:05:46,983 - jora_scraper - INFO - 📌 Extracting company for: 'Graduate Engineer - Digital - Brisbane (2027)'
+2026-02-08 03:05:46,996 - jora_scraper - INFO - 📌 Company found: 'Hatch'
+2026-02-08 03:05:46,996 - jora_scraper - INFO - 📌 Company result: 'Hatch'
+2026-02-08 03:05:46,996 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Graduate Engineer - Digital - Brisbane (2027)'
+2026-02-08 03:05:46,996 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:46,996 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Graduate Engineer - Digital - Brisbane (2027)' (unique job)
+2026-02-08 03:05:49,974 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Graduate Engineer - Digital - Brisbane (2027)' (desc length: 4389)
+2026-02-08 03:05:49,991 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'Machine Learning Engineer - AI Team'
+2026-02-08 03:05:49,991 - jora_scraper - INFO - 📌 Extracting company for: 'Machine Learning Engineer - AI Team'
+2026-02-08 03:05:50,004 - jora_scraper - INFO - 📌 Company found: 'Certus Recruitment Group'
+2026-02-08 03:05:50,004 - jora_scraper - INFO - 📌 Company result: 'Certus Recruitment Group'
+2026-02-08 03:05:50,004 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'Machine Learning Engineer - AI Team'
+2026-02-08 03:05:50,004 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:50,004 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'Machine Learning Engineer - AI Team' (unique job)
+2026-02-08 03:05:52,630 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'Machine Learning Engineer - AI Team' (desc length: 3951)
+2026-02-08 03:05:52,646 - jora_scraper - INFO - ✅ TIER 1 PASSED: 'AI Engineer'
+2026-02-08 03:05:52,646 - jora_scraper - INFO - 📌 Extracting company for: 'AI Engineer'
+2026-02-08 03:05:52,658 - jora_scraper - INFO - 📌 Company found: 'Bupa'
+2026-02-08 03:05:52,658 - jora_scraper - INFO - 📌 Company result: 'Bupa'
+2026-02-08 03:05:52,658 - jora_scraper - INFO - 📌 Starting TIER 2 check for: 'AI Engineer'
+2026-02-08 03:05:52,658 - jora_scraper - INFO - 📌 TIER 2 check completed - duplicate: False
+2026-02-08 03:05:52,658 - jora_scraper - INFO - ✅ TIER 2 PASSED: 'AI Engineer' (unique job)
+2026-02-08 03:05:55,207 - jora_scraper - INFO - ✅ TIER 3 PASSED: 'AI Engineer' (desc length: 6386)
+2026-02-08 03:05:55,207 - jora_scraper - INFO - 
+📊 PAGE 3 METRICS:
+   Cards found: 15
+   Jobs scraped: 15
+   Tier 1 filtered: 0
+   Tier 2 skipped: 0
+   Tier 3 filtered: 0
+   Efficiency: 0.0%
+2026-02-08 03:05:55,208 - jora_scraper - INFO - 
+🎯 JORA FINAL METRICS:
+   Total cards: 45
+   Jobs scraped: 42
+   Tier 1 filtered: 3 (6.7%)
+   Tier 2 skipped: 0 (0.0%)
+   Tier 3 filtered: 0 (0.0%)
+   Overall efficiency: 6.7%
+2026-02-08 03:05:55,385 - jora_scraper - INFO - ✅ Jora driver closed
+2026-02-08 03:05:55,385 - __main__ - INFO - Jora: 42 jobs
+2026-02-08 03:05:55,385 - __main__ - INFO - Fetching from LinkedIn: 1 searches
+2026-02-08 03:05:55,386 - WDM - INFO - ====== WebDriver manager ======
+2026-02-08 03:05:55,629 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2026-02-08 03:05:55,672 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2026-02-08 03:05:55,710 - WDM - INFO - Driver [/Users/b/.wdm/drivers/chromedriver/mac64/144.0.7559.133/chromedriver-mac-arm64/chromedriver] found in cache
+2026-02-08 03:05:59,141 - scraper - INFO - Loaded 26 cookies
+2026-02-08 03:06:01,149 - scraper - INFO - LinkedIn session active (on https://www.linkedin.com/)
+2026-02-08 03:06:01,152 - optimization - INFO - Optimization enabled: True
+2026-02-08 03:06:01,152 - optimization - INFO - Title keywords: 50
+2026-02-08 03:06:01,152 - optimization - INFO - Technical skills: 61
+2026-02-08 03:06:01,152 - optimization - INFO - Strong keywords: 25
+2026-02-08 03:06:01,152 - scraper - INFO - 3-Tier Optimization enabled
+2026-02-08 03:06:01,152 - scraper - INFO - Fetching page 1/3: https://www.linkedin.com/jobs/search/?keywords=Graduate Artificial Intelligence ...
+2026-02-08 03:06:02,882 - scraper - INFO - Waiting for page to load...
+2026-02-08 03:06:32,732 - scraper - ERROR - Job results list did not load
+2026-02-08 03:06:32,733 - scraper - INFO - Scrolling to load job cards...
+2026-02-08 03:07:08,517 - scraper - INFO - Found 25 total job cards with selector: li.scaffold-layout__list-item
+2026-02-08 03:07:08,641 - scraper - INFO - After filtering: 25 search result jobs (removed 0 recommendations)
+2026-02-08 03:07:11,648 - scraper - INFO - ✓ Found description on attempt 1: 1727 chars
+2026-02-08 03:07:11,668 - scraper - INFO - Description extracted: 1727 chars
+2026-02-08 03:07:11,746 - scraper - INFO - Extracted: Machine Learning Engineer - AI Data Trainer
+Machine Learning Engineer - AI Data Trainer at Alignerr ()
+2026-02-08 03:07:14,951 - scraper - INFO - ✓ Found description on attempt 1: 2743 chars
+2026-02-08 03:07:14,977 - scraper - INFO - Description extracted: 2743 chars
+2026-02-08 03:07:15,089 - scraper - INFO - Extracted: Artificial Intelligence Engineer
+Artificial Intelligence Engineer with verification at Opus Recruitment Solutions ()
+2026-02-08 03:07:19,080 - scraper - INFO - ✓ Found description on attempt 1: 1689 chars
+2026-02-08 03:07:19,094 - scraper - INFO - Description extracted: 1689 chars
+2026-02-08 03:07:19,164 - scraper - INFO - Extracted: Snr Machine Learning Engineer - Tech Startup - Next Unicorn
+Snr Machine Learning Engineer - Tech Startup - Next Unicorn at TENAX TALENT ()
+2026-02-08 03:07:23,460 - scraper - INFO - ✓ Found description on attempt 1: 1060 chars
+2026-02-08 03:07:23,477 - scraper - INFO - Description extracted: 1060 chars
+2026-02-08 03:07:23,538 - scraper - INFO - Extracted: AI Evaluation Engineer | Remote
+AI Evaluation Engineer | Remote at Crossing Hurdles ()
+2026-02-08 03:07:26,721 - scraper - INFO - ✓ Found description on attempt 1: 3895 chars
+2026-02-08 03:07:26,741 - scraper - INFO - Description extracted: 3895 chars
+2026-02-08 03:07:26,805 - scraper - INFO - Extracted: AI Engineers x 2 - Perth CBD - 12 month contracts
+AI Engineers x 2 - Perth CBD - 12 month contracts with verification at Talent (ai engineers x 2 - perth cbd - 12 month contracts)
+2026-02-08 03:07:30,201 - scraper - INFO - ✓ Found description on attempt 1: 6006 chars
+2026-02-08 03:07:30,225 - scraper - INFO - Description extracted: 6006 chars
+2026-02-08 03:07:30,298 - scraper - INFO - Extracted: AI Engineer
+AI Engineer at Bupa Australia ()
+2026-02-08 03:07:34,074 - scraper - INFO - ✓ Found description on attempt 1: 4351 chars
+2026-02-08 03:07:34,099 - scraper - INFO - Description extracted: 4351 chars
+2026-02-08 03:07:34,225 - scraper - INFO - Extracted: Future of Technology Internship
+Future of Technology Internship with verification at Future Fund ()
+2026-02-08 03:07:37,650 - scraper - INFO - ✓ Found description on attempt 1: 3855 chars
+2026-02-08 03:07:37,671 - scraper - INFO - Description extracted: 3855 chars
+2026-02-08 03:07:37,768 - scraper - INFO - Extracted: AI Engineer - Data Platforms (Azure)
+AI Engineer - Data Platforms (Azure) with verification at Westpac ()
+2026-02-08 03:07:41,407 - scraper - INFO - ✓ Found description on attempt 1: 2708 chars
+2026-02-08 03:07:41,426 - scraper - INFO - Description extracted: 2708 chars
+2026-02-08 03:07:41,502 - scraper - INFO - Extracted: AI Evaluation & Guardrails Engineer
+AI Evaluation & Guardrails Engineer with verification at NTT DATA, Inc. ()
+2026-02-08 03:07:44,797 - scraper - INFO - ✓ Found description on attempt 1: 3281 chars
+2026-02-08 03:07:44,812 - scraper - INFO - Description extracted: 3281 chars
+2026-02-08 03:07:44,885 - scraper - INFO - Extracted: AI Engineer
+AI Engineer with verification at Mineral Resources Limited ()
+2026-02-08 03:07:49,123 - scraper - INFO - ✓ Found description on attempt 1: 2228 chars
+2026-02-08 03:07:49,143 - scraper - INFO - Description extracted: 2228 chars
+2026-02-08 03:07:49,215 - scraper - INFO - Extracted: Founding Engineer - AI | AWS | Early Stage Deep Tech
+Founding Engineer - AI | AWS | Early Stage Deep Tech at The Nudge Group ()
+2026-02-08 03:07:52,375 - scraper - INFO - ✓ Found description on attempt 1: 1751 chars
+2026-02-08 03:07:52,389 - scraper - INFO - Description extracted: 1751 chars
+2026-02-08 03:07:52,450 - scraper - INFO - Extracted: DevOps Engineer
+DevOps Engineer at CareerUS Solutions (company review time is typically 1 week)
+2026-02-08 03:07:55,846 - scraper - INFO - ✓ Found description on attempt 1: 5702 chars
+2026-02-08 03:07:55,863 - scraper - INFO - Description extracted: 5702 chars
+2026-02-08 03:07:55,939 - scraper - INFO - Extracted: Machine Learning Engineer
+Machine Learning Engineer with verification at MYOB ()
+2026-02-08 03:07:59,304 - scraper - INFO - ✓ Found description on attempt 1: 1954 chars
+2026-02-08 03:07:59,319 - scraper - INFO - Description extracted: 1954 chars
+2026-02-08 03:07:59,390 - scraper - INFO - Extracted: Python/Machine Learning Developer
+Python/Machine Learning Developer with verification at Michael Page ()
+2026-02-08 03:08:03,473 - scraper - INFO - ✓ Found description on attempt 1: 2357 chars
+2026-02-08 03:08:03,488 - scraper - INFO - Description extracted: 2357 chars
+2026-02-08 03:08:03,564 - scraper - INFO - Extracted: Data Scientist (AI Engineering)
+Data Scientist (AI Engineering) with verification at Clear21 (company review time is typically 1 week)
+2026-02-08 03:08:07,313 - scraper - INFO - ✓ Found description on attempt 1: 3578 chars
+2026-02-08 03:08:07,330 - scraper - INFO - Description extracted: 3578 chars
+2026-02-08 03:08:07,459 - scraper - INFO - Extracted: AI Engineer
+AI Engineer at Protecht (company review time is typically 1 week)
+2026-02-08 03:08:10,805 - scraper - INFO - ✓ Found description on attempt 1: 6692 chars
+2026-02-08 03:08:10,849 - scraper - INFO - Description extracted: 6692 chars
+2026-02-08 03:08:10,949 - scraper - INFO - Extracted: ML & AI Engineer
+ML & AI Engineer with verification at CreditorWatch ()
+2026-02-08 03:08:15,016 - scraper - INFO - ✓ Found description on attempt 1: 2476 chars
+2026-02-08 03:08:15,044 - scraper - INFO - Description extracted: 2476 chars
+2026-02-08 03:08:15,171 - scraper - INFO - Extracted: AI Engineer
+AI Engineer with verification at Twine ()
+2026-02-08 03:08:19,429 - scraper - INFO - ✓ Found description on attempt 1: 3355 chars
+2026-02-08 03:08:19,452 - scraper - INFO - Description extracted: 3355 chars
+2026-02-08 03:08:19,527 - scraper - INFO - Extracted: Software Developer (Web, AI, RPA)
+Software Developer (Web, AI, RPA) with verification at Suncorp Group ()
+2026-02-08 03:08:23,460 - scraper - INFO - ✓ Found description on attempt 1: 4885 chars
+2026-02-08 03:08:23,478 - scraper - INFO - Description extracted: 4885 chars
+2026-02-08 03:08:23,546 - scraper - INFO - Extracted: AI Engineer
+AI Engineer with verification at Chartered Accountants Australia and New Zealand ()
+2026-02-08 03:08:26,748 - scraper - INFO - ✓ Found description on attempt 1: 6559 chars
+2026-02-08 03:08:26,765 - scraper - INFO - Description extracted: 6559 chars
+2026-02-08 03:08:26,826 - scraper - INFO - Extracted: Junior AI Engineer
+Junior AI Engineer with verification at Kablamo ()
+2026-02-08 03:08:30,551 - scraper - INFO - ✓ Found description on attempt 1: 1662 chars
+2026-02-08 03:08:30,570 - scraper - INFO - Description extracted: 1662 chars
+2026-02-08 03:08:30,646 - scraper - INFO - Extracted: Full Stack Engineer
+Full Stack Engineer at Keystone Recruitment ()
+2026-02-08 03:08:34,724 - scraper - INFO - ✓ Found description on attempt 1: 2343 chars
+2026-02-08 03:08:34,737 - scraper - INFO - Description extracted: 2343 chars
+2026-02-08 03:08:34,803 - scraper - INFO - Extracted: BI Engineer
+BI Engineer at Munro Footwear Group ()
+2026-02-08 03:08:35,227 - scraper - INFO - Page 1: Extracted 23 jobs (Tier 1 filtered: 2)
+2026-02-08 03:08:35,227 - scraper - INFO - Waiting 9.3s before next page...
+2026-02-08 03:08:44,492 - scraper - INFO - Fetching page 2/3: https://www.linkedin.com/jobs/search/?keywords=Graduate Artificial Intelligence ...
+2026-02-08 03:08:46,308 - scraper - INFO - Waiting for page to load...
+2026-02-08 03:09:15,510 - scraper - ERROR - Job results list did not load
+2026-02-08 03:09:15,511 - scraper - INFO - Scrolling to load job cards...
+2026-02-08 03:09:50,450 - scraper - INFO - Found 25 total job cards with selector: li.scaffold-layout__list-item
+2026-02-08 03:09:50,511 - scraper - INFO - After filtering: 25 search result jobs (removed 0 recommendations)
+2026-02-08 03:09:53,406 - scraper - INFO - ✓ Found description on attempt 1: 1968 chars
+2026-02-08 03:09:53,425 - scraper - INFO - Description extracted: 1968 chars
+2026-02-08 03:09:53,539 - scraper - INFO - Extracted: AI Engineers x 2 - Perth CBD - 12 month contracts
+AI Engineers x 2 - Perth CBD - 12 month contracts with verification at Talent (ai engineers x 2 - perth cbd - 12 month contracts)
+2026-02-08 03:09:57,285 - scraper - INFO - ✓ Found description on attempt 1: 6331 chars
+2026-02-08 03:09:57,307 - scraper - INFO - Description extracted: 6331 chars
+2026-02-08 03:09:57,385 - scraper - INFO - Extracted: Data Engineer
+Data Engineer with verification at Department of Transport and Planning ()
+2026-02-08 03:10:00,707 - scraper - INFO - ✓ Found description on attempt 1: 1905 chars
+2026-02-08 03:10:00,720 - scraper - INFO - Description extracted: 1905 chars
+2026-02-08 03:10:00,780 - scraper - INFO - Extracted: Internet of Things Engineer
+Internet of Things Engineer at CareerUS Solutions (company review time is typically 1 week)
+2026-02-08 03:10:03,937 - scraper - INFO - ✓ Found description on attempt 1: 5702 chars
+2026-02-08 03:10:03,955 - scraper - INFO - Description extracted: 5702 chars
+2026-02-08 03:10:04,026 - scraper - INFO - Extracted: Machine Learning Engineer
+Machine Learning Engineer with verification at MYOB ()
+2026-02-08 03:10:08,192 - scraper - INFO - ✓ Found description on attempt 1: 7153 chars
+2026-02-08 03:10:08,221 - scraper - INFO - Description extracted: 7153 chars
+2026-02-08 03:10:08,299 - scraper - INFO - Extracted: AI Governance Consultant
+AI Governance Consultant with verification at NTT DATA, Inc. ()
+2026-02-08 03:10:11,777 - scraper - INFO - ✓ Found description on attempt 1: 5834 chars
+2026-02-08 03:10:11,810 - scraper - INFO - Description extracted: 5834 chars
+2026-02-08 03:10:11,893 - scraper - INFO - Extracted: Associate AI Solutions Engineer - UX
+Associate AI Solutions Engineer - UX with verification at Transurban ()
+2026-02-08 03:10:15,359 - scraper - INFO - ✓ Found description on attempt 1: 3355 chars
+2026-02-08 03:10:15,385 - scraper - INFO - Description extracted: 3355 chars
+2026-02-08 03:10:15,499 - scraper - INFO - Extracted: Software Developer (Web, AI, RPA)
+Software Developer (Web, AI, RPA) with verification at Suncorp Group ()
+2026-02-08 03:10:18,808 - scraper - INFO - ✓ Found description on attempt 1: 5509 chars
+2026-02-08 03:10:18,831 - scraper - INFO - Description extracted: 5509 chars
+2026-02-08 03:10:18,893 - scraper - INFO - Extracted: Technology Intern Program 2026
+Technology Intern Program 2026 with verification at BHP ()
+2026-02-08 03:10:22,589 - scraper - INFO - ✓ Found description on attempt 1: 4236 chars
+2026-02-08 03:10:22,610 - scraper - INFO - Description extracted: 4236 chars
+2026-02-08 03:10:22,744 - scraper - INFO - Extracted: AI Engineer
+AI Engineer with verification at Optiver ()
+2026-02-08 03:10:26,785 - scraper - INFO - ✓ Found description on attempt 1: 850 chars
+2026-02-08 03:10:26,798 - scraper - INFO - Description extracted: 850 chars
+2026-02-08 03:10:26,858 - scraper - INFO - Extracted: Gen AI Engineer - Contract
+Gen AI Engineer - Contract at Nuage Technology Group ()
+2026-02-08 03:10:30,528 - scraper - INFO - ✓ Found description on attempt 1: 2568 chars
+2026-02-08 03:10:30,536 - scraper - INFO - Description extracted: 2568 chars
+2026-02-08 03:10:30,592 - scraper - INFO - Extracted: SWE Infrastructure Specialist (JS/TS/Python) – Freelance AI Trainer Project
+SWE Infrastructure Specialist (JS/TS/Python) – Freelance AI Trainer Project at Meridial Marketplace, by Invisible ()
+2026-02-08 03:10:34,302 - scraper - INFO - ✓ Found description on attempt 1: 1683 chars
+2026-02-08 03:10:34,321 - scraper - INFO - Description extracted: 1683 chars
+2026-02-08 03:10:34,410 - scraper - INFO - Extracted: Software Engineer (Remote)
+Software Engineer (Remote) at Keystone Recruitment ()
+2026-02-08 03:10:38,686 - scraper - INFO - ✓ Found description on attempt 1: 6049 chars
+2026-02-08 03:10:38,725 - scraper - INFO - Description extracted: 6049 chars
+2026-02-08 03:10:38,876 - scraper - INFO - Extracted: AI Engineer
+AI Engineer with verification at Tata Consultancy Services (company review time is typically 1 week)
+2026-02-08 03:10:42,583 - scraper - INFO - ✓ Found description on attempt 1: 3877 chars
+2026-02-08 03:10:42,654 - scraper - INFO - Description extracted: 3877 chars
+2026-02-08 03:10:42,725 - scraper - INFO - Extracted: Computer Vision Engineer (C++)
+Computer Vision Engineer (C++) with verification at Shield AI ()
+2026-02-08 03:10:46,280 - scraper - INFO - ✓ Found description on attempt 1: 1224 chars
+2026-02-08 03:10:46,297 - scraper - INFO - Description extracted: 1224 chars
+2026-02-08 03:10:46,373 - scraper - INFO - Extracted: Artificial Intelligence Engineer
+Artificial Intelligence Engineer with verification at Exclaim IT ()
+2026-02-08 03:10:50,189 - scraper - INFO - ✓ Found description on attempt 1: 2402 chars
+2026-02-08 03:10:50,233 - scraper - INFO - Description extracted: 2402 chars
+2026-02-08 03:10:50,289 - scraper - INFO - Extracted: AI Engineer
+AI Engineer with verification at Launch Group ()
+2026-02-08 03:10:53,976 - scraper - INFO - ✓ Found description on attempt 1: 2669 chars
+2026-02-08 03:10:54,036 - scraper - INFO - Description extracted: 2669 chars
+2026-02-08 03:10:54,110 - scraper - INFO - Extracted: AI + Cloud Engineer
+AI + Cloud Engineer with verification at Nityo Infotech ()
+2026-02-08 03:10:57,946 - scraper - INFO - ✓ Found description on attempt 1: 3420 chars
+2026-02-08 03:10:57,977 - scraper - INFO - Description extracted: 3420 chars
+2026-02-08 03:10:58,132 - scraper - INFO - Extracted: AI Presales Engineer
+AI Presales Engineer with verification at NiCE ()
+2026-02-08 03:11:02,134 - scraper - INFO - ✓ Found description on attempt 1: 4332 chars
+2026-02-08 03:11:02,167 - scraper - INFO - Description extracted: 4332 chars
+2026-02-08 03:11:02,301 - scraper - INFO - Extracted: AI Engineer (Databricks / Lakehouse AI)
+AI Engineer (Databricks / Lakehouse AI) at BI & DW Australia ()
+2026-02-08 03:11:02,783 - scraper - INFO - Page 2: Extracted 19 jobs (Tier 1 filtered: 6)
+2026-02-08 03:11:02,783 - scraper - INFO - Waiting 9.5s before next page...
+2026-02-08 03:11:12,261 - scraper - INFO - Fetching page 3/3: https://www.linkedin.com/jobs/search/?keywords=Graduate Artificial Intelligence ...
+2026-02-08 03:11:13,582 - scraper - INFO - Waiting for page to load...
+2026-02-08 03:11:41,884 - scraper - ERROR - Job results list did not load
+2026-02-08 03:11:41,884 - scraper - INFO - Scrolling to load job cards...
+2026-02-08 03:12:16,315 - scraper - INFO - Found 25 total job cards with selector: li.scaffold-layout__list-item
+2026-02-08 03:12:16,389 - scraper - INFO - After filtering: 25 search result jobs (removed 0 recommendations)
+2026-02-08 03:12:20,267 - scraper - INFO - ✓ Found description on attempt 1: 4061 chars
+2026-02-08 03:12:20,328 - scraper - INFO - Description extracted: 4061 chars
+2026-02-08 03:12:20,409 - scraper - INFO - Extracted: Frontend Engineer (Design Systems)
+Frontend Engineer (Design Systems) at Maincode ()
+2026-02-08 03:12:24,622 - scraper - INFO - ✓ Found description on attempt 1: 2769 chars
+2026-02-08 03:12:24,644 - scraper - INFO - Description extracted: 2769 chars
+2026-02-08 03:12:24,724 - scraper - INFO - Extracted: AI Knowledge Base Engineer
+AI Knowledge Base Engineer with verification at NTT DATA, Inc. ()
+2026-02-08 03:12:28,290 - scraper - INFO - ✓ Found description on attempt 1: 1930 chars
+2026-02-08 03:12:28,302 - scraper - INFO - Description extracted: 1930 chars
+2026-02-08 03:12:28,382 - scraper - INFO - Extracted: System Engineer
+System Engineer at CareerUS Solutions (company review time is typically 1 week)
+2026-02-08 03:12:32,723 - scraper - INFO - ✓ Found description on attempt 1: 3355 chars
+2026-02-08 03:12:32,744 - scraper - INFO - Description extracted: 3355 chars
+2026-02-08 03:12:32,811 - scraper - INFO - Extracted: Software Developer (Web, AI, RPA)
+Software Developer (Web, AI, RPA) with verification at Suncorp Group ()
+2026-02-08 03:12:36,404 - scraper - INFO - ✓ Found description on attempt 1: 3600 chars
+2026-02-08 03:12:36,423 - scraper - INFO - Description extracted: 3600 chars
+2026-02-08 03:12:36,487 - scraper - INFO - Extracted: Junior Data Engineer
+Junior Data Engineer with verification at Resolution Life ()
+2026-02-08 03:12:40,194 - scraper - INFO - ✓ Found description on attempt 1: 2849 chars
+2026-02-08 03:12:40,225 - scraper - INFO - Description extracted: 2849 chars
+2026-02-08 03:12:40,298 - scraper - INFO - Extracted: Software Engineer (Code QA) - Remote
+Software Engineer (Code QA) - Remote at Keystone Recruitment ()
+2026-02-08 03:12:44,152 - scraper - INFO - ✓ Found description on attempt 1: 1110 chars
+2026-02-08 03:12:44,163 - scraper - INFO - Description extracted: 1110 chars
+2026-02-08 03:12:44,218 - scraper - INFO - Extracted: Data Engineer / Analyst (3 days /week)
+Data Engineer / Analyst (3 days /week) at randstad digital australia (data engineer / analyst (3 days /week))
+2026-02-08 03:12:48,237 - scraper - INFO - ✓ Found description on attempt 1: 3829 chars
+2026-02-08 03:12:48,271 - scraper - INFO - Description extracted: 3829 chars
+2026-02-08 03:12:48,390 - scraper - INFO - Extracted: Fullstack AI Engineer
+Fullstack AI Engineer at UCentric (company review time is typically 1 week)
+2026-02-08 03:12:51,806 - scraper - INFO - ✓ Found description on attempt 1: 4903 chars
+2026-02-08 03:12:51,827 - scraper - INFO - Description extracted: 4903 chars
+2026-02-08 03:12:51,953 - scraper - INFO - Extracted: Software Engineer - (Data & AI)
+Software Engineer - (Data & AI) with verification at MYOB ()
+2026-02-08 03:12:55,841 - scraper - INFO - ✓ Found description on attempt 1: 3419 chars
+2026-02-08 03:12:55,855 - scraper - INFO - Description extracted: 3419 chars
+2026-02-08 03:12:55,922 - scraper - INFO - Extracted: Software Engineer, Early Career, Google One
+Software Engineer, Early Career, Google One with verification at Google ()
+2026-02-08 03:12:59,650 - scraper - INFO - ✓ Found description on attempt 1: 4374 chars
+2026-02-08 03:12:59,672 - scraper - INFO - Description extracted: 4374 chars
+2026-02-08 03:12:59,740 - scraper - INFO - Extracted: AI Ops/IT Engineer - Graduate - 3-month contract
+AI Ops/IT Engineer - Graduate - 3-month contract with verification at Moose Toys (ai ops/it engineer - graduate - 3-month contract)
+2026-02-08 03:13:03,194 - scraper - INFO - ✓ Found description on attempt 1: 1472 chars
+2026-02-08 03:13:03,209 - scraper - INFO - Description extracted: 1472 chars
+2026-02-08 03:13:03,274 - scraper - INFO - Extracted: MLOps Engineer
+MLOps Engineer at Source Point Strategic Sourcing (company review time is typically 1 week)
+2026-02-08 03:13:06,450 - scraper - INFO - ✓ Found description on attempt 1: 4582 chars
+2026-02-08 03:13:06,469 - scraper - INFO - Description extracted: 4582 chars
+2026-02-08 03:13:06,535 - scraper - INFO - Extracted: Junior/Intermediate AI & Innovation Full Stack Engineer
+Junior/Intermediate AI & Innovation Full Stack Engineer with verification at DXC Technology ()
+2026-02-08 03:13:10,516 - scraper - INFO - ✓ Found description on attempt 1: 2601 chars
+2026-02-08 03:13:10,528 - scraper - INFO - Description extracted: 2601 chars
+2026-02-08 03:13:10,611 - scraper - INFO - Extracted: Software Engineer Intern, Australia
+Software Engineer Intern, Australia with verification at Cisco ()
+2026-02-08 03:13:14,196 - scraper - INFO - ✓ Found description on attempt 1: 6594 chars
+2026-02-08 03:13:14,226 - scraper - INFO - Description extracted: 6594 chars
+2026-02-08 03:13:14,307 - scraper - INFO - Extracted: Associate Solutions Engineer
+Associate Solutions Engineer with verification at HubSpot ()
+2026-02-08 03:13:18,002 - scraper - INFO - ✓ Found description on attempt 1: 2356 chars
+2026-02-08 03:13:18,012 - scraper - INFO - Description extracted: 2356 chars
+2026-02-08 03:13:18,069 - scraper - INFO - Extracted: SWE Infrastructure Specialist (Java) – Freelance AI Trainer Project
+SWE Infrastructure Specialist (Java) – Freelance AI Trainer Project at Meridial Marketplace, by Invisible ()
+2026-02-08 03:13:21,596 - scraper - INFO - ✓ Found description on attempt 1: 1226 chars
+2026-02-08 03:13:21,620 - scraper - INFO - Description extracted: 1226 chars
+2026-02-08 03:13:21,684 - scraper - INFO - Extracted: React Developer | $70/hr Remote
+React Developer | $70/hr Remote at Crossing Hurdles ()
+2026-02-08 03:13:25,476 - scraper - INFO - ✓ Found description on attempt 1: 3776 chars
+2026-02-08 03:13:25,497 - scraper - INFO - Description extracted: 3776 chars
+2026-02-08 03:13:25,613 - scraper - INFO - Extracted: AI Software Engineer, Agents and Automation
+AI Software Engineer, Agents and Automation with verification at Affinda ()
+2026-02-08 03:13:29,337 - scraper - INFO - ✓ Found description on attempt 1: 2300 chars
+2026-02-08 03:13:29,363 - scraper - INFO - Description extracted: 2300 chars
+2026-02-08 03:13:29,438 - scraper - INFO - Extracted: React JS Developer
+React JS Developer at N2S.Global ()
+2026-02-08 03:13:29,805 - scraper - INFO - Page 3: Extracted 19 jobs (Tier 1 filtered: 6)
+2026-02-08 03:13:29,806 - scraper - INFO - 
+3-TIER OPTIMIZATION METRICS:
+2026-02-08 03:13:29,806 - scraper - INFO -   Total cards seen: 75
+2026-02-08 03:13:29,806 - scraper - INFO -   Tier 1 (Title): 14 filtered (18.7%)
+2026-02-08 03:13:29,806 - scraper - INFO -   Tier 2 (Dedup): 0 skipped (0.0%)
+2026-02-08 03:13:29,806 - scraper - INFO -   Tier 3 (Quality): 0 filtered (0.0%)
+2026-02-08 03:13:29,806 - scraper - INFO -   Jobs scraped: 0
+2026-02-08 03:13:29,807 - scraper - INFO -   Total filtered: 14
+2026-02-08 03:13:29,807 - scraper - INFO -   Efficiency gain: 18.7%
+2026-02-08 03:13:29,807 - scraper - INFO - Total extracted: 61 jobs across 3 page(s)
+2026-02-08 03:13:29,807 - scraper - INFO - Graduate AI Engineer - Australia: 61 jobs
+2026-02-08 03:13:35,447 - __main__ - INFO - LinkedIn: 61 jobs, Strategy: {'Selenium': 1, 'Failed': 0}
+2026-02-08 03:13:35,447 - __main__ - INFO - Fetched 167 total jobs
+2026-02-08 03:13:35,447 - __main__ - INFO - Source breakdown: {'linkedin': 61, 'seek': 64, 'jora': 42}
+2026-02-08 03:13:35,448 - optimization - INFO - Optimization enabled: True
+2026-02-08 03:13:35,448 - optimization - INFO - Title keywords: 50
+2026-02-08 03:13:35,448 - optimization - INFO - Technical skills: 61
+2026-02-08 03:13:35,448 - optimization - INFO - Strong keywords: 25
+2026-02-08 03:13:35,448 - __main__ - INFO - Optimization manager initialized
+2026-02-08 03:13:35,592 - __main__ - INFO - New jobs: 108, Duplicates: 59, Tier2: 0, Tier3: 0
+2026-02-08 03:13:35,600 - __main__ - INFO - Scoring 338 unscored jobs...
+2026-02-08 03:13:35,600 - job_parser - INFO - Loaded keywords from generated_keywords.json
+2026-02-08 03:13:35,600 - job_parser - INFO - Technical skills: 61
+2026-02-08 03:13:35,600 - job_parser - INFO - Max experience: 2 years
+2026-02-08 03:13:35,600 - job_parser - INFO - Excluded seniority levels: 11
+2026-02-08 03:13:35,603 - scorer - INFO - Starting batch scoring of 338 jobs
+2026-02-08 03:13:35,603 - scorer - INFO - Parser enabled - enforcing hard dealbreaker filters
+2026-02-08 03:13:35,603 - scorer - INFO - Scoring job 1/338: Technology Intern Program 2026
+Technology Intern Program 2026 with verification
+2026-02-08 03:13:35,613 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:13:39,975 - scorer - INFO - ✓ Scored: Technology Intern Program 2026
+Technology Intern Program 2026 with verification - 30%
+2026-02-08 03:13:40,979 - scorer - INFO - Scoring job 2/338: Full Stack Engineer
+Full Stack Engineer
+2026-02-08 03:13:40,995 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:13:44,776 - scorer - INFO - ✓ Scored: Full Stack Engineer
+Full Stack Engineer - 20%
+2026-02-08 03:13:45,781 - scorer - INFO - Scoring job 3/338: AI Engineer
+2026-02-08 03:13:45,827 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:13:48,533 - scorer - INFO - ✓ Scored: AI Engineer - 50%
+2026-02-08 03:13:49,538 - scorer - INFO - Scoring job 4/338: Machine Learning Engineer - AI Team
+2026-02-08 03:13:49,574 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:13:52,224 - scorer - INFO - ✓ Scored: Machine Learning Engineer - AI Team - 40%
+2026-02-08 03:13:53,228 - scorer - INFO - Scoring job 5/338: Graduate Engineer - Digital - Brisbane (2027)
+2026-02-08 03:13:53,267 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:13:56,790 - scorer - INFO - ✓ Scored: Graduate Engineer - Digital - Brisbane (2027) - 40%
+2026-02-08 03:13:57,797 - scorer - INFO - Scoring job 6/338: Machine Learning Engineer
+2026-02-08 03:13:57,827 - scorer - WARNING - ❌ REJECTED by parser: Machine Learning Engineer
+2026-02-08 03:13:57,828 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:13:57,933 - scorer - INFO - Scoring job 7/338: Associate Solutions Engineer
+2026-02-08 03:13:57,939 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:00,211 - scorer - INFO - ✓ Scored: Associate Solutions Engineer - 20%
+2026-02-08 03:14:01,217 - scorer - INFO - Scoring job 8/338: AI & ML Engineer / Permanent / up to $160,000 + super / Sydney
+2026-02-08 03:14:01,261 - scorer - WARNING - ❌ REJECTED by parser: AI & ML Engineer / Permanent / up to $160,000 + super / Sydney
+2026-02-08 03:14:01,261 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:14:01,366 - scorer - INFO - Scoring job 9/338: Electrical Engineering - AI Data Trainer
+2026-02-08 03:14:01,371 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:03,642 - scorer - INFO - ✓ Scored: Electrical Engineering - AI Data Trainer - 20%
+2026-02-08 03:14:04,647 - scorer - INFO - Scoring job 10/338: Graduate Engineer - Digital - Perth (Start ASAP)
+2026-02-08 03:14:04,660 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:07,780 - scorer - INFO - ✓ Scored: Graduate Engineer - Digital - Perth (Start ASAP) - 40%
+2026-02-08 03:14:08,785 - scorer - INFO - Scoring job 11/338: Physics Masters - AI Data Trainer
+2026-02-08 03:14:08,799 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:12,564 - scorer - INFO - ✓ Scored: Physics Masters - AI Data Trainer - 30%
+2026-02-08 03:14:13,569 - scorer - INFO - Scoring job 12/338: Technology Graduate Program (Feb 2027)
+2026-02-08 03:14:13,579 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:17,197 - scorer - INFO - ✓ Scored: Technology Graduate Program (Feb 2027) - 30%
+2026-02-08 03:14:18,202 - scorer - INFO - Scoring job 13/338: Data & AI Engineer
+2026-02-08 03:14:18,251 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:21,390 - scorer - INFO - ✓ Scored: Data & AI Engineer - 0%
+2026-02-08 03:14:22,395 - scorer - INFO - Scoring job 14/338: Internship Resume Submission – Australia only
+2026-02-08 03:14:22,410 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:25,274 - scorer - INFO - ✓ Scored: Internship Resume Submission – Australia only - 40%
+2026-02-08 03:14:26,278 - scorer - INFO - Scoring job 15/338: Machine Learning Engineer
+2026-02-08 03:14:26,282 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:29,511 - scorer - INFO - ✓ Scored: Machine Learning Engineer - 0%
+2026-02-08 03:14:30,516 - scorer - INFO - Scoring job 16/338: Graduate Software / Computer Systems Engineer (Feb 2027)
+2026-02-08 03:14:30,523 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:32,870 - scorer - INFO - ✓ Scored: Graduate Software / Computer Systems Engineer (Feb 2027) - 20%
+2026-02-08 03:14:33,875 - scorer - INFO - Scoring job 17/338: 2027 Sydney Engineering New Analyst Program (Jan 2027)
+2026-02-08 03:14:33,886 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:36,267 - scorer - INFO - ✓ Scored: 2027 Sydney Engineering New Analyst Program (Jan 2027) - 20%
+2026-02-08 03:14:37,269 - scorer - INFO - Scoring job 18/338: AI Engineer
+2026-02-08 03:14:37,323 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:41,823 - scorer - INFO - ✓ Scored: AI Engineer - 50%
+2026-02-08 03:14:42,825 - scorer - INFO - Scoring job 19/338: Graduate Software Engineer (Start ASAP)
+2026-02-08 03:14:42,838 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:46,526 - scorer - INFO - ✓ Scored: Graduate Software Engineer (Start ASAP) - 30%
+2026-02-08 03:14:47,531 - scorer - INFO - Scoring job 20/338: AI Solutions Engineer
+2026-02-08 03:14:47,543 - scorer - WARNING - ❌ REJECTED by parser: AI Solutions Engineer
+2026-02-08 03:14:47,543 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:14:47,648 - scorer - INFO - Scoring job 21/338: Graduate Engineer - Digital - Brisbane (Start ASAP)
+2026-02-08 03:14:47,656 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:50,818 - scorer - INFO - ✓ Scored: Graduate Engineer - Digital - Brisbane (Start ASAP) - 40%
+2026-02-08 03:14:51,823 - scorer - INFO - Scoring job 22/338: Mechanical Engineering - AI Data Trainer
+2026-02-08 03:14:51,831 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:14:55,770 - scorer - INFO - ✓ Scored: Mechanical Engineering - AI Data Trainer - 10%
+2026-02-08 03:14:56,775 - scorer - INFO - Scoring job 23/338: Scientist/Technical Graduate (Start ASAP)
+2026-02-08 03:14:56,779 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:00,281 - scorer - INFO - ✓ Scored: Scientist/Technical Graduate (Start ASAP) - 20%
+2026-02-08 03:15:01,287 - scorer - INFO - Scoring job 24/338: Ai engineer
+2026-02-08 03:15:01,324 - scorer - WARNING - ❌ REJECTED by parser: Ai engineer
+2026-02-08 03:15:01,325 - scorer - WARNING -    Reasons: Requires 6+ years of experience
+2026-02-08 03:15:01,425 - scorer - INFO - Scoring job 25/338: Freelance Mechanical Engineer with Python Experience - AI Trainer
+2026-02-08 03:15:01,443 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:04,792 - scorer - INFO - ✓ Scored: Freelance Mechanical Engineer with Python Experience - AI Trainer - 0%
+2026-02-08 03:15:05,797 - scorer - INFO - Scoring job 26/338: AI Ops/IT Engineer - Graduate - 3-month contract
+2026-02-08 03:15:05,813 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:11,040 - scorer - INFO - ✓ Scored: AI Ops/IT Engineer - Graduate - 3-month contract - 50%
+2026-02-08 03:15:12,042 - scorer - INFO - Scoring job 27/338: Computer Vision Scientist , International Machine Learning, Australia
+2026-02-08 03:15:12,085 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:17,762 - scorer - INFO - ✓ Scored: Computer Vision Scientist , International Machine Learning, Australia - 30%
+2026-02-08 03:15:18,767 - scorer - INFO - Scoring job 28/338: AI Automation
+2026-02-08 03:15:18,775 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:24,304 - scorer - INFO - ✓ Scored: AI Automation - 40%
+2026-02-08 03:15:25,310 - scorer - INFO - Scoring job 29/338: Machine Learning Engineer
+2026-02-08 03:15:25,362 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:31,206 - scorer - INFO - ✓ Scored: Machine Learning Engineer - 50%
+2026-02-08 03:15:32,210 - scorer - INFO - Scoring job 30/338: Freelance Automotive Engineer with Python Experience - AI Trainer
+2026-02-08 03:15:32,232 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:36,290 - scorer - INFO - ✓ Scored: Freelance Automotive Engineer with Python Experience - AI Trainer - 10%
+2026-02-08 03:15:37,293 - scorer - INFO - Scoring job 31/338: Computer Vision Engineer
+2026-02-08 03:15:37,308 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:44,443 - scorer - INFO - ✓ Scored: Computer Vision Engineer - 20%
+2026-02-08 03:15:45,448 - scorer - INFO - Scoring job 32/338: Graduate Engineer - Simulation - Perth (2027)
+2026-02-08 03:15:45,478 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:50,096 - scorer - INFO - ✓ Scored: Graduate Engineer - Simulation - Perth (2027) - 20%
+2026-02-08 03:15:51,101 - scorer - INFO - Scoring job 33/338: Graduate Software Engineer
+2026-02-08 03:15:51,124 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:15:56,006 - scorer - INFO - ✓ Scored: Graduate Software Engineer - 40%
+2026-02-08 03:15:57,009 - scorer - INFO - Scoring job 34/338: Software Development Graduate (2026, Stores), Brisbane
+2026-02-08 03:15:57,025 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:02,456 - scorer - INFO - ✓ Scored: Software Development Graduate (2026, Stores), Brisbane - 20%
+2026-02-08 03:16:03,462 - scorer - INFO - Scoring job 35/338: David Irvine Postgraduate Scholarships
+2026-02-08 03:16:03,488 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:09,097 - scorer - INFO - ✓ Scored: David Irvine Postgraduate Scholarships - 20%
+2026-02-08 03:16:10,103 - scorer - INFO - Scoring job 36/338: Software Development Engineer
+2026-02-08 03:16:10,118 - scorer - WARNING - ❌ REJECTED by parser: Software Development Engineer
+2026-02-08 03:16:10,118 - scorer - WARNING -    Reasons: Requires 3+ years of experience
+2026-02-08 03:16:10,223 - scorer - INFO - Scoring job 37/338: Software Development Graduate (2026, AWS), Sydney
+2026-02-08 03:16:10,244 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:15,854 - scorer - INFO - ✓ Scored: Software Development Graduate (2026, AWS), Sydney - 30%
+2026-02-08 03:16:16,858 - scorer - INFO - Scoring job 38/338: Machine Learning Engineer, Generative AI Innovation Center
+2026-02-08 03:16:16,914 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:23,085 - scorer - INFO - ✓ Scored: Machine Learning Engineer, Generative AI Innovation Center - 30%
+2026-02-08 03:16:24,090 - scorer - INFO - Scoring job 39/338: Accenture Industry X - Early Careers Opportunities 2026
+2026-02-08 03:16:24,104 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:29,167 - scorer - INFO - ✓ Scored: Accenture Industry X - Early Careers Opportunities 2026 - 30%
+2026-02-08 03:16:30,169 - scorer - INFO - Scoring job 40/338: Robotics Engineer
+2026-02-08 03:16:30,192 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:35,867 - scorer - INFO - ✓ Scored: Robotics Engineer - 30%
+2026-02-08 03:16:36,871 - scorer - INFO - Scoring job 41/338: Enterprise AI Architect — Generative AI & Data, Flexible
+2026-02-08 03:16:36,880 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:41,496 - scorer - INFO - ✓ Scored: Enterprise AI Architect — Generative AI & Data, Flexible - 20%
+2026-02-08 03:16:42,499 - scorer - INFO - Scoring job 42/338: Junior AI Engineer
+2026-02-08 03:16:42,562 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:46,927 - scorer - INFO - ✓ Scored: Junior AI Engineer - 80%
+2026-02-08 03:16:47,930 - scorer - INFO - Scoring job 43/338: AI Engineer - FDE (Forward Deployed Engineer)
+2026-02-08 03:16:48,000 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:52,934 - scorer - INFO - ✓ Scored: AI Engineer - FDE (Forward Deployed Engineer) - 30%
+2026-02-08 03:16:53,939 - scorer - INFO - Scoring job 44/338: AI Engineer - Consulting (Graduate), BCG X
+2026-02-08 03:16:54,033 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:16:57,041 - scorer - INFO - ✓ Scored: AI Engineer - Consulting (Graduate), BCG X - 0%
+2026-02-08 03:16:58,044 - scorer - INFO - Scoring job 45/338: Software Engineer - Enterprise AI Enablement
+2026-02-08 03:16:58,062 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:03,481 - scorer - INFO - ✓ Scored: Software Engineer - Enterprise AI Enablement - 50%
+2026-02-08 03:17:04,489 - scorer - INFO - Scoring job 46/338: Full Stack Developer
+2026-02-08 03:17:04,508 - scorer - WARNING - ❌ REJECTED by parser: Full Stack Developer
+2026-02-08 03:17:04,508 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:17:04,609 - scorer - INFO - Scoring job 47/338: Junior IT Systems Engineer
+2026-02-08 03:17:04,622 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:07,779 - scorer - INFO - ✓ Scored: Junior IT Systems Engineer - 20%
+2026-02-08 03:17:08,785 - scorer - INFO - Scoring job 48/338: Graduate Program 2027 - Software / Computer Systems Engineer, Coal Assets...
+2026-02-08 03:17:08,803 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:12,900 - scorer - INFO - ✓ Scored: Graduate Program 2027 - Software / Computer Systems Engineer, Coal Assets... - 20%
+2026-02-08 03:17:13,905 - scorer - INFO - Scoring job 49/338: Data Engineer
+2026-02-08 03:17:13,964 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer
+2026-02-08 03:17:13,964 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:17:14,070 - scorer - INFO - Scoring job 50/338: Full Stack Developer - AI & Cloud
+2026-02-08 03:17:14,086 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:19,232 - scorer - INFO - ✓ Scored: Full Stack Developer - AI & Cloud - 30%
+2026-02-08 03:17:20,237 - scorer - INFO - Scoring job 51/338: Data & AI Engineer
+2026-02-08 03:17:20,266 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:24,521 - scorer - INFO - ✓ Scored: Data & AI Engineer - 0%
+2026-02-08 03:17:25,525 - scorer - INFO - Scoring job 52/338: Graduate Program 2027 - Information Technology/Systems, Coal Assets Australia
+2026-02-08 03:17:25,533 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:29,756 - scorer - INFO - ✓ Scored: Graduate Program 2027 - Information Technology/Systems, Coal Assets Australia - 20%
+2026-02-08 03:17:30,758 - scorer - INFO - Scoring job 53/338: Software Developer - Python
+2026-02-08 03:17:30,771 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:34,054 - scorer - INFO - ✓ Scored: Software Developer - Python - 20%
+2026-02-08 03:17:35,058 - scorer - INFO - Scoring job 54/338: Appian Developer/s
+2026-02-08 03:17:35,070 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:39,491 - scorer - INFO - ✓ Scored: Appian Developer/s - 0%
+2026-02-08 03:17:40,497 - scorer - INFO - Scoring job 55/338: Data & Automation Engineer
+2026-02-08 03:17:40,519 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:45,326 - scorer - INFO - ✓ Scored: Data & Automation Engineer - 30%
+2026-02-08 03:17:46,331 - scorer - INFO - Scoring job 56/338: AI Engineer
+2026-02-08 03:17:46,381 - scorer - WARNING - ❌ REJECTED by parser: AI Engineer
+2026-02-08 03:17:46,381 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:17:46,486 - scorer - INFO - Scoring job 57/338: Mid-level Full Stack Engineer
+2026-02-08 03:17:46,489 - scorer - WARNING - ❌ REJECTED by parser: Mid-level Full Stack Engineer
+2026-02-08 03:17:46,489 - scorer - WARNING -    Reasons: Requires Australian PR/Citizenship/Security Clearance
+2026-02-08 03:17:46,594 - scorer - INFO - Scoring job 58/338: Solutions Developer (AI & VB.NET)
+2026-02-08 03:17:46,603 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:50,906 - scorer - INFO - ✓ Scored: Solutions Developer (AI & VB.NET) - 20%
+2026-02-08 03:17:51,909 - scorer - INFO - Scoring job 59/338: AI Solutions Engineer
+2026-02-08 03:17:51,957 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:17:57,945 - scorer - INFO - ✓ Scored: AI Solutions Engineer - 40%
+2026-02-08 03:17:58,951 - scorer - INFO - Scoring job 60/338: AI Engineer
+2026-02-08 03:17:58,973 - scorer - WARNING - ❌ REJECTED by parser: AI Engineer
+2026-02-08 03:17:58,973 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:17:59,076 - scorer - INFO - Scoring job 61/338: AI Engineer
+2026-02-08 03:17:59,122 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:05,990 - scorer - INFO - ✓ Scored: AI Engineer - 65%
+2026-02-08 03:18:06,996 - scorer - INFO - Scoring job 62/338: Software Developer
+2026-02-08 03:18:07,010 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:13,768 - scorer - INFO - ✓ Scored: Software Developer - 10%
+2026-02-08 03:18:14,769 - scorer - INFO - Scoring job 63/338: Junior DevOps Engineer
+2026-02-08 03:18:14,795 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:19,420 - scorer - INFO - ✓ Scored: Junior DevOps Engineer - 20%
+2026-02-08 03:18:20,426 - scorer - INFO - Scoring job 64/338: IT Asset Management (ITAM) Analyst / Junior ServiceNow Developer
+2026-02-08 03:18:20,447 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:25,711 - scorer - INFO - ✓ Scored: IT Asset Management (ITAM) Analyst / Junior ServiceNow Developer - 0%
+2026-02-08 03:18:26,717 - scorer - INFO - Scoring job 65/338: AI Co-Pilot Full Stack Developer
+2026-02-08 03:18:26,736 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:32,100 - scorer - INFO - ✓ Scored: AI Co-Pilot Full Stack Developer - 20%
+2026-02-08 03:18:33,105 - scorer - INFO - Scoring job 66/338: Software Engineer
+2026-02-08 03:18:33,131 - scorer - WARNING - ❌ REJECTED by parser: Software Engineer
+2026-02-08 03:18:33,131 - scorer - WARNING -    Reasons: Requires Australian PR/Citizenship/Security Clearance, Senior/Lead level position
+2026-02-08 03:18:33,236 - scorer - INFO - Scoring job 67/338: Software Engineer, Mobile (Android), Google Photos
+2026-02-08 03:18:33,247 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:36,984 - scorer - INFO - ✓ Scored: Software Engineer, Mobile (Android), Google Photos - 10%
+2026-02-08 03:18:37,985 - scorer - INFO - Scoring job 68/338: Java / Automation Test Engineer
+2026-02-08 03:18:37,990 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:41,251 - scorer - INFO - ✓ Scored: Java / Automation Test Engineer - 0%
+2026-02-08 03:18:42,256 - scorer - INFO - Scoring job 69/338: IT Asset Management (ITAM) Analyst / Junior ServiceNow Developer
+2026-02-08 03:18:42,278 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:46,690 - scorer - INFO - ✓ Scored: IT Asset Management (ITAM) Analyst / Junior ServiceNow Developer - 0%
+2026-02-08 03:18:47,695 - scorer - INFO - Scoring job 70/338: Software Engineer
+2026-02-08 03:18:47,706 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:51,735 - scorer - INFO - ✓ Scored: Software Engineer - 10%
+2026-02-08 03:18:52,740 - scorer - INFO - Scoring job 71/338: AI Engineering
+2026-02-08 03:18:52,752 - scorer - WARNING - ❌ REJECTED by parser: AI Engineering
+2026-02-08 03:18:52,752 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:18:52,857 - scorer - INFO - Scoring job 72/338: Software Engineering II
+2026-02-08 03:18:52,894 - scorer - WARNING - ❌ REJECTED by parser: Software Engineering II
+2026-02-08 03:18:52,894 - scorer - WARNING -    Reasons: Requires 3+ years of experience
+2026-02-08 03:18:52,999 - scorer - INFO - Scoring job 73/338: Product Support Analyst (Trading Systems)
+2026-02-08 03:18:53,007 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:55,837 - scorer - INFO - ✓ Scored: Product Support Analyst (Trading Systems) - 10%
+2026-02-08 03:18:56,841 - scorer - INFO - Scoring job 74/338: AI & ML Engineer / Permanent / up to $160,000 + super / Sydney
+2026-02-08 03:18:56,856 - scorer - WARNING - ❌ REJECTED by parser: AI & ML Engineer / Permanent / up to $160,000 + super / Sydney
+2026-02-08 03:18:56,856 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:18:56,959 - scorer - INFO - Scoring job 75/338: Zoho Deluge Programmer
+2026-02-08 03:18:56,965 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:18:59,999 - scorer - INFO - ✓ Scored: Zoho Deluge Programmer - 10%
+2026-02-08 03:19:01,005 - scorer - INFO - Scoring job 76/338: AI Solutions Engineer
+2026-02-08 03:19:01,019 - scorer - WARNING - ❌ REJECTED by parser: AI Solutions Engineer
+2026-02-08 03:19:01,019 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:19:01,124 - scorer - INFO - Scoring job 77/338: Data and Analytics Engineer (Software Engineering Background)
+2026-02-08 03:19:01,151 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:05,376 - scorer - INFO - ✓ Scored: Data and Analytics Engineer (Software Engineering Background) - 30%
+2026-02-08 03:19:06,381 - scorer - INFO - Scoring job 78/338: Full Stack Generative AI Developer
+2026-02-08 03:19:06,417 - scorer - WARNING - ❌ REJECTED by parser: Full Stack Generative AI Developer
+2026-02-08 03:19:06,417 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:19:06,522 - scorer - INFO - Scoring job 79/338: 2027 Graduate Program intake
+2026-02-08 03:19:06,533 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:09,804 - scorer - INFO - ✓ Scored: 2027 Graduate Program intake - 20%
+2026-02-08 03:19:10,810 - scorer - INFO - Scoring job 80/338: Software Engineer
+2026-02-08 03:19:10,839 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:14,953 - scorer - INFO - ✓ Scored: Software Engineer - 20%
+2026-02-08 03:19:15,958 - scorer - INFO - Scoring job 81/338: Machine Learning Engineer
+2026-02-08 03:19:15,979 - scorer - WARNING - ❌ REJECTED by parser: Machine Learning Engineer
+2026-02-08 03:19:15,979 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:19:16,084 - scorer - INFO - Scoring job 82/338: Quantitative Software Engineer
+2026-02-08 03:19:16,099 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:20,160 - scorer - INFO - ✓ Scored: Quantitative Software Engineer - 30%
+2026-02-08 03:19:21,163 - scorer - INFO - Scoring job 83/338: AI Co-Pilot Full Stack Developer
+2026-02-08 03:19:21,181 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:25,041 - scorer - INFO - ✓ Scored: AI Co-Pilot Full Stack Developer - 20%
+2026-02-08 03:19:26,043 - scorer - INFO - Scoring job 84/338: Associate Developer
+2026-02-08 03:19:26,055 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:30,648 - scorer - INFO - ✓ Scored: Associate Developer - 20%
+2026-02-08 03:19:31,651 - scorer - INFO - Scoring job 85/338: Software Engineer
+2026-02-08 03:19:31,663 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:36,340 - scorer - INFO - ✓ Scored: Software Engineer - 30%
+2026-02-08 03:19:37,345 - scorer - INFO - Scoring job 86/338: Junior Projects & Change Analyst (Entry Level Opportunity)
+2026-02-08 03:19:37,361 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:41,313 - scorer - INFO - ✓ Scored: Junior Projects & Change Analyst (Entry Level Opportunity) - 20%
+2026-02-08 03:19:42,315 - scorer - INFO - Scoring job 87/338: Associate Developer
+2026-02-08 03:19:42,344 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:46,173 - scorer - INFO - ✓ Scored: Associate Developer - 20%
+2026-02-08 03:19:47,176 - scorer - INFO - Scoring job 88/338: Quantitative Software Engineer
+2026-02-08 03:19:47,187 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:51,944 - scorer - INFO - ✓ Scored: Quantitative Software Engineer - 30%
+2026-02-08 03:19:52,949 - scorer - INFO - Scoring job 89/338: 2027 Graduate Program intake
+2026-02-08 03:19:52,956 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:19:55,944 - scorer - INFO - ✓ Scored: 2027 Graduate Program intake - 20%
+2026-02-08 03:19:56,950 - scorer - INFO - Scoring job 90/338: Software Engineering II
+2026-02-08 03:19:57,002 - scorer - WARNING - ❌ REJECTED by parser: Software Engineering II
+2026-02-08 03:19:57,002 - scorer - WARNING -    Reasons: Requires 3+ years of experience
+2026-02-08 03:19:57,107 - scorer - INFO - Scoring job 91/338: Graduate ICT Digital Applications Officer
+2026-02-08 03:19:57,114 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:02,069 - scorer - INFO - ✓ Scored: Graduate ICT Digital Applications Officer - 20%
+2026-02-08 03:20:03,074 - scorer - INFO - Scoring job 92/338: Software Engineer
+2026-02-08 03:20:03,079 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:07,962 - scorer - INFO - ✓ Scored: Software Engineer - 30%
+2026-02-08 03:20:08,965 - scorer - INFO - Scoring job 93/338: Full Stack Software Engineer (React, Next.js, Python) - Agentic AI Startup
+2026-02-08 03:20:09,006 - scorer - WARNING - ❌ REJECTED by parser: Full Stack Software Engineer (React, Next.js, Python) - Agentic AI Startup
+2026-02-08 03:20:09,006 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 3+ years of experience
+2026-02-08 03:20:09,108 - scorer - INFO - Scoring job 94/338: Junior Projects & Change Analyst (Entry Level Opportunity)
+2026-02-08 03:20:09,117 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:12,169 - scorer - INFO - ✓ Scored: Junior Projects & Change Analyst (Entry Level Opportunity) - 30%
+2026-02-08 03:20:13,175 - scorer - INFO - Scoring job 95/338: Data and Analytics Graduate
+2026-02-08 03:20:13,185 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:17,637 - scorer - INFO - ✓ Scored: Data and Analytics Graduate - 20%
+2026-02-08 03:20:18,642 - scorer - INFO - Scoring job 96/338: AI Developer
+2026-02-08 03:20:18,653 - scorer - WARNING - ❌ REJECTED by parser: AI Developer
+2026-02-08 03:20:18,653 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:20:18,758 - scorer - INFO - Scoring job 97/338: Software Engineer, Early Career, Google One
+2026-02-08 03:20:18,780 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:22,189 - scorer - INFO - ✓ Scored: Software Engineer, Early Career, Google One - 20%
+2026-02-08 03:20:23,195 - scorer - INFO - Scoring job 98/338: Associate Software Engineer
+2026-02-08 03:20:23,205 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:27,135 - scorer - INFO - ✓ Scored: Associate Software Engineer - 30%
+2026-02-08 03:20:28,140 - scorer - INFO - Scoring job 99/338: Machine Learning Engineer
+2026-02-08 03:20:28,174 - scorer - WARNING - ❌ REJECTED by parser: Machine Learning Engineer
+2026-02-08 03:20:28,175 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:20:28,276 - scorer - INFO - Scoring job 100/338: Junior Data Engineer
+2026-02-08 03:20:28,288 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:33,699 - scorer - INFO - ✓ Scored: Junior Data Engineer - 30%
+2026-02-08 03:20:34,705 - scorer - INFO - Scoring job 101/338: Web Software Developer
+2026-02-08 03:20:34,750 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:40,649 - scorer - INFO - ✓ Scored: Web Software Developer - 0%
+2026-02-08 03:20:41,655 - scorer - INFO - Scoring job 102/338: Junior Application Engineer
+2026-02-08 03:20:41,683 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:46,477 - scorer - INFO - ✓ Scored: Junior Application Engineer - 20%
+2026-02-08 03:20:47,482 - scorer - INFO - Scoring job 103/338: Graduate Software Developer
+2026-02-08 03:20:47,504 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:50,723 - scorer - INFO - ✓ Scored: Graduate Software Developer - 20%
+2026-02-08 03:20:51,726 - scorer - INFO - Scoring job 104/338: Graduate Software Engineer
+2026-02-08 03:20:51,741 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:20:56,113 - scorer - INFO - ✓ Scored: Graduate Software Engineer - 30%
+2026-02-08 03:20:57,117 - scorer - INFO - Scoring job 105/338: Junior AI Engineer
+2026-02-08 03:20:57,181 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:02,788 - scorer - INFO - ✓ Scored: Junior AI Engineer - 85%
+2026-02-08 03:21:02,789 - scorer - WARNING - ⚠️  OVERRIDING score from 85% to 25% due to dealbreakers in AI analysis
+2026-02-08 03:21:03,794 - scorer - INFO - Scoring job 106/338: Graduate Software Development Engineer & Customer Support
+2026-02-08 03:21:03,823 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:08,209 - scorer - INFO - ✓ Scored: Graduate Software Development Engineer & Customer Support - 20%
+2026-02-08 03:21:09,214 - scorer - INFO - Scoring job 107/338: Full Stack Software Engineer (React, Next.js, Python) - Agentic AI Startup
+2026-02-08 03:21:09,254 - scorer - WARNING - ❌ REJECTED by parser: Full Stack Software Engineer (React, Next.js, Python) - Agentic AI Startup
+2026-02-08 03:21:09,254 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 3+ years of experience
+2026-02-08 03:21:09,359 - scorer - INFO - Scoring job 108/338: Web Software Developer
+2026-02-08 03:21:09,378 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:13,403 - scorer - INFO - ✓ Scored: Web Software Developer - 20%
+2026-02-08 03:21:14,408 - scorer - INFO - Scoring job 109/338: Software Engineer Intern, Australia
+Software Engineer Intern, Australia with verification
+2026-02-08 03:21:14,411 - scorer - WARNING - ❌ REJECTED by parser: Software Engineer Intern, Australia
+Software Engineer Intern, Australia with verification
+2026-02-08 03:21:14,411 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:21:14,516 - scorer - INFO - Scoring job 110/338: React JS Developer
+React JS Developer
+2026-02-08 03:21:14,526 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:19,073 - scorer - INFO - ✓ Scored: React JS Developer
+React JS Developer - 0%
+2026-02-08 03:21:20,078 - scorer - INFO - Scoring job 111/338: React Developer | $70/hr Remote
+React Developer | $70/hr Remote
+2026-02-08 03:21:20,089 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:22,979 - scorer - INFO - ✓ Scored: React Developer | $70/hr Remote
+React Developer | $70/hr Remote - 0%
+2026-02-08 03:21:23,986 - scorer - INFO - Scoring job 112/338: SWE Infrastructure Specialist (Java) – Freelance AI Trainer Project
+SWE Infrastructure Specialist (Java) – Freelance AI Trainer Project
+2026-02-08 03:21:24,005 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:27,705 - scorer - INFO - ✓ Scored: SWE Infrastructure Specialist (Java) – Freelance AI Trainer Project
+SWE Infrastructure Specialist (Java) – Freelance AI Trainer Project - 0%
+2026-02-08 03:21:28,709 - scorer - INFO - Scoring job 113/338: Data Engineer / Analyst (3 days /week)
+Data Engineer / Analyst (3 days /week)
+2026-02-08 03:21:28,712 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:33,337 - scorer - INFO - ✓ Scored: Data Engineer / Analyst (3 days /week)
+Data Engineer / Analyst (3 days /week) - 0%
+2026-02-08 03:21:34,342 - scorer - INFO - Scoring job 114/338: Junior Data Engineer
+Junior Data Engineer with verification
+2026-02-08 03:21:34,372 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:38,958 - scorer - INFO - ✓ Scored: Junior Data Engineer
+Junior Data Engineer with verification - 30%
+2026-02-08 03:21:39,960 - scorer - INFO - Scoring job 115/338: Software Developer (Web, AI, RPA)
+Software Developer (Web, AI, RPA) with verification
+2026-02-08 03:21:39,991 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:43,541 - scorer - INFO - ✓ Scored: Software Developer (Web, AI, RPA)
+Software Developer (Web, AI, RPA) with verification - 50%
+2026-02-08 03:21:44,543 - scorer - INFO - Scoring job 116/338: System Engineer
+System Engineer
+2026-02-08 03:21:44,547 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:47,940 - scorer - INFO - ✓ Scored: System Engineer
+System Engineer - 0%
+2026-02-08 03:21:48,943 - scorer - INFO - Scoring job 117/338: Frontend Engineer (Design Systems)
+Frontend Engineer (Design Systems)
+2026-02-08 03:21:48,971 - scorer - WARNING - ❌ REJECTED by parser: Frontend Engineer (Design Systems)
+Frontend Engineer (Design Systems)
+2026-02-08 03:21:48,972 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 3+ years of experience
+2026-02-08 03:21:49,076 - scorer - INFO - Scoring job 118/338: AI Software Engineer, Agents and Automation
+AI Software Engineer, Agents and Automation with verification
+2026-02-08 03:21:49,110 - scorer - WARNING - ❌ REJECTED by parser: AI Software Engineer, Agents and Automation
+AI Software Engineer, Agents and Automation with verification
+2026-02-08 03:21:49,110 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:21:49,215 - scorer - INFO - Scoring job 119/338: Associate Solutions Engineer
+Associate Solutions Engineer with verification
+2026-02-08 03:21:49,243 - scorer - WARNING - ❌ REJECTED by parser: Associate Solutions Engineer
+Associate Solutions Engineer with verification
+2026-02-08 03:21:49,244 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:21:49,349 - scorer - INFO - Scoring job 120/338: Junior/Intermediate AI & Innovation Full Stack Engineer
+Junior/Intermediate AI & Innovation Full Stack Engineer with verification
+2026-02-08 03:21:49,359 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:51,804 - scorer - INFO - ✓ Scored: Junior/Intermediate AI & Innovation Full Stack Engineer
+Junior/Intermediate AI & Innovation Full Stack Engineer with verification - 40%
+2026-02-08 03:21:52,809 - scorer - INFO - Scoring job 121/338: AI Ops/IT Engineer - Graduate - 3-month contract
+AI Ops/IT Engineer - Graduate - 3-month contract with verification
+2026-02-08 03:21:52,828 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:21:56,351 - scorer - INFO - ✓ Scored: AI Ops/IT Engineer - Graduate - 3-month contract
+AI Ops/IT Engineer - Graduate - 3-month contract with verification - 40%
+2026-02-08 03:21:57,359 - scorer - INFO - Scoring job 122/338: Software Engineer, Early Career, Google One
+Software Engineer, Early Career, Google One with verification
+2026-02-08 03:21:57,378 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:01,139 - scorer - INFO - ✓ Scored: Software Engineer, Early Career, Google One
+Software Engineer, Early Career, Google One with verification - 20%
+2026-02-08 03:22:02,140 - scorer - INFO - Scoring job 123/338: AI Engineer (Databricks / Lakehouse AI)
+AI Engineer (Databricks / Lakehouse AI)
+2026-02-08 03:22:02,185 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:07,460 - scorer - INFO - ✓ Scored: AI Engineer (Databricks / Lakehouse AI)
+AI Engineer (Databricks / Lakehouse AI) - 50%
+2026-02-08 03:22:08,466 - scorer - INFO - Scoring job 124/338: Software Engineer - (Data & AI)
+Software Engineer - (Data & AI) with verification
+2026-02-08 03:22:08,518 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:12,738 - scorer - INFO - ✓ Scored: Software Engineer - (Data & AI)
+Software Engineer - (Data & AI) with verification - 40%
+2026-02-08 03:22:13,743 - scorer - INFO - Scoring job 125/338: AI Presales Engineer
+AI Presales Engineer with verification
+2026-02-08 03:22:13,751 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:18,550 - scorer - INFO - ✓ Scored: AI Presales Engineer
+AI Presales Engineer with verification - 30%
+2026-02-08 03:22:19,556 - scorer - INFO - Scoring job 126/338: Fullstack AI Engineer
+Fullstack AI Engineer
+2026-02-08 03:22:19,567 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:23,881 - scorer - INFO - ✓ Scored: Fullstack AI Engineer
+Fullstack AI Engineer - 30%
+2026-02-08 03:22:24,882 - scorer - INFO - Scoring job 127/338: AI + Cloud Engineer
+AI + Cloud Engineer with verification
+2026-02-08 03:22:24,895 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:29,324 - scorer - INFO - ✓ Scored: AI + Cloud Engineer
+AI + Cloud Engineer with verification - 40%
+2026-02-08 03:22:30,326 - scorer - INFO - Scoring job 128/338: Software Engineer (Code QA) - Remote
+Software Engineer (Code QA) - Remote
+2026-02-08 03:22:30,350 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:33,369 - scorer - INFO - ✓ Scored: Software Engineer (Code QA) - Remote
+Software Engineer (Code QA) - Remote - 20%
+2026-02-08 03:22:34,372 - scorer - INFO - Scoring job 129/338: MLOps Engineer
+MLOps Engineer
+2026-02-08 03:22:34,380 - scorer - WARNING - ❌ REJECTED by parser: MLOps Engineer
+MLOps Engineer
+2026-02-08 03:22:34,380 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:22:34,486 - scorer - INFO - Scoring job 130/338: SWE Infrastructure Specialist (JS/TS/Python) – Freelance AI Trainer Project
+SWE Infrastructure Specialist (JS/TS/Python) – Freelance AI Trainer Project
+2026-02-08 03:22:34,493 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:40,263 - scorer - INFO - ✓ Scored: SWE Infrastructure Specialist (JS/TS/Python) – Freelance AI Trainer Project
+SWE Infrastructure Specialist (JS/TS/Python) – Freelance AI Trainer Project - 20%
+2026-02-08 03:22:41,265 - scorer - INFO - Scoring job 131/338: AI Knowledge Base Engineer
+AI Knowledge Base Engineer with verification
+2026-02-08 03:22:41,285 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:45,541 - scorer - INFO - ✓ Scored: AI Knowledge Base Engineer
+AI Knowledge Base Engineer with verification - 50%
+2026-02-08 03:22:46,546 - scorer - INFO - Scoring job 132/338: AI Engineer
+AI Engineer with verification
+2026-02-08 03:22:46,563 - scorer - WARNING - ❌ REJECTED by parser: AI Engineer
+AI Engineer with verification
+2026-02-08 03:22:46,563 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:22:46,669 - scorer - INFO - Scoring job 133/338: Artificial Intelligence Engineer
+Artificial Intelligence Engineer with verification
+2026-02-08 03:22:46,678 - scorer - WARNING - ❌ REJECTED by parser: Artificial Intelligence Engineer
+Artificial Intelligence Engineer with verification
+2026-02-08 03:22:46,678 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:22:46,783 - scorer - INFO - Scoring job 134/338: Computer Vision Engineer (C++)
+Computer Vision Engineer (C++) with verification
+2026-02-08 03:22:46,800 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:50,266 - scorer - INFO - ✓ Scored: Computer Vision Engineer (C++)
+Computer Vision Engineer (C++) with verification - 30%
+2026-02-08 03:22:51,272 - scorer - INFO - Scoring job 135/338: AI Engineer
+AI Engineer with verification
+2026-02-08 03:22:51,339 - scorer - WARNING - ❌ REJECTED by parser: AI Engineer
+AI Engineer with verification
+2026-02-08 03:22:51,339 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:22:51,444 - scorer - INFO - Scoring job 136/338: Software Engineer (Remote)
+Software Engineer (Remote)
+2026-02-08 03:22:51,452 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:54,345 - scorer - INFO - ✓ Scored: Software Engineer (Remote)
+Software Engineer (Remote) - 20%
+2026-02-08 03:22:55,351 - scorer - INFO - Scoring job 137/338: Gen AI Engineer - Contract
+Gen AI Engineer - Contract
+2026-02-08 03:22:55,355 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:22:58,367 - scorer - INFO - ✓ Scored: Gen AI Engineer - Contract
+Gen AI Engineer - Contract - 40%
+2026-02-08 03:22:59,373 - scorer - INFO - Scoring job 138/338: AI Engineer
+AI Engineer with verification
+2026-02-08 03:22:59,405 - scorer - WARNING - ❌ REJECTED by parser: AI Engineer
+AI Engineer with verification
+2026-02-08 03:22:59,405 - scorer - WARNING -    Reasons: Requires 6+ years of experience
+2026-02-08 03:22:59,510 - scorer - INFO - Scoring job 139/338: Software Developer (Web, AI, RPA)
+Software Developer (Web, AI, RPA) with verification
+2026-02-08 03:22:59,539 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:04,738 - scorer - INFO - ✓ Scored: Software Developer (Web, AI, RPA)
+Software Developer (Web, AI, RPA) with verification - 40%
+2026-02-08 03:23:05,743 - scorer - INFO - Scoring job 140/338: Associate AI Solutions Engineer - UX
+Associate AI Solutions Engineer - UX with verification
+2026-02-08 03:23:05,799 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:09,716 - scorer - INFO - ✓ Scored: Associate AI Solutions Engineer - UX
+Associate AI Solutions Engineer - UX with verification - 50%
+2026-02-08 03:23:10,721 - scorer - INFO - Scoring job 141/338: BI Engineer
+BI Engineer
+2026-02-08 03:23:10,733 - scorer - WARNING - ❌ REJECTED by parser: BI Engineer
+BI Engineer
+2026-02-08 03:23:10,733 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:23:10,834 - scorer - INFO - Scoring job 142/338: AI Governance Consultant
+AI Governance Consultant with verification
+2026-02-08 03:23:10,861 - scorer - WARNING - ❌ REJECTED by parser: AI Governance Consultant
+AI Governance Consultant with verification
+2026-02-08 03:23:10,861 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 10+ years of experience
+2026-02-08 03:23:10,966 - scorer - INFO - Scoring job 143/338: Machine Learning Engineer
+Machine Learning Engineer with verification
+2026-02-08 03:23:11,003 - scorer - WARNING - ❌ REJECTED by parser: Machine Learning Engineer
+Machine Learning Engineer with verification
+2026-02-08 03:23:11,003 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:23:11,108 - scorer - INFO - Scoring job 144/338: Internet of Things Engineer
+Internet of Things Engineer
+2026-02-08 03:23:11,110 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:13,184 - scorer - INFO - ✓ Scored: Internet of Things Engineer
+Internet of Things Engineer - 0%
+2026-02-08 03:23:14,189 - scorer - INFO - Scoring job 145/338: Data Engineer
+Data Engineer with verification
+2026-02-08 03:23:14,224 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer
+Data Engineer with verification
+2026-02-08 03:23:14,224 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:23:14,326 - scorer - INFO - Scoring job 146/338: AI Engineers x 2 - Perth CBD - 12 month contracts
+AI Engineers x 2 - Perth CBD - 12 month contracts with verification
+2026-02-08 03:23:14,329 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:18,334 - scorer - INFO - ✓ Scored: AI Engineers x 2 - Perth CBD - 12 month contracts
+AI Engineers x 2 - Perth CBD - 12 month contracts with verification - 70%
+2026-02-08 03:23:19,339 - scorer - INFO - Scoring job 147/338: Junior AI Engineer
+Junior AI Engineer with verification
+2026-02-08 03:23:19,395 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:22,659 - scorer - INFO - ✓ Scored: Junior AI Engineer
+Junior AI Engineer with verification - 70%
+2026-02-08 03:23:23,665 - scorer - INFO - Scoring job 148/338: AI Engineer
+AI Engineer with verification
+2026-02-08 03:23:23,732 - scorer - WARNING - ❌ REJECTED by parser: AI Engineer
+AI Engineer with verification
+2026-02-08 03:23:23,732 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:23:23,837 - scorer - INFO - Scoring job 149/338: Software Developer (Web, AI, RPA)
+Software Developer (Web, AI, RPA) with verification
+2026-02-08 03:23:23,860 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:28,366 - scorer - INFO - ✓ Scored: Software Developer (Web, AI, RPA)
+Software Developer (Web, AI, RPA) with verification - 40%
+2026-02-08 03:23:29,372 - scorer - INFO - Scoring job 150/338: AI Engineer
+AI Engineer with verification
+2026-02-08 03:23:29,382 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:32,773 - scorer - INFO - ✓ Scored: AI Engineer
+AI Engineer with verification - 40%
+2026-02-08 03:23:33,778 - scorer - INFO - Scoring job 151/338: ML & AI Engineer
+ML & AI Engineer with verification
+2026-02-08 03:23:33,858 - scorer - WARNING - ❌ REJECTED by parser: ML & AI Engineer
+ML & AI Engineer with verification
+2026-02-08 03:23:33,858 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 5+ years of experience
+2026-02-08 03:23:33,959 - scorer - INFO - Scoring job 152/338: AI Engineer
+AI Engineer
+2026-02-08 03:23:33,978 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:37,506 - scorer - INFO - ✓ Scored: AI Engineer
+AI Engineer - 30%
+2026-02-08 03:23:38,510 - scorer - INFO - Scoring job 153/338: Data Scientist (AI Engineering)
+Data Scientist (AI Engineering) with verification
+2026-02-08 03:23:38,579 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:42,147 - scorer - INFO - ✓ Scored: Data Scientist (AI Engineering)
+Data Scientist (AI Engineering) with verification - 50%
+2026-02-08 03:23:43,153 - scorer - INFO - Scoring job 154/338: Python/Machine Learning Developer
+Python/Machine Learning Developer with verification
+2026-02-08 03:23:43,158 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:46,055 - scorer - INFO - ✓ Scored: Python/Machine Learning Developer
+Python/Machine Learning Developer with verification - 60%
+2026-02-08 03:23:47,060 - scorer - INFO - Scoring job 155/338: Machine Learning Engineer
+Machine Learning Engineer with verification
+2026-02-08 03:23:47,110 - scorer - WARNING - ❌ REJECTED by parser: Machine Learning Engineer
+Machine Learning Engineer with verification
+2026-02-08 03:23:47,111 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:23:47,216 - scorer - INFO - Scoring job 156/338: DevOps Engineer
+DevOps Engineer
+2026-02-08 03:23:47,218 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:49,681 - scorer - INFO - ✓ Scored: DevOps Engineer
+DevOps Engineer - 0%
+2026-02-08 03:23:50,684 - scorer - INFO - Scoring job 157/338: Founding Engineer - AI | AWS | Early Stage Deep Tech
+Founding Engineer - AI | AWS | Early Stage Deep Tech
+2026-02-08 03:23:50,701 - scorer - WARNING - ❌ REJECTED by parser: Founding Engineer - AI | AWS | Early Stage Deep Tech
+Founding Engineer - AI | AWS | Early Stage Deep Tech
+2026-02-08 03:23:50,701 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:23:50,806 - scorer - INFO - Scoring job 158/338: AI Engineer
+AI Engineer with verification
+2026-02-08 03:23:50,856 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:53,679 - scorer - INFO - ✓ Scored: AI Engineer
+AI Engineer with verification - 50%
+2026-02-08 03:23:54,683 - scorer - INFO - Scoring job 159/338: AI Evaluation & Guardrails Engineer
+AI Evaluation & Guardrails Engineer with verification
+2026-02-08 03:23:54,697 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:23:57,670 - scorer - INFO - ✓ Scored: AI Evaluation & Guardrails Engineer
+AI Evaluation & Guardrails Engineer with verification - 50%
+2026-02-08 03:23:58,676 - scorer - INFO - Scoring job 160/338: AI Engineer - Data Platforms (Azure)
+AI Engineer - Data Platforms (Azure) with verification
+2026-02-08 03:23:58,716 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:24:02,241 - scorer - INFO - ✓ Scored: AI Engineer - Data Platforms (Azure)
+AI Engineer - Data Platforms (Azure) with verification - 40%
+2026-02-08 03:24:03,243 - scorer - INFO - Scoring job 161/338: Future of Technology Internship
+Future of Technology Internship with verification
+2026-02-08 03:24:03,255 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:24:05,941 - scorer - INFO - ✓ Scored: Future of Technology Internship
+Future of Technology Internship with verification - 0%
+2026-02-08 03:24:06,945 - scorer - INFO - Scoring job 162/338: AI Engineer
+AI Engineer
+2026-02-08 03:24:06,990 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:24:11,237 - scorer - INFO - ✓ Scored: AI Engineer
+AI Engineer - 50%
+2026-02-08 03:24:12,242 - scorer - INFO - Scoring job 163/338: AI Engineers x 2 - Perth CBD - 12 month contracts
+AI Engineers x 2 - Perth CBD - 12 month contracts with verification
+2026-02-08 03:24:12,245 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:24:18,495 - scorer - INFO - ✓ Scored: AI Engineers x 2 - Perth CBD - 12 month contracts
+AI Engineers x 2 - Perth CBD - 12 month contracts with verification - 70%
+2026-02-08 03:24:19,501 - scorer - INFO - Scoring job 164/338: AI Evaluation Engineer | Remote
+AI Evaluation Engineer | Remote
+2026-02-08 03:24:19,502 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:24:26,957 - scorer - INFO - ✓ Scored: AI Evaluation Engineer | Remote
+AI Evaluation Engineer | Remote - 20%
+2026-02-08 03:24:27,960 - scorer - INFO - Scoring job 165/338: Snr Machine Learning Engineer - Tech Startup - Next Unicorn
+Snr Machine Learning Engineer - Tech Startup - Next Unicorn
+2026-02-08 03:24:27,975 - scorer - WARNING - ❌ REJECTED by parser: Snr Machine Learning Engineer - Tech Startup - Next Unicorn
+Snr Machine Learning Engineer - Tech Startup - Next Unicorn
+2026-02-08 03:24:27,975 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:24:28,081 - scorer - INFO - Scoring job 166/338: Artificial Intelligence Engineer
+Artificial Intelligence Engineer with verification
+2026-02-08 03:24:28,098 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:24:36,438 - scorer - INFO - ✓ Scored: Artificial Intelligence Engineer
+Artificial Intelligence Engineer with verification - 50%
+2026-02-08 03:24:37,443 - scorer - INFO - Scoring job 167/338: Machine Learning Engineer - AI Data Trainer
+Machine Learning Engineer - AI Data Trainer
+2026-02-08 03:24:37,447 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:24:42,862 - scorer - INFO - ✓ Scored: Machine Learning Engineer - AI Data Trainer
+Machine Learning Engineer - AI Data Trainer - 40%
+2026-02-08 03:24:43,868 - scorer - INFO - Scoring job 168/338: AI Engineer
+2026-02-08 03:24:43,915 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:24:49,001 - scorer - INFO - ✓ Scored: AI Engineer - 40%
+2026-02-08 03:24:50,007 - scorer - INFO - Scoring job 169/338: Machine Learning Engineer - AI Team
+2026-02-08 03:24:50,070 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:24:56,453 - scorer - INFO - ✓ Scored: Machine Learning Engineer - AI Team - 30%
+2026-02-08 03:24:57,458 - scorer - INFO - Scoring job 170/338: Graduate Engineer - Digital - Brisbane (2027)
+2026-02-08 03:24:57,475 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:02,516 - scorer - INFO - ✓ Scored: Graduate Engineer - Digital - Brisbane (2027) - 40%
+2026-02-08 03:25:03,521 - scorer - INFO - Scoring job 171/338: Machine Learning Engineer
+2026-02-08 03:25:03,548 - scorer - WARNING - ❌ REJECTED by parser: Machine Learning Engineer
+2026-02-08 03:25:03,548 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:25:03,654 - scorer - INFO - Scoring job 172/338: Associate Solutions Engineer
+2026-02-08 03:25:03,660 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:06,751 - scorer - INFO - ✓ Scored: Associate Solutions Engineer - 30%
+2026-02-08 03:25:07,754 - scorer - INFO - Scoring job 173/338: AI & ML Engineer / Permanent / up to $160,000 + super / Sydney
+2026-02-08 03:25:07,781 - scorer - WARNING - ❌ REJECTED by parser: AI & ML Engineer / Permanent / up to $160,000 + super / Sydney
+2026-02-08 03:25:07,781 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:25:07,886 - scorer - INFO - Scoring job 174/338: Electrical Engineering - AI Data Trainer
+2026-02-08 03:25:07,897 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:12,760 - scorer - INFO - ✓ Scored: Electrical Engineering - AI Data Trainer - 20%
+2026-02-08 03:25:13,765 - scorer - INFO - Scoring job 175/338: Graduate Engineer - Digital - Perth (Start ASAP)
+2026-02-08 03:25:13,778 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:17,057 - scorer - INFO - ✓ Scored: Graduate Engineer - Digital - Perth (Start ASAP) - 40%
+2026-02-08 03:25:18,060 - scorer - INFO - Scoring job 176/338: Physics Masters - AI Data Trainer
+2026-02-08 03:25:18,065 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:22,713 - scorer - INFO - ✓ Scored: Physics Masters - AI Data Trainer - 30%
+2026-02-08 03:25:23,719 - scorer - INFO - Scoring job 177/338: Technology Graduate Program (Feb 2027)
+2026-02-08 03:25:23,731 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:26,703 - scorer - INFO - ✓ Scored: Technology Graduate Program (Feb 2027) - 30%
+2026-02-08 03:25:27,708 - scorer - INFO - Scoring job 178/338: Data & AI Engineer
+2026-02-08 03:25:27,728 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:31,119 - scorer - INFO - ✓ Scored: Data & AI Engineer - 0%
+2026-02-08 03:25:32,120 - scorer - INFO - Scoring job 179/338: Internship Resume Submission – Australia only
+2026-02-08 03:25:32,146 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:34,575 - scorer - INFO - ✓ Scored: Internship Resume Submission – Australia only - 30%
+2026-02-08 03:25:35,580 - scorer - INFO - Scoring job 180/338: Machine Learning Engineer
+2026-02-08 03:25:35,582 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:38,694 - scorer - INFO - ✓ Scored: Machine Learning Engineer - 0%
+2026-02-08 03:25:39,699 - scorer - INFO - Scoring job 181/338: Graduate Software / Computer Systems Engineer (Feb 2027)
+2026-02-08 03:25:39,705 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:44,163 - scorer - INFO - ✓ Scored: Graduate Software / Computer Systems Engineer (Feb 2027) - 20%
+2026-02-08 03:25:45,169 - scorer - INFO - Scoring job 182/338: 2027 Sydney Engineering New Analyst Program (Jan 2027)
+2026-02-08 03:25:45,181 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:49,270 - scorer - INFO - ✓ Scored: 2027 Sydney Engineering New Analyst Program (Jan 2027) - 20%
+2026-02-08 03:25:50,276 - scorer - INFO - Scoring job 183/338: AI Engineer
+2026-02-08 03:25:50,329 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:55,063 - scorer - INFO - ✓ Scored: AI Engineer - 50%
+2026-02-08 03:25:56,068 - scorer - INFO - Scoring job 184/338: Graduate Software Engineer (Start ASAP)
+2026-02-08 03:25:56,080 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:25:58,795 - scorer - INFO - ✓ Scored: Graduate Software Engineer (Start ASAP) - 30%
+2026-02-08 03:25:59,801 - scorer - INFO - Scoring job 185/338: AI Solutions Engineer
+2026-02-08 03:25:59,812 - scorer - WARNING - ❌ REJECTED by parser: AI Solutions Engineer
+2026-02-08 03:25:59,812 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:25:59,918 - scorer - INFO - Scoring job 186/338: Graduate Engineer - Digital - Brisbane (Start ASAP)
+2026-02-08 03:25:59,927 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:26:05,146 - scorer - INFO - ✓ Scored: Graduate Engineer - Digital - Brisbane (Start ASAP) - 40%
+2026-02-08 03:26:06,151 - scorer - INFO - Scoring job 187/338: Mechanical Engineering - AI Data Trainer
+2026-02-08 03:26:06,165 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:26:13,106 - scorer - INFO - ✓ Scored: Mechanical Engineering - AI Data Trainer - 20%
+2026-02-08 03:26:14,110 - scorer - INFO - Scoring job 188/338: Scientist/Technical Graduate (Start ASAP)
+2026-02-08 03:26:14,119 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:26:19,954 - scorer - INFO - ✓ Scored: Scientist/Technical Graduate (Start ASAP) - 20%
+2026-02-08 03:26:20,959 - scorer - INFO - Scoring job 189/338: Freelance Mechanical Engineer with Python Experience - AI Trainer
+2026-02-08 03:26:20,967 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:26:26,341 - scorer - INFO - ✓ Scored: Freelance Mechanical Engineer with Python Experience - AI Trainer - 20%
+2026-02-08 03:26:27,347 - scorer - INFO - Scoring job 190/338: Ai engineer
+2026-02-08 03:26:27,372 - scorer - WARNING - ❌ REJECTED by parser: Ai engineer
+2026-02-08 03:26:27,372 - scorer - WARNING -    Reasons: Requires 6+ years of experience
+2026-02-08 03:26:27,477 - scorer - INFO - Scoring job 191/338: AI Ops/IT Engineer - Graduate - 3-month contract
+2026-02-08 03:26:27,507 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:26:34,625 - scorer - INFO - ✓ Scored: AI Ops/IT Engineer - Graduate - 3-month contract - 40%
+2026-02-08 03:26:35,631 - scorer - INFO - Scoring job 192/338: Computer Vision Scientist , International Machine Learning, Australia
+2026-02-08 03:26:35,670 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:26:43,223 - scorer - INFO - ✓ Scored: Computer Vision Scientist , International Machine Learning, Australia - 20%
+2026-02-08 03:26:44,228 - scorer - INFO - Scoring job 193/338: AI Automation
+2026-02-08 03:26:44,238 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:26:49,044 - scorer - INFO - ✓ Scored: AI Automation - 40%
+2026-02-08 03:26:50,050 - scorer - INFO - Scoring job 194/338: Machine Learning Engineer
+2026-02-08 03:26:50,077 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:26:56,352 - scorer - INFO - ✓ Scored: Machine Learning Engineer - 50%
+2026-02-08 03:26:57,357 - scorer - INFO - Scoring job 195/338: Freelance Automotive Engineer with Python Experience - AI Trainer
+2026-02-08 03:26:57,370 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:01,398 - scorer - INFO - ✓ Scored: Freelance Automotive Engineer with Python Experience - AI Trainer - 20%
+2026-02-08 03:27:02,403 - scorer - INFO - Scoring job 196/338: Computer Vision Engineer
+2026-02-08 03:27:02,415 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:08,333 - scorer - INFO - ✓ Scored: Computer Vision Engineer - 20%
+2026-02-08 03:27:09,337 - scorer - INFO - Scoring job 197/338: Graduate Engineer - Simulation - Perth (2027)
+2026-02-08 03:27:09,350 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:15,506 - scorer - INFO - ✓ Scored: Graduate Engineer - Simulation - Perth (2027) - 20%
+2026-02-08 03:27:16,509 - scorer - INFO - Scoring job 198/338: Graduate Software Engineer
+2026-02-08 03:27:16,544 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:21,566 - scorer - INFO - ✓ Scored: Graduate Software Engineer - 40%
+2026-02-08 03:27:22,567 - scorer - INFO - Scoring job 199/338: Software Development Graduate (2026, Stores), Brisbane
+2026-02-08 03:27:22,602 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:28,203 - scorer - INFO - ✓ Scored: Software Development Graduate (2026, Stores), Brisbane - 20%
+2026-02-08 03:27:29,211 - scorer - INFO - Scoring job 200/338: David Irvine Postgraduate Scholarships
+2026-02-08 03:27:29,233 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:34,158 - scorer - INFO - ✓ Scored: David Irvine Postgraduate Scholarships - 30%
+2026-02-08 03:27:35,168 - scorer - INFO - Scoring job 201/338: Software Development Engineer
+2026-02-08 03:27:35,192 - scorer - WARNING - ❌ REJECTED by parser: Software Development Engineer
+2026-02-08 03:27:35,192 - scorer - WARNING -    Reasons: Requires 3+ years of experience
+2026-02-08 03:27:35,294 - scorer - INFO - Scoring job 202/338: Machine Learning Engineer, Generative AI Innovation Center
+2026-02-08 03:27:35,324 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:39,661 - scorer - INFO - ✓ Scored: Machine Learning Engineer, Generative AI Innovation Center - 30%
+2026-02-08 03:27:40,666 - scorer - INFO - Scoring job 203/338: Software Development Graduate (2026, AWS), Sydney
+2026-02-08 03:27:40,704 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:45,247 - scorer - INFO - ✓ Scored: Software Development Graduate (2026, AWS), Sydney - 20%
+2026-02-08 03:27:46,258 - scorer - INFO - Scoring job 204/338: Accenture Industry X - Early Careers Opportunities 2026
+2026-02-08 03:27:46,287 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:49,874 - scorer - INFO - ✓ Scored: Accenture Industry X - Early Careers Opportunities 2026 - 30%
+2026-02-08 03:27:50,881 - scorer - INFO - Scoring job 205/338: Robotics Engineer
+2026-02-08 03:27:50,920 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:54,609 - scorer - INFO - ✓ Scored: Robotics Engineer - 20%
+2026-02-08 03:27:55,617 - scorer - INFO - Scoring job 206/338: Enterprise AI Architect — Generative AI & Data, Flexible
+2026-02-08 03:27:55,620 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:27:59,119 - scorer - INFO - ✓ Scored: Enterprise AI Architect — Generative AI & Data, Flexible - 20%
+2026-02-08 03:28:00,128 - scorer - INFO - Scoring job 207/338: Junior AI Engineer
+2026-02-08 03:28:00,192 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:04,721 - scorer - INFO - ✓ Scored: Junior AI Engineer - 70%
+2026-02-08 03:28:05,728 - scorer - INFO - Scoring job 208/338: AI Engineer - FDE (Forward Deployed Engineer)
+2026-02-08 03:28:05,769 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:10,362 - scorer - INFO - ✓ Scored: AI Engineer - FDE (Forward Deployed Engineer) - 30%
+2026-02-08 03:28:11,372 - scorer - INFO - Scoring job 209/338: AI Engineer - Consulting (Graduate), BCG X
+2026-02-08 03:28:11,464 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:15,595 - scorer - INFO - ✓ Scored: AI Engineer - Consulting (Graduate), BCG X - 30%
+2026-02-08 03:28:16,605 - scorer - INFO - Scoring job 210/338: Data Engineer
+Data Engineer
+2026-02-08 03:28:16,610 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer
+Data Engineer
+2026-02-08 03:28:16,610 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 5+ years of experience
+2026-02-08 03:28:16,720 - scorer - INFO - Scoring job 211/338: Data Integration Engineer
+Data Integration Engineer with verification
+2026-02-08 03:28:16,728 - scorer - WARNING - ❌ REJECTED by parser: Data Integration Engineer
+Data Integration Engineer with verification
+2026-02-08 03:28:16,728 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:28:16,838 - scorer - INFO - Scoring job 212/338: Cloud Engineer/Azure
+Cloud Engineer/Azure with verification
+2026-02-08 03:28:16,843 - scorer - WARNING - ❌ REJECTED by parser: Cloud Engineer/Azure
+Cloud Engineer/Azure with verification
+2026-02-08 03:28:16,843 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:28:16,953 - scorer - INFO - Scoring job 213/338: Python Engineer
+Python Engineer with verification
+2026-02-08 03:28:17,001 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:19,982 - scorer - INFO - ✓ Scored: Python Engineer
+Python Engineer with verification - 20%
+2026-02-08 03:28:20,993 - scorer - INFO - Scoring job 214/338: Software Engineer - ERP & SQL
+Software Engineer - ERP & SQL with verification
+2026-02-08 03:28:21,011 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:24,236 - scorer - INFO - ✓ Scored: Software Engineer - ERP & SQL
+Software Engineer - ERP & SQL with verification - 0%
+2026-02-08 03:28:25,247 - scorer - INFO - Scoring job 215/338: Data Center IT Support Engineer
+Data Center IT Support Engineer with verification
+2026-02-08 03:28:25,267 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:28,873 - scorer - INFO - ✓ Scored: Data Center IT Support Engineer
+Data Center IT Support Engineer with verification - 0%
+2026-02-08 03:28:29,880 - scorer - INFO - Scoring job 216/338: Full Stack Engineer
+Full Stack Engineer
+2026-02-08 03:28:29,883 - scorer - WARNING - ❌ REJECTED by parser: Full Stack Engineer
+Full Stack Engineer
+2026-02-08 03:28:29,883 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:28:29,993 - scorer - INFO - Scoring job 217/338: Solutions Engineer
+Solutions Engineer with verification
+2026-02-08 03:28:30,010 - scorer - WARNING - ❌ REJECTED by parser: Solutions Engineer
+Solutions Engineer with verification
+2026-02-08 03:28:30,010 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 7+ years of experience
+2026-02-08 03:28:30,117 - scorer - INFO - Scoring job 218/338: Engineering System Network Engineer - Defence
+Engineering System Network Engineer - Defence with verification
+2026-02-08 03:28:30,130 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:32,584 - scorer - INFO - ✓ Scored: Engineering System Network Engineer - Defence
+Engineering System Network Engineer - Defence with verification - 0%
+2026-02-08 03:28:33,596 - scorer - INFO - Scoring job 219/338: AI Product Engineer
+AI Product Engineer with verification
+2026-02-08 03:28:33,608 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:37,314 - scorer - INFO - ✓ Scored: AI Product Engineer
+AI Product Engineer with verification - 30%
+2026-02-08 03:28:38,321 - scorer - INFO - Scoring job 220/338: IT Systems Engineer
+IT Systems Engineer
+2026-02-08 03:28:38,351 - scorer - WARNING - ❌ REJECTED by parser: IT Systems Engineer
+IT Systems Engineer
+2026-02-08 03:28:38,351 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 3+ years of experience
+2026-02-08 03:28:38,461 - scorer - INFO - Scoring job 221/338: Customer Engineer, Cloud AI, Google Cloud
+Customer Engineer, Cloud AI, Google Cloud with verification
+2026-02-08 03:28:38,507 - scorer - WARNING - ❌ REJECTED by parser: Customer Engineer, Cloud AI, Google Cloud
+Customer Engineer, Cloud AI, Google Cloud with verification
+2026-02-08 03:28:38,507 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 10+ years of experience
+2026-02-08 03:28:38,617 - scorer - INFO - Scoring job 222/338: Software Engineer
+Software Engineer with verification
+2026-02-08 03:28:38,707 - scorer - WARNING - ❌ REJECTED by parser: Software Engineer
+Software Engineer with verification
+2026-02-08 03:28:38,707 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:28:38,817 - scorer - INFO - Scoring job 223/338: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer
+2026-02-08 03:28:38,837 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:42,613 - scorer - INFO - ✓ Scored: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer - 40%
+2026-02-08 03:28:43,622 - scorer - INFO - Scoring job 224/338: Graduate Full-Stack Engineer
+Graduate Full-Stack Engineer
+2026-02-08 03:28:43,648 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:46,175 - scorer - INFO - ✓ Scored: Graduate Full-Stack Engineer
+Graduate Full-Stack Engineer - 0%
+2026-02-08 03:28:47,180 - scorer - INFO - Scoring job 225/338: Solutions Engineer - ANZ
+Solutions Engineer - ANZ with verification
+2026-02-08 03:28:47,224 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:52,516 - scorer - INFO - ✓ Scored: Solutions Engineer - ANZ
+Solutions Engineer - ANZ with verification - 20%
+2026-02-08 03:28:53,526 - scorer - INFO - Scoring job 226/338: Node.js Developer
+Node.js Developer
+2026-02-08 03:28:53,559 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:28:57,983 - scorer - INFO - ✓ Scored: Node.js Developer
+Node.js Developer - 0%
+2026-02-08 03:28:58,994 - scorer - INFO - Scoring job 227/338: Associate Solution Engineer
+Associate Solution Engineer with verification
+2026-02-08 03:28:59,001 - scorer - WARNING - ❌ REJECTED by parser: Associate Solution Engineer
+Associate Solution Engineer with verification
+2026-02-08 03:28:59,001 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:28:59,111 - scorer - INFO - Scoring job 228/338: Freelance Software Developer (Kotlin) - AI Trainer
+Freelance Software Developer (Kotlin) - AI Trainer
+2026-02-08 03:28:59,117 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:04,510 - scorer - INFO - ✓ Scored: Freelance Software Developer (Kotlin) - AI Trainer
+Freelance Software Developer (Kotlin) - AI Trainer - 0%
+2026-02-08 03:29:05,511 - scorer - INFO - Scoring job 229/338: IT Engineer
+IT Engineer with verification
+2026-02-08 03:29:05,524 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:10,921 - scorer - INFO - ✓ Scored: IT Engineer
+IT Engineer with verification - 0%
+2026-02-08 03:29:11,928 - scorer - INFO - Scoring job 230/338: Solutions Engineer
+Solutions Engineer with verification
+2026-02-08 03:29:11,944 - scorer - WARNING - ❌ REJECTED by parser: Solutions Engineer
+Solutions Engineer with verification
+2026-02-08 03:29:11,945 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:29:12,055 - scorer - INFO - Scoring job 231/338: Software Engineer - Android
+Software Engineer - Android with verification
+2026-02-08 03:29:12,066 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:14,882 - scorer - INFO - ✓ Scored: Software Engineer - Android
+Software Engineer - Android with verification - 0%
+2026-02-08 03:29:15,892 - scorer - INFO - Scoring job 232/338: Software Engineer (Data)
+Software Engineer (Data) with verification
+2026-02-08 03:29:15,952 - scorer - WARNING - ❌ REJECTED by parser: Software Engineer (Data)
+Software Engineer (Data) with verification
+2026-02-08 03:29:15,952 - scorer - WARNING -    Reasons: Requires 3+ years of experience
+2026-02-08 03:29:16,061 - scorer - INFO - Scoring job 233/338: Data Engineer
+Data Engineer with verification
+2026-02-08 03:29:16,107 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer
+Data Engineer with verification
+2026-02-08 03:29:16,107 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:29:16,217 - scorer - INFO - Scoring job 234/338: Data Engineer (12-month Max Term)
+Data Engineer (12-month Max Term) with verification
+2026-02-08 03:29:16,237 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:20,459 - scorer - INFO - ✓ Scored: Data Engineer (12-month Max Term)
+Data Engineer (12-month Max Term) with verification - 30%
+2026-02-08 03:29:21,469 - scorer - INFO - Scoring job 235/338: Data Engineer
+Data Engineer with verification
+2026-02-08 03:29:21,498 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:26,280 - scorer - INFO - ✓ Scored: Data Engineer
+Data Engineer with verification - 30%
+2026-02-08 03:29:27,290 - scorer - INFO - Scoring job 236/338: Frontend Developer
+Frontend Developer
+2026-02-08 03:29:27,292 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:32,419 - scorer - INFO - ✓ Scored: Frontend Developer
+Frontend Developer - 0%
+2026-02-08 03:29:33,428 - scorer - INFO - Scoring job 237/338: Customer Engineer, Cloud AI, Google Cloud
+Customer Engineer, Cloud AI, Google Cloud with verification
+2026-02-08 03:29:33,447 - scorer - WARNING - ❌ REJECTED by parser: Customer Engineer, Cloud AI, Google Cloud
+Customer Engineer, Cloud AI, Google Cloud with verification
+2026-02-08 03:29:33,448 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 10+ years of experience
+2026-02-08 03:29:33,558 - scorer - INFO - Scoring job 238/338: Software Engineer
+Software Engineer with verification
+2026-02-08 03:29:33,573 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:39,880 - scorer - INFO - ✓ Scored: Software Engineer
+Software Engineer with verification - 20%
+2026-02-08 03:29:40,892 - scorer - INFO - Scoring job 239/338: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer
+2026-02-08 03:29:40,940 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:46,817 - scorer - INFO - ✓ Scored: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer - 40%
+2026-02-08 03:29:47,828 - scorer - INFO - Scoring job 240/338: Data Engineer (Databricks + DBT)
+Data Engineer (Databricks + DBT) with verification
+2026-02-08 03:29:47,839 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer (Databricks + DBT)
+Data Engineer (Databricks + DBT) with verification
+2026-02-08 03:29:47,839 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:29:47,949 - scorer - INFO - Scoring job 241/338: Data Engineer
+Data Engineer
+2026-02-08 03:29:47,970 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer
+Data Engineer
+2026-02-08 03:29:47,970 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:29:48,078 - scorer - INFO - Scoring job 242/338: Azure Devops Engineer
+Azure Devops Engineer
+2026-02-08 03:29:48,081 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:52,159 - scorer - INFO - ✓ Scored: Azure Devops Engineer
+Azure Devops Engineer - 0%
+2026-02-08 03:29:53,161 - scorer - INFO - Scoring job 243/338: Graduate Software Engineer
+Graduate Software Engineer with verification
+2026-02-08 03:29:53,177 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:29:57,129 - scorer - INFO - ✓ Scored: Graduate Software Engineer
+Graduate Software Engineer with verification - 20%
+2026-02-08 03:29:58,140 - scorer - INFO - Scoring job 244/338: Data Loss Prevention (DLP) Engineer
+Data Loss Prevention (DLP) Engineer
+2026-02-08 03:29:58,143 - scorer - WARNING - ❌ REJECTED by parser: Data Loss Prevention (DLP) Engineer
+Data Loss Prevention (DLP) Engineer
+2026-02-08 03:29:58,143 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:29:58,253 - scorer - INFO - Scoring job 245/338: Software Development Engineer in Test (SDET)
+Software Development Engineer in Test (SDET)
+2026-02-08 03:29:58,289 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:04,364 - scorer - INFO - ✓ Scored: Software Development Engineer in Test (SDET)
+Software Development Engineer in Test (SDET) - 0%
+2026-02-08 03:30:05,374 - scorer - INFO - Scoring job 246/338: Data Engineer
+Data Engineer with verification
+2026-02-08 03:30:05,401 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:10,965 - scorer - INFO - ✓ Scored: Data Engineer
+Data Engineer with verification - 20%
+2026-02-08 03:30:11,975 - scorer - INFO - Scoring job 247/338: Fullstack Engineer
+Fullstack Engineer
+2026-02-08 03:30:12,006 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:17,153 - scorer - INFO - ✓ Scored: Fullstack Engineer
+Fullstack Engineer - 20%
+2026-02-08 03:30:18,161 - scorer - INFO - Scoring job 248/338: Process Mining Data Engineer
+Process Mining Data Engineer
+2026-02-08 03:30:18,204 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:22,521 - scorer - INFO - ✓ Scored: Process Mining Data Engineer
+Process Mining Data Engineer - 20%
+2026-02-08 03:30:23,530 - scorer - INFO - Scoring job 249/338: Software Developer - AI
+Software Developer - AI with verification
+2026-02-08 03:30:23,606 - scorer - WARNING - ❌ REJECTED by parser: Software Developer - AI
+Software Developer - AI with verification
+2026-02-08 03:30:23,606 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 10+ years of experience
+2026-02-08 03:30:23,711 - scorer - INFO - Scoring job 250/338: Freelance Software Developer (Kotlin) - AI Trainer
+Freelance Software Developer (Kotlin) - AI Trainer
+2026-02-08 03:30:23,718 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:29,177 - scorer - INFO - ✓ Scored: Freelance Software Developer (Kotlin) - AI Trainer
+Freelance Software Developer (Kotlin) - AI Trainer - 0%
+2026-02-08 03:30:30,178 - scorer - INFO - Scoring job 251/338: Data Platform Engineer
+Data Platform Engineer
+2026-02-08 03:30:30,192 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:34,387 - scorer - INFO - ✓ Scored: Data Platform Engineer
+Data Platform Engineer - 10%
+2026-02-08 03:30:35,395 - scorer - INFO - Scoring job 252/338: Python Developer
+Python Developer with verification
+2026-02-08 03:30:35,411 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:39,079 - scorer - INFO - ✓ Scored: Python Developer
+Python Developer with verification - 20%
+2026-02-08 03:30:40,089 - scorer - INFO - Scoring job 253/338: Fullstack Developer | $70/hr Remote
+Fullstack Developer | $70/hr Remote
+2026-02-08 03:30:40,093 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:43,388 - scorer - INFO - ✓ Scored: Fullstack Developer | $70/hr Remote
+Fullstack Developer | $70/hr Remote - 10%
+2026-02-08 03:30:44,390 - scorer - INFO - Scoring job 254/338: Data Engineer
+Data Engineer with verification
+2026-02-08 03:30:44,436 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer
+Data Engineer with verification
+2026-02-08 03:30:44,436 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:30:44,544 - scorer - INFO - Scoring job 255/338: DevOps Engineer – AWS
+DevOps Engineer – AWS
+2026-02-08 03:30:44,562 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:48,180 - scorer - INFO - ✓ Scored: DevOps Engineer – AWS
+DevOps Engineer – AWS - 0%
+2026-02-08 03:30:49,188 - scorer - INFO - Scoring job 256/338: Software Engineer (Multiple Levels)
+Software Engineer (Multiple Levels) with verification
+2026-02-08 03:30:49,208 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:53,196 - scorer - INFO - ✓ Scored: Software Engineer (Multiple Levels)
+Software Engineer (Multiple Levels) with verification - 0%
+2026-02-08 03:30:54,206 - scorer - INFO - Scoring job 257/338: IoT Data Engineer
+IoT Data Engineer with verification
+2026-02-08 03:30:54,230 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:30:59,119 - scorer - INFO - ✓ Scored: IoT Data Engineer
+IoT Data Engineer with verification - 20%
+2026-02-08 03:31:00,130 - scorer - INFO - Scoring job 258/338: Data Engineer - AI and Data
+Data Engineer - AI and Data with verification
+2026-02-08 03:31:00,159 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:05,537 - scorer - INFO - ✓ Scored: Data Engineer - AI and Data
+Data Engineer - AI and Data with verification - 30%
+2026-02-08 03:31:06,547 - scorer - INFO - Scoring job 259/338: Expressions of Interest - .Net Developers - All Levels
+Expressions of Interest - .Net Developers - All Levels with verification
+2026-02-08 03:31:06,549 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:10,684 - scorer - INFO - ✓ Scored: Expressions of Interest - .Net Developers - All Levels
+Expressions of Interest - .Net Developers - All Levels with verification - 0%
+2026-02-08 03:31:11,691 - scorer - INFO - Scoring job 260/338: Software Engineer
+Software Engineer with verification
+2026-02-08 03:31:11,710 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:16,974 - scorer - INFO - ✓ Scored: Software Engineer
+Software Engineer with verification - 20%
+2026-02-08 03:31:17,975 - scorer - INFO - Scoring job 261/338: Software Engineer
+Software Engineer with verification
+2026-02-08 03:31:18,001 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:23,874 - scorer - INFO - ✓ Scored: Software Engineer
+Software Engineer with verification - 20%
+2026-02-08 03:31:24,884 - scorer - INFO - Scoring job 262/338: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer
+2026-02-08 03:31:24,928 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:29,566 - scorer - INFO - ✓ Scored: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer - 40%
+2026-02-08 03:31:30,576 - scorer - INFO - Scoring job 263/338: Data Integration Engineer
+Data Integration Engineer
+2026-02-08 03:31:30,596 - scorer - WARNING - ❌ REJECTED by parser: Data Integration Engineer
+Data Integration Engineer
+2026-02-08 03:31:30,596 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:31:30,706 - scorer - INFO - Scoring job 264/338: Software Engineer
+Software Engineer
+2026-02-08 03:31:30,719 - scorer - WARNING - ❌ REJECTED by parser: Software Engineer
+Software Engineer
+2026-02-08 03:31:30,719 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:31:30,829 - scorer - INFO - Scoring job 265/338: Web Scrape Developer (Python)
+Web Scrape Developer (Python)
+2026-02-08 03:31:30,874 - scorer - WARNING - ❌ REJECTED by parser: Web Scrape Developer (Python)
+Web Scrape Developer (Python)
+2026-02-08 03:31:30,874 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:31:30,984 - scorer - INFO - Scoring job 266/338: Quantitative Data Engineer
+Quantitative Data Engineer with verification
+2026-02-08 03:31:30,998 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:35,503 - scorer - INFO - ✓ Scored: Quantitative Data Engineer
+Quantitative Data Engineer with verification - 20%
+2026-02-08 03:31:36,511 - scorer - INFO - Scoring job 267/338: Fullstack Engineer
+Fullstack Engineer
+2026-02-08 03:31:36,528 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:40,135 - scorer - INFO - ✓ Scored: Fullstack Engineer
+Fullstack Engineer - 20%
+2026-02-08 03:31:41,145 - scorer - INFO - Scoring job 268/338: Full Stack Developer - AI Training
+Full Stack Developer - AI Training
+2026-02-08 03:31:41,153 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:45,520 - scorer - INFO - ✓ Scored: Full Stack Developer - AI Training
+Full Stack Developer - AI Training - 20%
+2026-02-08 03:31:46,528 - scorer - INFO - Scoring job 269/338: Cyber & Cloud Engineer
+Cyber & Cloud Engineer with verification
+2026-02-08 03:31:46,542 - scorer - WARNING - ❌ REJECTED by parser: Cyber & Cloud Engineer
+Cyber & Cloud Engineer with verification
+2026-02-08 03:31:46,542 - scorer - WARNING -    Reasons: Requires Australian PR/Citizenship/Security Clearance, Senior/Lead level position
+2026-02-08 03:31:46,652 - scorer - INFO - Scoring job 270/338: Graduate Developer
+Graduate Developer with verification
+2026-02-08 03:31:46,670 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:50,009 - scorer - INFO - ✓ Scored: Graduate Developer
+Graduate Developer with verification - 0%
+2026-02-08 03:31:51,017 - scorer - INFO - Scoring job 271/338: Freelance Machine Learning Engineer (Python)
+Freelance Machine Learning Engineer (Python)
+2026-02-08 03:31:51,038 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:31:55,241 - scorer - INFO - ✓ Scored: Freelance Machine Learning Engineer (Python)
+Freelance Machine Learning Engineer (Python) - 20%
+2026-02-08 03:31:56,245 - scorer - INFO - Scoring job 272/338: Software Engineer
+Software Engineer with verification
+2026-02-08 03:31:56,290 - scorer - WARNING - ❌ REJECTED by parser: Software Engineer
+Software Engineer with verification
+2026-02-08 03:31:56,290 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:31:56,401 - scorer - INFO - Scoring job 273/338: Data and Automation Engineer
+Data and Automation Engineer with verification
+2026-02-08 03:31:56,435 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:02,138 - scorer - INFO - ✓ Scored: Data and Automation Engineer
+Data and Automation Engineer with verification - 30%
+2026-02-08 03:32:03,150 - scorer - INFO - Scoring job 274/338: Junior Software Engineer
+Junior Software Engineer with verification
+2026-02-08 03:32:03,165 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:06,968 - scorer - INFO - ✓ Scored: Junior Software Engineer
+Junior Software Engineer with verification - 30%
+2026-02-08 03:32:07,978 - scorer - INFO - Scoring job 275/338: Junior Linux Kernel Engineer - Ubuntu
+Junior Linux Kernel Engineer - Ubuntu with verification
+2026-02-08 03:32:08,020 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:12,479 - scorer - INFO - ✓ Scored: Junior Linux Kernel Engineer - Ubuntu
+Junior Linux Kernel Engineer - Ubuntu with verification - 10%
+2026-02-08 03:32:13,482 - scorer - INFO - Scoring job 276/338: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer
+2026-02-08 03:32:13,529 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:17,652 - scorer - INFO - ✓ Scored: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer - 40%
+2026-02-08 03:32:18,656 - scorer - INFO - Scoring job 277/338: Analytics Engineer (12 month contract)
+Analytics Engineer (12 month contract)
+2026-02-08 03:32:18,678 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:25,199 - scorer - INFO - ✓ Scored: Analytics Engineer (12 month contract)
+Analytics Engineer (12 month contract) - 30%
+2026-02-08 03:32:26,210 - scorer - INFO - Scoring job 278/338: Analytics Engineer
+Analytics Engineer with verification
+2026-02-08 03:32:26,270 - scorer - WARNING - ❌ REJECTED by parser: Analytics Engineer
+Analytics Engineer with verification
+2026-02-08 03:32:26,270 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:32:26,380 - scorer - INFO - Scoring job 279/338: Fullstack Engineer
+Fullstack Engineer
+2026-02-08 03:32:26,404 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:31,627 - scorer - INFO - ✓ Scored: Fullstack Engineer
+Fullstack Engineer - 20%
+2026-02-08 03:32:32,633 - scorer - INFO - Scoring job 280/338: SR. Security Engineer
+SR. Security Engineer
+2026-02-08 03:32:32,647 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:39,001 - scorer - INFO - ✓ Scored: SR. Security Engineer
+SR. Security Engineer - 0%
+2026-02-08 03:32:40,011 - scorer - INFO - Scoring job 281/338: Associate Solutions Engineer
+Associate Solutions Engineer with verification
+2026-02-08 03:32:40,022 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:43,678 - scorer - INFO - ✓ Scored: Associate Solutions Engineer
+Associate Solutions Engineer with verification - 10%
+2026-02-08 03:32:44,681 - scorer - INFO - Scoring job 282/338: Software Engineer
+Software Engineer with verification
+2026-02-08 03:32:44,719 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:48,626 - scorer - INFO - ✓ Scored: Software Engineer
+Software Engineer with verification - 0%
+2026-02-08 03:32:49,630 - scorer - INFO - Scoring job 283/338: Database Engineer (GCP)
+Database Engineer (GCP) with verification
+2026-02-08 03:32:49,674 - scorer - WARNING - ❌ REJECTED by parser: Database Engineer (GCP)
+Database Engineer (GCP) with verification
+2026-02-08 03:32:49,674 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:32:49,785 - scorer - INFO - Scoring job 284/338: AI Agent Orchestrator Engineer
+AI Agent Orchestrator Engineer with verification
+2026-02-08 03:32:49,801 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:32:54,194 - scorer - INFO - ✓ Scored: AI Agent Orchestrator Engineer
+AI Agent Orchestrator Engineer with verification - 40%
+2026-02-08 03:32:55,204 - scorer - INFO - Scoring job 285/338: Platform Engineer
+Platform Engineer
+2026-02-08 03:32:55,222 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:00,202 - scorer - INFO - ✓ Scored: Platform Engineer
+Platform Engineer - 20%
+2026-02-08 03:33:01,213 - scorer - INFO - Scoring job 286/338: Data Engineer
+Data Engineer
+2026-02-08 03:33:01,225 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:05,711 - scorer - INFO - ✓ Scored: Data Engineer
+Data Engineer - 20%
+2026-02-08 03:33:06,722 - scorer - INFO - Scoring job 287/338: Freelance Machine Learning Engineer (Python)
+Freelance Machine Learning Engineer (Python)
+2026-02-08 03:33:06,743 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:09,928 - scorer - INFO - ✓ Scored: Freelance Machine Learning Engineer (Python)
+Freelance Machine Learning Engineer (Python) - 20%
+2026-02-08 03:33:10,934 - scorer - INFO - Scoring job 288/338: Linux Kernel Engineer
+Linux Kernel Engineer with verification
+2026-02-08 03:33:10,985 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:14,023 - scorer - INFO - ✓ Scored: Linux Kernel Engineer
+Linux Kernel Engineer with verification - 0%
+2026-02-08 03:33:15,027 - scorer - INFO - Scoring job 289/338: Python Developer | $70/hr Remote
+Python Developer | $70/hr Remote
+2026-02-08 03:33:15,041 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:19,522 - scorer - INFO - ✓ Scored: Python Developer | $70/hr Remote
+Python Developer | $70/hr Remote - 20%
+2026-02-08 03:33:20,532 - scorer - INFO - Scoring job 290/338: Platform Engineer
+Platform Engineer
+2026-02-08 03:33:20,534 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:25,507 - scorer - INFO - ✓ Scored: Platform Engineer
+Platform Engineer - 0%
+2026-02-08 03:33:26,517 - scorer - INFO - Scoring job 291/338: Data Engineer
+Data Engineer
+2026-02-08 03:33:26,529 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer
+Data Engineer
+2026-02-08 03:33:26,529 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:33:26,639 - scorer - INFO - Scoring job 292/338: Data Engineer
+Data Engineer with verification
+2026-02-08 03:33:26,655 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:32,251 - scorer - INFO - ✓ Scored: Data Engineer
+Data Engineer with verification - 20%
+2026-02-08 03:33:33,261 - scorer - INFO - Scoring job 293/338: Data Engineer
+Data Engineer with verification
+2026-02-08 03:33:33,274 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:38,253 - scorer - INFO - ✓ Scored: Data Engineer
+Data Engineer with verification - 20%
+2026-02-08 03:33:39,264 - scorer - INFO - Scoring job 294/338: ML Platform Engineer (AU)
+ML Platform Engineer (AU) with verification
+2026-02-08 03:33:39,318 - scorer - WARNING - ❌ REJECTED by parser: ML Platform Engineer (AU)
+ML Platform Engineer (AU) with verification
+2026-02-08 03:33:39,318 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 3+ years of experience
+2026-02-08 03:33:39,428 - scorer - INFO - Scoring job 295/338: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer
+2026-02-08 03:33:39,453 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:42,750 - scorer - INFO - ✓ Scored: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer - 40%
+2026-02-08 03:33:43,760 - scorer - INFO - Scoring job 296/338: Junior Full Stack Engineer - Hybrid
+Junior Full Stack Engineer - Hybrid
+2026-02-08 03:33:43,798 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:47,779 - scorer - INFO - ✓ Scored: Junior Full Stack Engineer - Hybrid
+Junior Full Stack Engineer - Hybrid - 30%
+2026-02-08 03:33:48,784 - scorer - INFO - Scoring job 297/338: Full Stack Engineer – AI Systems (Remote)
+Full Stack Engineer – AI Systems (Remote) with verification
+2026-02-08 03:33:48,799 - scorer - WARNING - ❌ REJECTED by parser: Full Stack Engineer – AI Systems (Remote)
+Full Stack Engineer – AI Systems (Remote) with verification
+2026-02-08 03:33:48,799 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:33:48,901 - scorer - INFO - Scoring job 298/338: Frontend Engineer
+Frontend Engineer with verification
+2026-02-08 03:33:48,913 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:33:54,789 - scorer - INFO - ✓ Scored: Frontend Engineer
+Frontend Engineer with verification - 0%
+2026-02-08 03:33:55,800 - scorer - INFO - Scoring job 299/338: Software Engineer/Electrical Engineer - Distributed Energy Resources (DER)
+Software Engineer/Electrical Engineer - Distributed Energy Resources (DER) with verification
+2026-02-08 03:33:55,812 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:34:01,944 - scorer - INFO - ✓ Scored: Software Engineer/Electrical Engineer - Distributed Energy Resources (DER)
+Software Engineer/Electrical Engineer - Distributed Energy Resources (DER) with verification - 20%
+2026-02-08 03:34:02,951 - scorer - INFO - Scoring job 300/338: Software Engineer – Creative Software (Remote)
+Software Engineer – Creative Software (Remote)
+2026-02-08 03:34:02,958 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:34:09,062 - scorer - INFO - ✓ Scored: Software Engineer – Creative Software (Remote)
+Software Engineer – Creative Software (Remote) - 10%
+2026-02-08 03:34:10,072 - scorer - INFO - Scoring job 301/338: Software Engineer (Fullstack)
+Software Engineer (Fullstack)
+2026-02-08 03:34:10,083 - scorer - WARNING - ❌ REJECTED by parser: Software Engineer (Fullstack)
+Software Engineer (Fullstack)
+2026-02-08 03:34:10,083 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:34:10,187 - scorer - INFO - Scoring job 302/338: Software Development Engineer
+Software Development Engineer with verification
+2026-02-08 03:34:10,210 - scorer - WARNING - ❌ REJECTED by parser: Software Development Engineer
+Software Development Engineer with verification
+2026-02-08 03:34:10,210 - scorer - WARNING -    Reasons: Requires 3+ years of experience
+2026-02-08 03:34:10,317 - scorer - INFO - Scoring job 303/338: AI Governance Consultant
+AI Governance Consultant with verification
+2026-02-08 03:34:10,349 - scorer - WARNING - ❌ REJECTED by parser: AI Governance Consultant
+AI Governance Consultant with verification
+2026-02-08 03:34:10,349 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 10+ years of experience
+2026-02-08 03:34:10,458 - scorer - INFO - Scoring job 304/338: Software Development Graduate (2026, Stores), Brisbane
+Software Development Graduate (2026, Stores), Brisbane with verification
+2026-02-08 03:34:10,473 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:34:14,848 - scorer - INFO - ✓ Scored: Software Development Graduate (2026, Stores), Brisbane
+Software Development Graduate (2026, Stores), Brisbane with verification - 10%
+2026-02-08 03:34:15,858 - scorer - INFO - Scoring job 305/338: AI Deployment Engineer
+AI Deployment Engineer with verification
+2026-02-08 03:34:15,881 - scorer - WARNING - ❌ REJECTED by parser: AI Deployment Engineer
+AI Deployment Engineer with verification
+2026-02-08 03:34:15,881 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:34:15,984 - scorer - INFO - Scoring job 306/338: Data Engineer (Databricks & DBT)
+Data Engineer (Databricks & DBT) with verification
+2026-02-08 03:34:15,990 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer (Databricks & DBT)
+Data Engineer (Databricks & DBT) with verification
+2026-02-08 03:34:15,990 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:34:16,100 - scorer - INFO - Scoring job 307/338: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer
+2026-02-08 03:34:16,130 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:34:21,385 - scorer - INFO - ✓ Scored: Data Scientist (Masters) - AI Data Trainer
+Data Scientist (Masters) - AI Data Trainer - 40%
+2026-02-08 03:34:22,391 - scorer - INFO - Scoring job 308/338: Cyber & Cloud Engineer
+Cyber & Cloud Engineer with verification
+2026-02-08 03:34:22,413 - scorer - WARNING - ❌ REJECTED by parser: Cyber & Cloud Engineer
+Cyber & Cloud Engineer with verification
+2026-02-08 03:34:22,414 - scorer - WARNING -    Reasons: Requires Australian PR/Citizenship/Security Clearance, Senior/Lead level position
+2026-02-08 03:34:22,524 - scorer - INFO - Scoring job 309/338: Data Engineer - Oracle
+Data Engineer - Oracle with verification
+2026-02-08 03:34:22,538 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:34:28,919 - scorer - INFO - ✓ Scored: Data Engineer - Oracle
+Data Engineer - Oracle with verification - 0%
+2026-02-08 03:34:29,930 - scorer - INFO - Scoring job 310/338: Forward Deployed Engineer (AI Agent)
+Forward Deployed Engineer (AI Agent) with verification
+2026-02-08 03:34:29,968 - scorer - WARNING - ❌ REJECTED by parser: Forward Deployed Engineer (AI Agent)
+Forward Deployed Engineer (AI Agent) with verification
+2026-02-08 03:34:29,968 - scorer - WARNING -    Reasons: Requires 3+ years of experience
+2026-02-08 03:34:30,078 - scorer - INFO - Scoring job 311/338: Software Developer Internship - 2026-27
+Software Developer Internship - 2026-27 with verification
+2026-02-08 03:34:30,091 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:34:35,889 - scorer - INFO - ✓ Scored: Software Developer Internship - 2026-27
+Software Developer Internship - 2026-27 with verification - 0%
+2026-02-08 03:34:36,893 - scorer - INFO - Scoring job 312/338: Cloud Security Engineer
+Cloud Security Engineer with verification
+2026-02-08 03:34:36,914 - scorer - WARNING - ❌ REJECTED by parser: Cloud Security Engineer
+Cloud Security Engineer with verification
+2026-02-08 03:34:36,915 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:34:37,025 - scorer - INFO - Scoring job 313/338: Cloud Engineer - GCP
+Cloud Engineer - GCP with verification
+2026-02-08 03:34:37,034 - scorer - WARNING - ❌ REJECTED by parser: Cloud Engineer - GCP
+Cloud Engineer - GCP with verification
+2026-02-08 03:34:37,034 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:34:37,144 - scorer - INFO - Scoring job 314/338: Data Observability Engineer
+Data Observability Engineer with verification
+2026-02-08 03:34:37,151 - scorer - WARNING - ❌ REJECTED by parser: Data Observability Engineer
+Data Observability Engineer with verification
+2026-02-08 03:34:37,151 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:34:37,261 - scorer - INFO - Scoring job 315/338: AI Productivity Platform Engineer
+AI Productivity Platform Engineer with verification
+2026-02-08 03:34:37,298 - scorer - WARNING - ❌ REJECTED by parser: AI Productivity Platform Engineer
+AI Productivity Platform Engineer with verification
+2026-02-08 03:34:37,298 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:34:37,408 - scorer - INFO - Scoring job 316/338: Graduate AGV Software Engineer
+Graduate AGV Software Engineer with verification
+2026-02-08 03:34:37,427 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:34:42,049 - scorer - INFO - ✓ Scored: Graduate AGV Software Engineer
+Graduate AGV Software Engineer with verification - 20%
+2026-02-08 03:34:43,058 - scorer - INFO - Scoring job 317/338: Software Engineer - City Futures Research Centre (x2 positions)
+Software Engineer - City Futures Research Centre (x2 positions) with verification
+2026-02-08 03:34:43,099 - scorer - WARNING - ❌ REJECTED by parser: Software Engineer - City Futures Research Centre (x2 positions)
+Software Engineer - City Futures Research Centre (x2 positions) with verification
+2026-02-08 03:34:43,099 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:34:43,201 - scorer - INFO - Scoring job 318/338: Data Analyst and Engineer- South Bank, QLD
+Data Analyst and Engineer- South Bank, QLD with verification
+2026-02-08 03:34:43,229 - scorer - WARNING - ❌ REJECTED by parser: Data Analyst and Engineer- South Bank, QLD
+Data Analyst and Engineer- South Bank, QLD with verification
+2026-02-08 03:34:43,229 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 4+ years of experience
+2026-02-08 03:34:43,334 - scorer - INFO - Scoring job 319/338: Java Full Stack Developer
+Java Full Stack Developer
+2026-02-08 03:34:43,358 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:34:47,317 - scorer - INFO - ✓ Scored: Java Full Stack Developer
+Java Full Stack Developer - 0%
+2026-02-08 03:34:48,317 - scorer - INFO - Scoring job 320/338: Platform Engineer
+Platform Engineer with verification
+2026-02-08 03:34:48,336 - scorer - WARNING - ❌ REJECTED by parser: Platform Engineer
+Platform Engineer with verification
+2026-02-08 03:34:48,336 - scorer - WARNING -    Reasons: Senior/Lead level position, Requires 5+ years of experience
+2026-02-08 03:34:48,447 - scorer - INFO - Scoring job 321/338: Data Engineer
+Data Engineer
+2026-02-08 03:34:48,451 - scorer - WARNING - ❌ REJECTED by parser: Data Engineer
+Data Engineer
+2026-02-08 03:34:48,451 - scorer - WARNING -    Reasons: Requires 3+ years of experience
+2026-02-08 03:34:48,558 - scorer - INFO - Scoring job 322/338: Front End Developer - AI Economics Unit (Immediate Start)
+Front End Developer - AI Economics Unit (Immediate Start)
+2026-02-08 03:34:48,594 - scorer - WARNING - ❌ REJECTED by parser: Front End Developer - AI Economics Unit (Immediate Start)
+Front End Developer - AI Economics Unit (Immediate Start)
+2026-02-08 03:34:48,594 - scorer - WARNING -    Reasons: Requires 5+ years of experience
+2026-02-08 03:34:48,701 - scorer - INFO - Scoring job 323/338: Power BI Developer
+Power BI Developer with verification
+2026-02-08 03:34:48,711 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:34:54,604 - scorer - INFO - ✓ Scored: Power BI Developer
+Power BI Developer with verification - 0%
+2026-02-08 03:34:55,614 - scorer - INFO - Scoring job 324/338: Freelance Machine Learning Engineer (Python)
+Freelance Machine Learning Engineer (Python)
+2026-02-08 03:34:55,635 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:35:00,577 - scorer - INFO - ✓ Scored: Freelance Machine Learning Engineer (Python)
+Freelance Machine Learning Engineer (Python) - 30%
+2026-02-08 03:35:01,587 - scorer - INFO - Scoring job 325/338: Audio Software Engineer
+Audio Software Engineer
+2026-02-08 03:35:01,597 - scorer - WARNING - ❌ REJECTED by parser: Audio Software Engineer
+Audio Software Engineer
+2026-02-08 03:35:01,597 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:35:01,701 - scorer - INFO - Scoring job 326/338: AI Platform Engineer, Applied AI
+AI Platform Engineer, Applied AI
+2026-02-08 03:35:01,722 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:35:07,731 - scorer - INFO - ✓ Scored: AI Platform Engineer, Applied AI
+AI Platform Engineer, Applied AI - 50%
+2026-02-08 03:35:08,741 - scorer - INFO - Scoring job 327/338: Junior Full Stack Engineer - Remote AU
+Junior Full Stack Engineer - Remote AU
+2026-02-08 03:35:08,797 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:35:14,231 - scorer - INFO - ✓ Scored: Junior Full Stack Engineer - Remote AU
+Junior Full Stack Engineer - Remote AU - 30%
+2026-02-08 03:35:15,234 - scorer - INFO - Scoring job 328/338: Systems Engineer
+Systems Engineer with verification
+2026-02-08 03:35:15,260 - scorer - WARNING - ❌ REJECTED by parser: Systems Engineer
+Systems Engineer with verification
+2026-02-08 03:35:15,260 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:35:15,367 - scorer - INFO - Scoring job 329/338: Android Developer | Remote
+Android Developer | Remote
+2026-02-08 03:35:15,369 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:35:20,141 - scorer - INFO - ✓ Scored: Android Developer | Remote
+Android Developer | Remote - 0%
+2026-02-08 03:35:21,151 - scorer - INFO - Scoring job 330/338: Software Development Graduate (2026, AWS), Sydney
+Software Development Graduate (2026, AWS), Sydney with verification
+2026-02-08 03:35:21,162 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:35:27,192 - scorer - INFO - ✓ Scored: Software Development Graduate (2026, AWS), Sydney
+Software Development Graduate (2026, AWS), Sydney with verification - 0%
+2026-02-08 03:35:28,202 - scorer - INFO - Scoring job 331/338: Cloud Engineer
+Cloud Engineer
+2026-02-08 03:35:28,216 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:35:33,948 - scorer - INFO - ✓ Scored: Cloud Engineer
+Cloud Engineer - 0%
+2026-02-08 03:35:34,950 - scorer - INFO - Scoring job 332/338: Associate Systems Engineer
+Associate Systems Engineer with verification
+2026-02-08 03:35:34,978 - scorer - WARNING - ❌ REJECTED by parser: Associate Systems Engineer
+Associate Systems Engineer with verification
+2026-02-08 03:35:34,978 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:35:35,088 - scorer - INFO - Scoring job 333/338: Software Engineer, iOS
+Software Engineer, iOS
+2026-02-08 03:35:35,119 - scorer - WARNING - ❌ REJECTED by parser: Software Engineer, iOS
+Software Engineer, iOS
+2026-02-08 03:35:35,119 - scorer - WARNING -    Reasons: Senior/Lead level position
+2026-02-08 03:35:35,229 - scorer - INFO - Scoring job 334/338: Software Engineer intern – Indexing & Clustering, Australia
+Software Engineer intern – Indexing & Clustering, Australia with verification
+2026-02-08 03:35:35,242 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:35:39,555 - scorer - INFO - ✓ Scored: Software Engineer intern – Indexing & Clustering, Australia
+Software Engineer intern – Indexing & Clustering, Australia with verification - 30%
+2026-02-08 03:35:40,565 - scorer - INFO - Scoring job 335/338: DevOps Engineer
+DevOps Engineer with verification
+2026-02-08 03:35:40,578 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:35:45,038 - scorer - INFO - ✓ Scored: DevOps Engineer
+DevOps Engineer with verification - 0%
+2026-02-08 03:35:46,046 - scorer - INFO - Scoring job 336/338: Backend Engineer, User Platform - Java (Remote across ANZ)
+Backend Engineer, User Platform - Java (Remote across ANZ) with verification
+2026-02-08 03:35:46,080 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:35:52,824 - scorer - INFO - ✓ Scored: Backend Engineer, User Platform - Java (Remote across ANZ)
+Backend Engineer, User Platform - Java (Remote across ANZ) with verification - 0%
+2026-02-08 03:35:53,834 - scorer - INFO - Scoring job 337/338: Prompt Engineer – Astrology AI Product
+Prompt Engineer – Astrology AI Product with verification
+2026-02-08 03:35:53,838 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:36:00,044 - scorer - INFO - ✓ Scored: Prompt Engineer – Astrology AI Product
+Prompt Engineer – Astrology AI Product with verification - 20%
+2026-02-08 03:36:01,051 - scorer - INFO - Scoring job 338/338: Security Engineer, Detection
+Security Engineer, Detection with verification
+2026-02-08 03:36:01,060 - scorer - INFO - Scoring with model: deepseek/deepseek-chat
+2026-02-08 03:36:08,476 - scorer - INFO - ✓ Scored: Security Engineer, Detection
+Security Engineer, Detection with verification - 10%
+2026-02-08 03:36:09,486 - scorer - INFO - Batch scoring complete: 338 scored, 0 failed, 93 rejected by parser, avg: 22.5%
+2026-02-08 03:36:09,692 - __main__ - INFO - Scored: 338, Failed: 0, Avg: 22.5%
+2026-02-08 03:36:09,698 - notifier - INFO - Notifying 104 new matches
+2026-02-08 03:36:09,704 - notifier - INFO - Attempting to send email (attempt 1/3)...
+2026-02-08 03:36:17,527 - notifier - INFO - ✓ Email sent successfully to sravankumar.nnv@gmail.com
+2026-02-08 03:36:17,611 - __main__ - INFO - ✓ Email notification sent for 104 match(es)
+2026-02-08 03:36:17,614 - __main__ - INFO - ======================================================================
+2026-02-08 03:36:17,614 - __main__ - INFO - Daily run completed successfully
+2026-02-08 03:36:17,614 - __main__ - INFO - Total matches (75%+): 104
+2026-02-08 03:36:17,614 - __main__ - INFO - Next run: 2026-02-09 00:36:17 AWST
+2026-02-08 03:36:17,614 - __main__ - INFO - ======================================================================

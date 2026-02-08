@@ -17,6 +17,8 @@ Future-Ready:
 import json
 import hashlib
 import os
+import sys
+from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any
 import requests
@@ -43,12 +45,20 @@ class KeywordGenerator:
         with open(self.jobs_file, "r", encoding="utf-8") as f:
             content = f.read()
         
+        # Also read profile.txt if it exists for skills extraction
+        profile_content = ""
+        profile_path = Path("profile.txt")
+        if profile_path.exists():
+            with open(profile_path, "r", encoding="utf-8") as f:
+                profile_content = f.read()
+        
         result = {
             "job_titles": "",
             "dealbreakers": {},
             "preferences": {},
             "optimization": {},
-            "raw_content": content
+            "raw_content": content,
+            "profile_content": profile_content
         }
         
         # Extract job titles (everything before [DEALBREAKERS] or end of file)
@@ -152,84 +162,142 @@ class KeywordGenerator:
             json.dump(keywords, f, indent=2, ensure_ascii=False)
         
         print(f"✅ Keywords generated and saved to {self.output_file}")
-        print(f"   - Technical skills: {len(keywords.get('technical_skills', []))}")
-        print(f"   - Title keywords: {len(keywords.get('title_keywords', []))}")
-        print(f"   - Description keywords: {len(keywords.get('description_keywords', []))}")
+        print(f"   - Title required keywords: {len(keywords.get('title_required_keywords', []))}")
+        print(f"   - Title required phrases: {len(keywords.get('title_required_phrases', []))}")
+        print(f"   - Title exclude keywords: {len(keywords.get('title_exclude_keywords', []))}")
+        print(f"   - Acronym mappings: {len(keywords.get('acronym_mappings', {}))}")
+        print(f"   - False positive patterns: {len(keywords.get('false_positive_patterns', []))}")
+        print(f"   - Description keywords: {len(keywords.get('description_required_keywords', []))}")
+        print(f"   - Description quality threshold: {keywords.get('description_quality_threshold', 2)}")
         
         return keywords
     
     def _create_prompt(self, jobs_data: Dict) -> str:
-        """Create AI prompt for keyword generation"""
+        """Create AI prompt for keyword generation with 13 universal patterns"""
         job_titles = jobs_data["job_titles"]
         dealbreakers = jobs_data.get("dealbreakers", {})
+        profile_content = jobs_data.get("profile_content", "")
         
-        prompt = f"""You are an expert job search keyword analyzer. Analyze these target job titles and generate comprehensive keywords for job scraping and filtering.
+        # Extract key info from profile if available
+        profile_summary = ""
+        if profile_content:
+            profile_summary = f"""
+USER PROFILE/SKILLS (extract relevant keywords from this):
+{profile_content[:2000]}...
+"""
+        
+        prompt = f"""You are an expert job search keyword analyzer. Analyze the target job titles, dealbreakers, and user profile to generate comprehensive, UNIVERSAL keywords that work for ANY job type (AI, Marketing, Finance, Backend, Sales, etc.).
 
 TARGET JOB TITLES:
 {job_titles}
 
-DEALBREAKERS (if provided):
-{json.dumps(dealbreakers, indent=2) if dealbreakers else "None provided - use general search"}
+DEALBREAKERS:
+{json.dumps(dealbreakers, indent=2) if dealbreakers else "None provided"}
+{profile_summary}
 
-Generate the following in JSON format:
+Your task: Generate keywords following 13 UNIVERSAL PATTERNS that apply to any job domain:
 
-1. **technical_skills** (40-60 items): Relevant technical skills, tools, frameworks, languages for these roles.
-   - Include programming languages, frameworks, libraries, tools
-   - Include both common and specialized technologies
-   - Examples for AI roles: Python, TensorFlow, PyTorch, LangChain, OpenAI, AWS
-   - Examples for Finance roles: Excel, SQL, Bloomberg, Financial Modeling, VBA
-   - Examples for Marketing roles: Google Analytics, SEO, SEM, HubSpot, Adobe Creative
+PATTERN 1: Core Field-Specific Roles
+- Identify the core domain (AI/ML/Marketing/Finance/Backend/etc.) from job titles
+- Generate keywords SPECIFIC to that domain
+- DO NOT include generic role words alone (engineer, developer, analyst, software)
+- ONLY include domain-specific combinations (ai engineer, ml developer, data analyst)
 
-2. **title_keywords** (30-50 items): Keywords that should appear in relevant job titles.
-   - Include role names, seniority levels, specializations
-   - Include synonyms and variations
-   - Examples for AI: ai, machine learning, ml, data scientist, mlops, computer vision
-   - Examples for Finance: analyst, accountant, financial, investment, portfolio
-   - Examples for Marketing: marketing, digital, content, social media, brand
+PATTERN 2: Desired Seniority Level
+- Extract seniority from job titles (Graduate/Junior/Associate/Entry-Level)
+- Generate variations (junior, graduate, entry level, associate, early career)
 
-3. **description_keywords** (50-80 items): Technical terms that should appear in job descriptions.
-   - Include methodologies, concepts, processes, domains
-   - Include industry-specific jargon
-   - Examples for AI: model, algorithm, neural network, deep learning, nlp, training
-   - Examples for Finance: valuation, forecasting, budgeting, p&l, roi, financial statements
-   - Examples for Marketing: campaign, engagement, conversion, analytics, brand awareness
+PATTERN 3: Excluded Seniority (from dealbreakers)
+- Use exclude_seniority from dealbreakers to filter senior roles
+- Generate patterns to catch Senior/Lead/Principal/Manager variants
 
-4. **strong_keywords** (15-25 items): Must-have keywords that strongly indicate relevance.
-   - These are non-negotiable terms for the role
-   - Examples for AI: machine learning, deep learning, neural network, computer vision, nlp
-   - Examples for Finance: financial analysis, investment, portfolio management
-   - Examples for Marketing: marketing strategy, digital marketing, campaign management
+PATTERN 4: Generic Roles WITHOUT User's Field
+- Generic "Developer" alone → MUST REJECT (not in title_required_keywords)
+- Generic "Engineer" alone → MUST REJECT
+- Generic "Analyst" alone → MUST REJECT
+- Generic "Software" alone → MUST REJECT
+- These words should ONLY appear in title_exclude_keywords or NOT AT ALL
 
-5. **exclude_keywords** (20-30 items): Keywords that indicate COMPLETELY NON-TECHNICAL jobs.
-   - CRITICAL: Exclude ONLY jobs with ZERO technical/analytical component
-   - DO NOT exclude industry names (finance, business, consulting) - target roles can exist in ANY industry
-   - Examples to EXCLUDE: sales representative, retail cashier, warehouse worker, truck driver, construction laborer
-   - Examples to EXCLUDE: nursing, teaching (non-technical), receptionist, customer service rep
-   - Examples to KEEP: "AI in Finance" is valid, "Business Analyst" can be valid, "Consulting" can involve tech
-   - Focus on: Pure manual labor, pure sales (no tech), pure hospitality, pure admin roles
-   - If a keyword could apply to a technical role in that industry, DO NOT exclude it
+PATTERN 5: Generic Roles WITH User's Field Integration
+- "Full Stack AI Engineer" → ACCEPT only because "ai" keyword present
+- "Marketing Data Analyst" → ACCEPT only if "data" keyword present
+- DO NOT include "full stack", "software engineer", "developer" as standalone keywords
+- ONLY include domain-specific phrases like "ai engineer", "ml developer"
 
-6. **adjacent_roles** (10-20 items): Related roles that might be relevant.
-   - Roles that use similar skills but different titles
-   - Examples for AI: algorithm engineer, research engineer, quantitative analyst
-   - Examples for Finance: business analyst, data analyst, risk analyst
-   - Examples for Marketing: growth hacker, content strategist, community manager
+PATTERN 6: Adjacent Field Roles
+- For AI: Data Engineering, Analytics acceptable
+- For Marketing: Growth, Content Strategy acceptable
+- Identify 2-3 adjacent fields from job titles and profile
 
-7. **search_keywords** (20-30 items): Optimized keywords for job board searches.
-   - Best keywords to use when constructing search URLs
-   - Should be broad enough to capture all relevant jobs
-   - Examples for AI: ai engineer, ml engineer, data scientist, computer vision
-   - Examples for Finance: financial analyst, junior accountant, investment analyst
+PATTERN 7: Hybrid/Cross-Functional Roles
+- "AI Product Manager" might be acceptable if AI-focused
+- Generate patterns for domain + function hybrids
 
-IMPORTANT:
-- Focus on keywords SPECIFIC to these job titles
-- Include both formal and informal terminology
-- Consider industry-specific variations
-- Include emerging technologies/trends in the field
-- Be comprehensive to avoid missing relevant jobs
-- All keywords should be lowercase for matching
+PATTERN 8: Desired Program Types
+- Graduate programs, internships, apprenticeships
+- Extract from job titles (Graduate/Intern/Trainee)
 
-Return ONLY valid JSON with these exact keys. No explanations.
+PATTERN 9: Borderline Technologies/Skills
+- For AI: Data Engineering, Analytics (adjacent, might be OK)
+- For Backend: DevOps, Infrastructure (adjacent)
+- Identify borderline skills from profile
+
+PATTERN 10: Non-Core Function Roles (FALSE POSITIVES)
+- "AI Sales Engineer" → REJECT (Sales primary, AI secondary)
+- "Marketing AI Specialist" → REJECT (Marketing primary)
+- Generate false positive patterns: domain + non-core function
+
+PATTERN 11: Multi-Word Phrase Matching
+- "Machine Learning" is different from "Machine" + "Learning"
+- Generate 50 multi-word phrases that MUST match exactly
+- Examples: "machine learning", "data science", "computer vision"
+
+PATTERN 12: Acronym Expansion
+- ML ↔ Machine Learning
+- AI ↔ Artificial Intelligence
+- Generate bidirectional mappings for common acronyms
+
+PATTERN 13: False Positive Prevention
+- "AI Marketing Manager" → domain + excluded function
+- Generate 20 regex patterns to catch false positives early
+- Examples: "(?i)(ai|ml|data)\\s+(sales|marketing|hr|recruiting)"
+
+Generate JSON with these keys:
+
+{{
+  "title_required_keywords": [150 words],  // PATTERN 1: Core domain keywords (ai, machine learning, backend, react, etc.)
+  "title_required_phrases": [50 phrases],  // PATTERN 11: Multi-word phrases ("machine learning", "data science")
+  "title_exclude_keywords": [25 words],    // PATTERN 10: Non-core functions (sales, marketing, hr, recruiting)
+  "acronym_mappings": {{...}},              // PATTERN 12: {{"ml": "machine learning", "ai": "artificial intelligence"}}
+  "false_positive_patterns": [20 patterns], // PATTERN 13: Regex patterns like "(?i)(ai|ml)\\s+(sales|marketing)"
+  "description_required_keywords": [200 words], // Technical terms for description quality check
+  "description_quality_threshold": 2,       // Minimum keyword matches required in description
+  "description_min_length": 100,            // Minimum description length
+  "technical_skills": [60 items],           // LEGACY: Keep for compatibility
+  "strong_keywords": [25 items],            // LEGACY: Keep for compatibility  
+  "exclude_keywords": [30 items],           // PATTERN 4: Generic non-technical jobs (retail, warehouse, etc.)
+  "adjacent_roles": [20 items],             // PATTERN 6: Adjacent field roles
+  "search_keywords": [30 items]             // LEGACY: Keep for compatibility
+}}
+
+CRITICAL INSTRUCTIONS:
+- Extract domain from job titles (AI/ML, Marketing, Finance, Backend, etc.)
+- title_required_keywords: 150 unique DOMAIN-SPECIFIC words (lowercase, no duplicates)
+  * NEVER include generic role words alone: engineer, developer, analyst, software, programmer
+  * ONLY domain-specific: ai, machine, learning, nlp, vision, data, scientist, mlops, etc.
+  * If domain is AI/ML: include ai, ml, machine, learning, deep, neural, vision, nlp, data, scientist, mlops, etc.
+  * Generic role words should be in title_exclude_keywords instead
+- title_required_phrases: 50 multi-word DOMAIN-SPECIFIC exact-match phrases
+  * Examples: "machine learning", "data science", "ai engineer", "computer vision"
+  * NOT: "software engineer", "developer", "full stack developer"
+- title_exclude_keywords: 25 non-core function words (sales, marketing, hr, recruiting, AND generic role words WITHOUT domain context)
+- acronym_mappings: 10-15 common acronyms in this domain
+- false_positive_patterns: 20 regex patterns (format: "(?i)pattern")
+- description_required_keywords: 200 unique technical terms (lowercase)
+- All arrays must have unique values (no duplicates)
+- Ensure proper JSON format (no trailing commas, escape special chars)
+
+Return ONLY valid JSON. No markdown, no explanations, no duplicates.
 """
         return prompt
     
@@ -240,6 +308,9 @@ Return ONLY valid JSON with these exact keys. No explanations.
         
         if not api_key:
             raise ValueError("OpenRouter API key not found in config.json!")
+        
+        # Load keyword generation config
+        keygen_config = self.config.get('keyword_generation', {})
         
         headers = {
             "Authorization": f"Bearer {api_key}",
@@ -260,12 +331,12 @@ Return ONLY valid JSON with these exact keys. No explanations.
                     "content": prompt
                 }
             ],
-            "temperature": 0.3,  # Lower temperature for consistent output
-            "max_tokens": 4000
+            "temperature": keygen_config.get('temperature', 0.3),  # Load from config
+            "max_tokens": keygen_config.get('max_tokens', 8000)  # Load from config
         }
         
         print("   Calling DeepSeek API...")
-        response = requests.post(api_url, headers=headers, json=payload)
+        response = requests.post(api_url, headers=headers, json=payload, timeout=keygen_config.get('timeout', 120))
         
         if response.status_code != 200:
             raise Exception(f"API call failed: {response.status_code} - {response.text}")

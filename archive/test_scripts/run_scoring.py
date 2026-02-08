@@ -76,7 +76,7 @@ def main():
     print(f"   📝 Parser fallback: {score_summary.get('parser_scored', 0)}")
     if score_summary.get('failed', 0) > 0:
         print(f"   ❌ Failed: {score_summary.get('failed', 0)}")
-    print(f"📊 Average score: {score_summary.get('average_score', 0):.1f}%")
+    print(f"📊 Average score: {score_summary.get('avg_score', 0):.1f}%")
     
     # Show top matches
     all_jobs = db.get_all_jobs()

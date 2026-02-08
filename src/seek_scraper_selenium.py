@@ -15,6 +15,7 @@ import time
 import random
 import logging
 import pickle
+import json
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 import re
@@ -34,6 +35,12 @@ logger = logging.getLogger(__name__)
 
 def create_seek_driver(headless=True):
     """Create Chrome WebDriver for Seek (similar to LinkedIn)"""
+    # Load config
+    config_path = Path(__file__).parent.parent / 'config.json'
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+    selenium_config = config.get('selenium', {})
+    
     chrome_options = Options()
     
     if headless:
@@ -46,8 +53,9 @@ def create_seek_driver(headless=True):
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     chrome_options.add_experimental_option('useAutomationExtension', False)
     
-    # User agent
-    chrome_options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+    # User agent from config
+    user_agent = selenium_config.get('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+    chrome_options.add_argument(f'user-agent={user_agent}')
     
     driver = webdriver.Chrome(options=chrome_options)
     driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
@@ -197,6 +205,7 @@ def scrape_seek_jobs(url, max_pages=10, search_config=None):
                         job['region'] = search_config.get('region', 'australia')
                     
                     job['source'] = 'seek'
+                    job['_page'] = page  # Track page number for metrics
                     
                     print(f"   ✅ Job {idx}: {job['title']} at {job['company']}")
                     all_jobs.append(job)
@@ -218,13 +227,21 @@ def scrape_seek_jobs(url, max_pages=10, search_config=None):
             
             # Log metrics
             jobs_scraped = len([j for j in all_jobs if j.get('_page') == page])
+            logger.info(f"") 
+            logger.info(f"📊 PAGE {page} METRICS:")
+            logger.info(f"   Cards found: {total_cards}")
+            logger.info(f"   Jobs scraped: {jobs_scraped}")
+            logger.info(f"   Tier 1 filtered: {tier1_filtered}")
+            logger.info(f"   Tier 2 skipped: {tier2_skipped}")
+            logger.info(f"   Tier 3 filtered: {tier3_filtered}")
+            logger.info(f"   Filter rate: {(tier1_filtered+tier2_skipped+tier3_filtered)/total_cards*100 if total_cards > 0 else 0:.1f}%")
             print(f"\n📊 PAGE {page} METRICS:")
-            print(f"   Total cards: {total_cards}")
-            print(f"   Tier 1 filtered: {tier1_filtered} ({tier1_filtered/total_cards*100:.1f}%)")
-            print(f"   Tier 2 skipped: {tier2_skipped} ({tier2_skipped/total_cards*100:.1f}%)")
-            print(f"   Tier 3 filtered: {tier3_filtered} ({tier3_filtered/total_cards*100:.1f}%)")
+            print(f"   Cards found: {total_cards}")
             print(f"   Jobs scraped: {jobs_scraped}")
-            print(f"   Efficiency gain: {(tier1_filtered+tier2_skipped+tier3_filtered)/total_cards*100:.1f}%")
+            print(f"   Tier 1 filtered: {tier1_filtered}")
+            print(f"   Tier 2 skipped: {tier2_skipped}")
+            print(f"   Tier 3 filtered: {tier3_filtered}")
+            print(f"   Filter rate: {(tier1_filtered+tier2_skipped+tier3_filtered)/total_cards*100 if total_cards > 0 else 0:.1f}%")
             
             # Try to go to next page
             if page < max_pages:
@@ -233,6 +250,30 @@ def scrape_seek_jobs(url, max_pages=10, search_config=None):
                     logger.info(f"No more pages after page {page}")
                     break
                 time.sleep(3)
+        
+        # Final comprehensive metrics (like Jora)
+        total_tier1 = sum(1 for j in all_jobs if j.get('_filtered') and j.get('_filter_tier') == 1)
+        total_tier2 = sum(1 for j in all_jobs if j.get('_filtered') and j.get('_filter_tier') == 2)
+        total_tier3 = sum(1 for j in all_jobs if j.get('_filtered') and j.get('_filter_tier') == 3)
+        total_filtered = total_tier1 + total_tier2 + total_tier3
+        total_cards_processed = len(all_jobs) + total_filtered
+        
+        logger.info(f"")
+        logger.info(f"🎯 SEEK FINAL METRICS:")
+        logger.info(f"   Total cards: {total_cards_processed}")
+        logger.info(f"   Jobs scraped: {len(all_jobs)}")
+        logger.info(f"   Tier 1 filtered: {total_tier1} ({total_tier1/total_cards_processed*100 if total_cards_processed > 0 else 0:.1f}%)")
+        logger.info(f"   Tier 2 skipped: {total_tier2} ({total_tier2/total_cards_processed*100 if total_cards_processed > 0 else 0:.1f}%)")
+        logger.info(f"   Tier 3 filtered: {total_tier3} ({total_tier3/total_cards_processed*100 if total_cards_processed > 0 else 0:.1f}%)")
+        logger.info(f"   Overall efficiency: {total_filtered/total_cards_processed*100 if total_cards_processed > 0 else 0:.1f}%")
+        
+        print(f"\n🎯 SEEK FINAL METRICS:")
+        print(f"   Total cards: {total_cards_processed}")
+        print(f"   Jobs scraped: {len(all_jobs)}")
+        print(f"   Tier 1 filtered: {total_tier1} ({total_tier1/total_cards_processed*100 if total_cards_processed > 0 else 0:.1f}%)")
+        print(f"   Tier 2 skipped: {total_tier2} ({total_tier2/total_cards_processed*100 if total_cards_processed > 0 else 0:.1f}%)")
+        print(f"   Tier 3 filtered: {total_tier3} ({total_tier3/total_cards_processed*100 if total_cards_processed > 0 else 0:.1f}%)")
+        print(f"   Overall efficiency: {total_filtered/total_cards_processed*100 if total_cards_processed > 0 else 0:.1f}%")
         
         logger.info(f"Total jobs scraped: {len(all_jobs)}")
         
@@ -269,16 +310,20 @@ def extract_job_from_seek_card(card, driver, optimizer=None):
         
         # TIER 1: Title filtering
         if optimizer:
+            logger.info(f"✅ TIER 1 CHECK: '{title}'")
             should_scrape, reason = optimizer.tier1_should_scrape_title(title)
             if not should_scrape:
+                logger.info(f"❌ TIER 1 FILTERED: '{title}' - {reason}")
                 return {
                     'title': title,
                     '_filtered': True,
                     '_filter_tier': 1,
                     '_filter_reason': reason
                 }
+            logger.info(f"✅ TIER 1 PASSED: '{title}'")
         
         # Company
+        logger.info(f"📌 Extracting company for: '{title}'")
         company = "Unknown"
         company_selectors = [
             "a[data-automation='jobCompany']",
@@ -290,9 +335,11 @@ def extract_job_from_seek_card(card, driver, optimizer=None):
             try:
                 company = card.find_element(By.CSS_SELECTOR, selector).text.strip()
                 if company:
+                    logger.info(f"📌 Company found: '{company}'")
                     break
             except NoSuchElementException:
                 continue
+        logger.info(f"📌 Company result: '{company}'")
         
         # Location
         location = "Australia"
@@ -325,9 +372,12 @@ def extract_job_from_seek_card(card, driver, optimizer=None):
                 continue
         
         # TIER 2: Deduplication
+        logger.info(f"📌 Starting TIER 2 check for: '{title}'")
         if optimizer:
             is_duplicate, reason = optimizer.tier2_is_duplicate(url, title, company, [])
+            logger.info(f"📌 TIER 2 check completed - duplicate: {is_duplicate}")
             if is_duplicate:
+                logger.info(f"❌ TIER 2 FILTERED: '{title}' - {reason}")
                 return {
                     'title': title,
                     'company': company,
@@ -335,11 +385,14 @@ def extract_job_from_seek_card(card, driver, optimizer=None):
                     '_filter_tier': 2,
                     '_filter_reason': reason
                 }
+            logger.info(f"✅ TIER 2 PASSED: '{title}' (unique job)")
         
         # TIER 3: Description quality
         if optimizer and description:
+            logger.info(f"📌 Starting TIER 3 quality check for: '{title}'")
             has_quality, reason = optimizer.tier3_has_quality_description(description)
             if not has_quality:
+                logger.info(f"❌ TIER 3 FILTERED: '{title}' - {reason}")
                 return {
                     'title': title,
                     'company': company,
@@ -347,6 +400,7 @@ def extract_job_from_seek_card(card, driver, optimizer=None):
                     '_filter_tier': 3,
                     '_filter_reason': reason
                 }
+            logger.info(f"✅ TIER 3 PASSED (snippet): '{title}' (desc length: {len(description)})")
                 # Fetch full description by clicking on the job
         full_description = fetch_job_description(card, driver, url)
         if full_description:

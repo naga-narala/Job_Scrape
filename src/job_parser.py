@@ -301,10 +301,20 @@ class JobDescriptionParser:
             reasons.append("Requires Australian PR/Citizenship/Security Clearance")
         
         # Senior level in title or description
-        if self.patterns['senior_level'].search(title) or \
-           (self.patterns['senior_level'].search(desc) and 
-            not re.search(r'\b(junior|graduate|entry)', desc, re.IGNORECASE)):
-            reasons.append("Senior/Lead level position")
+        # Improved: Only match if "senior" is describing the role, not stakeholders/management
+        # Avoid false positives like "senior or junior" by excluding "senior or"
+        senior_in_title = self.patterns['senior_level'].search(title)
+        # Use negative lookahead to exclude "senior or"
+        senior_role_pattern = r'\b(senior|lead|principal|staff|head of)\s+(?!or\b)(developer|engineer|analyst|architect|programmer|consultant|designer)'
+        senior_in_desc = re.search(senior_role_pattern, desc, re.IGNORECASE)
+        
+        if senior_in_title or senior_in_desc:
+            # Double-check it's not about stakeholders or team structure
+            if not re.search(r'\b(junior|graduate|entry)', desc, re.IGNORECASE):
+                if senior_in_title:
+                    reasons.append("Senior/Lead level position (in title)")
+                else:
+                    reasons.append("Senior/Lead level position (in description)")
         
         # 3+ years experience required
         years_match = self.patterns['years_excessive'].search(desc)

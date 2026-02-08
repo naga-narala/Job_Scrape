@@ -1,25 +1,133 @@
 {
+  "_comment_api_keys": "════════════════════════════════════════════════════════════════",
+  "_comment_api_keys_desc": "API Keys & Authentication",
+
   "openrouter_api_key": "your_openrouter_api_key_here",
   "jsearch_api_key": "your_jsearch_api_key_here",
+
+
+  "_comment_email": "════════════════════════════════════════════════════════════════",
+  "_comment_email_desc": "Email & Notifications",
+
   "email_smtp_host": "smtp.gmail.com",
   "email_smtp_port": 587,
   "email_from": "your_email@gmail.com",
   "email_password": "your_app_password_here",
   "email_to": "recipient@email.com",
-  "match_threshold": 30,
-  "check_interval_hours": 24,
+
+
+  "_comment_core": "════════════════════════════════════════════════════════════════",
+  "_comment_core_desc": "Core Workflow Settings",
+
   "timezone": "Australia/Perth",
+  "check_interval_hours": 24,
+  "match_threshold": 30,
+  "hide_jobs_older_than_days": 30,
+  "dashboard_default_days": 7,
+
+
+  "_comment_platforms": "════════════════════════════════════════════════════════════════",
+  "_comment_platforms_desc": "Job Platform Settings (LinkedIn, Seek, Jora)",
+
+  "linkedin_max_pages": 3,
+  "seek_max_pages": 3,
+  "jora_max_pages": 3,
+
+  "seek": {
+    "delay_min": 2,
+    "delay_max": 5
+  },
+
+  "jora": {
+    "cookie_retry_attempts": 3
+  },
+
+
+  "_comment_ai_models": "════════════════════════════════════════════════════════════════",
+  "_comment_ai_models_desc": "AI Models & Scoring Configuration",
+
   "ai_models": {
     "primary": "deepseek/deepseek-chat",
-    "fallbacks": [
-      "anthropic/claude-3.5-haiku"
-    ]
+    "fallbacks": ["anthropic/claude-3.5-haiku"]
   },
+
+  "ai": {
+    "temperature": 0.3,
+    "max_tokens": 500,
+    "rate_limit_retry_delay": 3600,
+    "batch_delay": 0.1,
+    "score_retry_delay": 1
+  },
+
+  "keyword_generation": {
+    "max_tokens": 8000,
+    "temperature": 0.3,
+    "timeout": 120
+  },
+
+
+  "_comment_rescore": "════════════════════════════════════════════════════════════════",
+  "_comment_rescore_desc": "Smart Rescore Settings",
+
   "rescore_threshold_min": 70,
   "rescore_threshold_max": 79,
   "rescore_max_age_days": 7,
-  "notification_threshold": 70,
-  "linkedin_max_pages": 3,
+
+
+  "_comment_optimization": "════════════════════════════════════════════════════════════════",
+  "_comment_optimization_desc": "3-Tier Optimization System",
+
+  "optimization": {
+    "enable_title_filtering": true,
+    "enable_description_filtering": true,
+    "enable_deduplication": true,
+    "optimization_level": "balanced",
+    "dedup_check_days": 90,
+    "description_min_length": 100,
+    "title_must_contain_keywords": true,
+    "fuzzy_match_threshold": 0.85
+  },
+
+
+  "_comment_selenium": "════════════════════════════════════════════════════════════════",
+  "_comment_selenium_desc": "Selenium Browser Automation Settings",
+
+  "selenium": {
+    "window_size": "1920,1080",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "load_timeout": 2,
+    "click_delay": 0.5,
+    "description_fetch_delay": 3,
+    "description_retry_attempts": 3,
+    "retry_delay": 1
+  },
+
+
+  "_comment_workflow": "════════════════════════════════════════════════════════════════",
+  "_comment_workflow_desc": "Workflow Execution Settings",
+
+  "workflow": {
+    "delay_between_phases": 3,
+    "test_mode_max_jobs": 10,
+    "scheduler_check_interval": 60
+  },
+
+
+  "_comment_storage": "════════════════════════════════════════════════════════════════",
+  "_comment_storage_desc": "Database & Dashboard",
+
+  "database": {
+    "path": "data/jobs.db"
+  },
+
+  "dashboard": {
+    "default_port": 8000
+  },
+
+
+  "_comment_legacy": "════════════════════════════════════════════════════════════════",
+  "_comment_legacy_desc": "Legacy LinkedIn Settings (for reference)",
+
   "linkedin": {
     "enabled": true,
     "geoId_australia": "101452733",

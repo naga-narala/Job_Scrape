@@ -2,6 +2,7 @@ import logging
 import time
 import pickle
 import random
+import json
 from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -25,7 +26,16 @@ COOKIES_FILE = Path(__file__).parent.parent / 'data' / 'linkedin_cookies.pkl'
 COOKIES_FILE.parent.mkdir(parents=True, exist_ok=True)
 
 
+def _load_config():
+    """Load configuration from config.json"""
+    config_path = Path(__file__).parent.parent / 'config.json'
+    with open(config_path, 'r') as f:
+        return json.load(f)
+
+
 def create_driver(headless=True, use_profile=False):
+    config = _load_config()
+    selenium_config = config.get('selenium', {})
     chrome_options = Options()
     
     # Option to use a separate Chrome profile for persistent login
@@ -44,8 +54,8 @@ def create_driver(headless=True, use_profile=False):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--window-size=1920,1080')
-    chrome_options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36')
+    chrome_options.add_argument(f'--window-size={selenium_config.get("window_size", "1920,1080")}')
+    chrome_options.add_argument(f'user-agent={selenium_config.get("user_agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36")}')
     
     # Fix for webdriver-manager extraction issue on Mac ARM64
     import os
@@ -79,13 +89,15 @@ def save_cookies(driver):
 
 
 def load_cookies(driver):
+    config = _load_config()
+    selenium_config = config.get('selenium', {})
     try:
         if not COOKIES_FILE.exists():
             return False
         with open(COOKIES_FILE, 'rb') as f:
             cookies = pickle.load(f)
         driver.get("https://www.linkedin.com")
-        time.sleep(2)
+        time.sleep(selenium_config.get('load_timeout', 2))
         for cookie in cookies:
             try:
                 driver.add_cookie(cookie)
@@ -99,9 +111,11 @@ def load_cookies(driver):
 
 
 def is_logged_in(driver):
+    config = _load_config()
+    selenium_config = config.get('selenium', {})
     try:
         current_url = driver.current_url
-        time.sleep(2)
+        time.sleep(selenium_config.get('load_timeout', 2))
         
         # Check if we're on login/authwall page
         if '/login' in current_url or '/authwall' in current_url or '/uas/login' in current_url:
@@ -131,7 +145,9 @@ def manual_login_helper():
         
         # Navigate to feed to check login
         driver.get("https://www.linkedin.com/feed")
-        time.sleep(3)
+        config = _load_config()
+        selenium_config = config.get('selenium', {})
+        time.sleep(selenium_config.get('description_fetch_delay', 3))
         
         if is_logged_in(driver):
             save_cookies(driver)
@@ -264,9 +280,11 @@ def extract_job_from_card(card, search_config, driver, optimizer=None):
                 pass
         
         # Click the job card to load details in the side panel
+        config = _load_config()
+        selenium_config = config.get('selenium', {})
         try:
             driver.execute_script("arguments[0].scrollIntoView(true);", card)
-            time.sleep(0.5)
+            time.sleep(selenium_config.get('click_delay', 0.5))
             
             # Try clicking with JavaScript if regular click fails
             try:
@@ -275,7 +293,9 @@ def extract_job_from_card(card, search_config, driver, optimizer=None):
                 driver.execute_script("arguments[0].click();", card)
             
             # Wait longer for details panel to load
-            time.sleep(random.uniform(2, 3))
+            min_delay = selenium_config.get('load_timeout', 2)
+            max_delay = selenium_config.get('description_fetch_delay', 3)
+            time.sleep(random.uniform(min_delay, max_delay))
             
             # Extra wait for description to load (LinkedIn lazy loads this)
             try:
@@ -284,7 +304,7 @@ def extract_job_from_card(card, search_config, driver, optimizer=None):
                 )
             except:
                 logger.debug("Description element took longer to load")
-                time.sleep(2)  # Extra fallback wait
+                time.sleep(selenium_config.get('load_timeout', 2))  # Extra fallback wait
             
             # Extract full job details from the details panel
             description = ""
@@ -301,25 +321,27 @@ def extract_job_from_card(card, search_config, driver, optimizer=None):
                 
                 # Get full description - try multiple times if needed
                 desc_element = None
-                for attempt in range(3):
+                logger.info(f"📌 Fetching full description for: '{title}'")
+                max_attempts = selenium_config.get('description_retry_attempts', 3)
+                for attempt in range(max_attempts):
                     try:
                         desc_element = driver.find_element(By.CSS_SELECTOR, "div.jobs-description-content__text, div.jobs-box__html-content, div.jobs-description__content")
                         if desc_element and desc_element.text.strip():
-                            logger.info(f"✓ Found description on attempt {attempt + 1}: {len(desc_element.text.strip())} chars")
+                            logger.info(f"✅ Found description on attempt {attempt + 1}: {len(desc_element.text.strip())} chars")
                             break
                         else:
-                            logger.warning(f"Description element found but empty on attempt {attempt + 1}")
-                        time.sleep(1)  # Wait and retry
+                            logger.warning(f"⚠️ Description element found but empty on attempt {attempt + 1}")
+                        time.sleep(selenium_config.get('retry_delay', 1))  # Wait and retry
                     except Exception as e:
-                        logger.warning(f"Description not found on attempt {attempt + 1}: {e}")
-                        if attempt < 2:
-                            time.sleep(1)
+                        logger.warning(f"⚠️ Description not found on attempt {attempt + 1}: {e}")
+                        if attempt < max_attempts - 1:
+                            time.sleep(selenium_config.get('retry_delay', 1))
                         continue
                 
                 if desc_element:
                     try:
                         full_text = desc_element.text.strip()
-                        logger.info(f"Description extracted: {len(full_text)} chars")
+                        logger.info(f"✅ Description extracted: {len(full_text)} chars")
                         
                         # Try to separate requirements section
                         # LinkedIn often has "Requirements added by the job poster" or similar headings
@@ -555,7 +577,7 @@ def fetch_jobs_from_url(url, search_config, driver, max_pages=None):
                 )
                 logger.info("Job results list loaded")
             except:
-                logger.error("Job results list did not load")
+                logger.warning("Job results list did not load with expected selector - trying fallback methods")
             
             # Scroll aggressively to trigger lazy loading
             logger.info("Scrolling to load job cards...")
@@ -625,19 +647,29 @@ def fetch_jobs_from_url(url, search_config, driver, max_pages=None):
                 break
             
             page_jobs = []
-            filtered_tier1 = 0
+            page_tier1_filtered = 0
+            page_tier2_skipped = 0
+            page_tier3_filtered = 0
+            
             for card in job_cards:
                 job = extract_job_from_card(card, search_config, driver, optimizer)
                 if job:
-                    # Check if filtered by Tier 1
+                    # Check if filtered by any tier
                     if job.get('filtered') == 'tier1':
-                        filtered_tier1 += 1
+                        page_tier1_filtered += 1
                         continue
+                    elif job.get('filtered') == 'tier2':
+                        page_tier2_skipped += 1
+                        continue
+                    elif job.get('filtered') == 'tier3':
+                        page_tier3_filtered += 1
+                        continue
+                    
                     print(f"   📋 Found job: {job['title']} at {job['company']}")
                     page_jobs.append(job)
                 time.sleep(random.uniform(0.3, 0.6))
             
-            logger.info(f"Page {page_num + 1}: Extracted {len(page_jobs)} jobs (Tier 1 filtered: {filtered_tier1})")
+            logger.info(f"Page {page_num + 1}: Extracted {len(page_jobs)} jobs | Filtered: T1={page_tier1_filtered} T2={page_tier2_skipped} T3={page_tier3_filtered}")
             all_jobs.extend(page_jobs)
             
             # Only stop if we got ZERO jobs (instead of < 5)
@@ -660,17 +692,34 @@ def fetch_jobs_from_url(url, search_config, driver, max_pages=None):
             # Continue to next page on error
             continue
     
-    # Print optimization metrics
+    # Print optimization metrics (Jora-style) - Set final count first
     if optimizer:
+        # CRITICAL: Set the final jobs_scraped count
+        optimizer.metrics['jobs_scraped'] = len(all_jobs)
+        
         metrics = optimizer.get_metrics_summary()
-        logger.info(f"\n3-TIER OPTIMIZATION METRICS:")
-        logger.info(f"  Total cards seen: {metrics['total_cards_seen']}")
-        logger.info(f"  Tier 1 (Title): {metrics['tier1_title_filtered']} filtered ({metrics['tier1_filter_rate']})")
-        logger.info(f"  Tier 2 (Dedup): {metrics['tier2_duplicates_skipped']} skipped ({metrics['tier2_dedup_rate']})")
-        logger.info(f"  Tier 3 (Quality): {metrics['tier3_quality_filtered']} filtered ({metrics['tier3_quality_rate']})")
-        logger.info(f"  Jobs scraped: {metrics['jobs_scraped']}")
-        logger.info(f"  Total filtered: {metrics['total_filtered']}")
-        logger.info(f"  Efficiency gain: {metrics['efficiency_gain']}")
+        total = metrics['total_cards_seen']
+        t1 = metrics['tier1_title_filtered']
+        t2 = metrics['tier2_duplicates_skipped']
+        t3 = metrics['tier3_quality_filtered']
+        final = metrics['jobs_scraped']
+        
+        logger.info(f"")
+        logger.info(f"🎯 LINKEDIN FINAL METRICS:")
+        logger.info(f"   Total cards seen: {total}")
+        logger.info(f"   Tier 1 (Title filter): {t1} filtered ({t1/total*100:.1f}%)")
+        logger.info(f"   Tier 2 (Deduplication): {t2} skipped ({t2/total*100:.1f}%)")
+        logger.info(f"   Tier 3 (Quality filter): {t3} filtered ({t3/total*100:.1f}%)")
+        logger.info(f"   ✓ Jobs scraped: {final} ({final/total*100:.1f}%)")
+        logger.info(f"   Total filtered: {metrics['total_filtered']} ({metrics['efficiency_gain']})")
+        
+        print(f"\n🎯 LINKEDIN FINAL METRICS:")
+        print(f"   Total cards seen: {total}")
+        print(f"   Tier 1 (Title filter): {t1} filtered ({t1/total*100:.1f}%)")
+        print(f"   Tier 2 (Deduplication): {t2} skipped ({t2/total*100:.1f}%)")
+        print(f"   Tier 3 (Quality filter): {t3} filtered ({t3/total*100:.1f}%)")
+        print(f"   ✓ Jobs scraped: {final} ({final/total*100:.1f}%)")
+        print(f"   Total filtered: {metrics['total_filtered']} ({metrics['efficiency_gain']})")
     
     logger.info(f"Total extracted: {len(all_jobs)} jobs across {page_num + 1} page(s)")
     return all_jobs

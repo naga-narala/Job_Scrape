@@ -6,6 +6,11 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+# Load config
+config_path = Path(__file__).parent.parent / 'config.json'
+with open(config_path, 'r') as f:
+    _SCORER_CONFIG = json.load(f)
+
 # Import job parser for hard filtering
 try:
     from job_parser import JobDescriptionParser
@@ -233,11 +238,15 @@ def build_prompt(job, profile_content):
     )
 
 
-def call_openrouter(model, prompt, api_key, max_tokens=500):
+def call_openrouter(model, prompt, api_key, max_tokens=None):
     """
     Call OpenRouter API with specified model
     Returns: response content dict
     """
+    ai_config = _SCORER_CONFIG.get('ai', {})
+    if max_tokens is None:
+        max_tokens = ai_config.get('max_tokens', 500)
+    
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
@@ -255,7 +264,7 @@ def call_openrouter(model, prompt, api_key, max_tokens=500):
         ],
         "response_format": {"type": "json_object"},
         "max_tokens": max_tokens,
-        "temperature": 0.3  # Lower temperature for more consistent scoring
+        "temperature": ai_config.get('temperature', 0.3)  # Load from config
     }
     
     try:
@@ -384,6 +393,7 @@ def score_job_with_fallback(job, profile_content, models_config, api_key):
     Returns: {score: int, reasoning: str, model_used: str}
     """
     model_chain = [models_config['primary']] + models_config['fallbacks']
+    failed_models = []  # Track which models failed and why
     
     for model in model_chain:
         try:
@@ -399,9 +409,11 @@ def score_job_with_fallback(job, profile_content, models_config, api_key):
             return result
             
         except RateLimitError as e:
-            logger.warning(f"Rate limit hit for {model}, waiting 1 hour...")
-            # Pause for 1 hour then retry same model
-            time.sleep(3600)
+            ai_config = _SCORER_CONFIG.get('ai', {})
+            retry_delay = ai_config.get('rate_limit_retry_delay', 3600)
+            logger.warning(f"Rate limit hit for {model}, waiting {retry_delay}s...")
+            # Pause then retry same model
+            time.sleep(retry_delay)
             
             # Retry this model after waiting
             try:
@@ -416,19 +428,24 @@ def score_job_with_fallback(job, profile_content, models_config, api_key):
                 continue
                 
         except ModelUnavailableError as e:
+            failed_models.append((model, f"Unavailable: {e}"))
             logger.warning(f"Model {model} unavailable, trying fallback: {e}")
             continue
             
         except ScoringError as e:
+            failed_models.append((model, f"Error: {e}"))
             logger.error(f"Scoring error with {model}: {e}")
             continue
             
         except Exception as e:
+            failed_models.append((model, f"Exception: {e}"))
             logger.error(f"Unexpected error with {model}: {e}")
             continue
     
-    # All models failed
-    raise ScoringError("All AI models failed to score job")
+    # All models failed - provide detailed summary
+    failure_summary = "\n".join([f"  - {m}: {reason}" for m, reason in failed_models])
+    logger.error(f"❌ ALL AI MODELS FAILED ({len(failed_models)} models tried):\n{failure_summary}")
+    raise ScoringError(f"All {len(failed_models)} AI models failed to score job")
 
 
 def score_batch(jobs, profile_content, models_config, api_key):
@@ -473,13 +490,38 @@ def score_batch(jobs, profile_content, models_config, api_key):
                 
                 # If dealbreakers found, force score to 15-25 and skip AI scoring
                 if parsed['dealbreakers']['has_dealbreakers']:
-                    logger.warning(f"❌ REJECTED by parser: {job.get('title', 'Unknown')}")
-                    logger.warning(f"   Reasons: {', '.join(parsed['dealbreakers']['reasons'])}")
-                    
-                    # Add extra context if dealbreaker found in requirements section
                     reasons = parsed['dealbreakers']['reasons']
-                    if requirement_text and any(req_word in requirement_text.lower() for req_word in ['year', 'experience', 'senior', 'citizenship', 'pr required']):
-                        reasons.append("Hidden in requirements section")
+                    
+                    # Extract evidence snippets to show what triggered rejection
+                    evidence = []
+                    full_text_lower = full_text.lower()
+                    
+                    for reason in reasons:
+                        if 'Senior' in reason or 'Lead' in reason:
+                            # Find the actual text mentioning senior/lead
+                            import re
+                            senior_match = re.search(r'\b(senior|lead|principal|staff|architect)\s+\w+', full_text_lower)
+                            if senior_match:
+                                evidence.append(f"Found: '{senior_match.group(0)}' in description")
+                        elif 'years' in reason:
+                            # Find the years requirement
+                            years_match = re.search(r'(\d+)\+?\s*years?', full_text_lower)
+                            if years_match:
+                                evidence.append(f"Found: '{years_match.group(0)}' requirement")
+                        elif 'PR' in reason or 'Citizenship' in reason:
+                            # Find citizenship/PR mention
+                            pr_match = re.search(r'(australian\s+citizen|pr\s+required|security\s+clearance)', full_text_lower)
+                            if pr_match:
+                                evidence.append(f"Found: '{pr_match.group(0)}'")
+                    
+                    logger.warning(f"❌ PARSER REJECTION: {job.get('title', 'Unknown')} at {job.get('company', 'Unknown')}")
+                    logger.warning(f"   Dealbreakers: {', '.join(reasons)}")
+                    if evidence:
+                        logger.warning(f"   Evidence: {' | '.join(evidence)}")
+                    
+                    # Add evidence to reasons for database storage
+                    if evidence:
+                        reasons.append(f"Evidence: {'; '.join(evidence)}")
                     
                     scores.append({
                         'job_id': job.get('id'),
@@ -494,7 +536,8 @@ def score_batch(jobs, profile_content, models_config, api_key):
                     rejected_by_parser += 1
                     scored += 1
                     total_score += 20
-                    time.sleep(0.1)  # Minimal delay
+                    ai_config = _SCORER_CONFIG.get('ai', {})
+                    time.sleep(ai_config.get('batch_delay', 0.1))  # Minimal delay
                     continue
             
             # Job passed parser check - proceed with AI scoring
@@ -534,7 +577,8 @@ def score_batch(jobs, profile_content, models_config, api_key):
             total_score += final_score
             
             # Rate limiting between jobs
-            time.sleep(1)
+            ai_config = _SCORER_CONFIG.get('ai', {})
+            time.sleep(ai_config.get('score_retry_delay', 1))
             
         except ScoringError as e:
             logger.error(f"Failed to score job {job.get('title', 'Unknown')}: {e}")
@@ -547,16 +591,26 @@ def score_batch(jobs, profile_content, models_config, api_key):
     
     avg_score = round(total_score / scored, 1) if scored > 0 else 0
     
+    # Check if primary model was never used successfully
+    models_config = _SCORER_CONFIG.get('ai', {}).get('models', {})
+    primary_model = models_config.get('primary', 'unknown')
+    models_used = set(s.get('model_used', '') for s in scores if s.get('model_used'))
+    
+    if primary_model and primary_model not in models_used and scored > 0:
+        logger.warning(f"⚠️  PRIMARY MODEL NEVER SUCCEEDED: '{primary_model}' failed for all jobs. Used fallbacks: {', '.join(models_used)}")
+    
     summary = {
-        'scored': scored,
+        'processed': scored,  # Total jobs processed (includes AI scored + parser rejected)
+        'ai_scored': scored - rejected_by_parser,  # Jobs that got numeric scores from AI
+        'parser_rejected': rejected_by_parser,  # Jobs rejected before AI scoring
         'failed': failed,
         'avg_score': avg_score,
         'scores': scores
     }
     
     if parser:
-        logger.info(f"Batch scoring complete: {scored} scored, {failed} failed, {rejected_by_parser} rejected by parser, avg: {avg_score}%")
+        logger.info(f"Batch scoring complete: {scored - rejected_by_parser} AI scored, {rejected_by_parser} parser rejected, {failed} failed, avg: {avg_score}%")
     else:
-        logger.info(f"Batch scoring complete: {scored} scored, {failed} failed, avg: {avg_score}%")
+        logger.info(f"Batch scoring complete: {scored} AI scored, {failed} failed, avg: {avg_score}%")
     
     return summary

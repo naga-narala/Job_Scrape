@@ -17,6 +17,7 @@ import time
 import random
 import logging
 import pickle
+import json
 from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -47,6 +48,12 @@ def create_jora_driver(headless=True):
         Selenium WebDriver instance
     """
     try:
+        # Load config
+        config_path = Path(__file__).parent.parent / 'config.json'
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        selenium_config = config.get('selenium', {})
+        
         chrome_options = Options()
         
         if headless:
@@ -59,8 +66,9 @@ def create_jora_driver(headless=True):
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         chrome_options.add_experimental_option('useAutomationExtension', False)
         
-        # User agent
-        chrome_options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+        # User agent from config
+        user_agent = selenium_config.get('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+        chrome_options.add_argument(f'--user-agent={user_agent}')
         
         # Install ChromeDriver
         service = Service(ChromeDriverManager().install())
@@ -263,30 +271,40 @@ def scrape_jora_jobs(url, max_pages=10, search_config=None):
         total_filtered = tier1_filtered + tier2_skipped + tier3_filtered
         overall_efficiency = (total_filtered / total_cards * 100) if total_cards > 0 else 0
         
+        # Set optimizer metrics before final display
+        if optimizer:
+            optimizer.metrics['jobs_scraped'] = len(all_jobs)
+        
         print(f"\n{'='*70}")
         print(f"🎯 JORA SCRAPING COMPLETE")
         print(f"{'='*70}")
         print(f"Total job cards seen: {total_cards}")
-        print(f"Jobs scraped: {len(all_jobs)}")
         if total_cards > 0:
-            print(f"Tier 1 filtered: {tier1_filtered} ({tier1_filtered/total_cards*100:.1f}%)")
-            print(f"Tier 2 skipped: {tier2_skipped} ({tier2_skipped/total_cards*100:.1f}%)")
-            print(f"Tier 3 filtered: {tier3_filtered} ({tier3_filtered/total_cards*100:.1f}%)")
+            print(f"Tier 1 (Title filter): {tier1_filtered} filtered ({tier1_filtered/total_cards*100:.1f}%)")
+            print(f"Tier 2 (Deduplication): {tier2_skipped} skipped ({tier2_skipped/total_cards*100:.1f}%)")
+            print(f"Tier 3 (Quality filter): {tier3_filtered} filtered ({tier3_filtered/total_cards*100:.1f}%)")
+            print(f"✓ Jobs scraped: {len(all_jobs)} ({len(all_jobs)/total_cards*100:.1f}%)")
             print(f"Overall efficiency: {overall_efficiency:.1f}%")
         else:
             print(f"Tier 1 filtered: {tier1_filtered}")
             print(f"Tier 2 skipped: {tier2_skipped}")
             print(f"Tier 3 filtered: {tier3_filtered}")
+            print(f"✓ Jobs scraped: {len(all_jobs)}")
         print(f"{'='*70}\n")
         
         logger.info(f"""
-🎯 JORA FINAL METRICS:
-   Total cards: {total_cards}
-   Jobs scraped: {len(all_jobs)}
-   Tier 1 filtered: {tier1_filtered} ({tier1_filtered/total_cards*100:.1f}%)
-   Tier 2 skipped: {tier2_skipped} ({tier2_skipped/total_cards*100:.1f}%)
-   Tier 3 filtered: {tier3_filtered} ({tier3_filtered/total_cards*100:.1f}%)
-   Overall efficiency: {overall_efficiency:.1f}%""")
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                         JORA FINAL SCRAPING METRICS                          ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+  
+  Total cards seen: {total_cards}
+  Tier 1 (Title filter): {tier1_filtered} filtered ({tier1_filtered/total_cards*100 if total_cards > 0 else 0:.1f}%)
+  Tier 2 (Deduplication): {tier2_skipped} skipped ({tier2_skipped/total_cards*100 if total_cards > 0 else 0:.1f}%)
+  Tier 3 (Quality filter): {tier3_filtered} filtered ({tier3_filtered/total_cards*100 if total_cards > 0 else 0:.1f}%)
+  ✓ Jobs scraped: {len(all_jobs)} ({len(all_jobs)/total_cards*100 if total_cards > 0 else 0:.1f}%)
+  
+  Total filtered: {total_filtered} ({overall_efficiency:.1f}%)
+""")
         
     except Exception as e:
         logger.error(f"❌ Error during Jora scraping: {e}")
