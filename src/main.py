@@ -33,16 +33,29 @@ except ImportError:
     KEYWORD_GEN_AVAILABLE = False
 
 try:
-    from seek_scraper import SeekScraper
+    from seek_scraper_selenium import scrape_seek_jobs
     SEEK_AVAILABLE = True
+    SEEK_SELENIUM = True
 except ImportError:
-    SEEK_AVAILABLE = False
+    try:
+        from seek_scraper import SeekScraper
+        SEEK_AVAILABLE = True
+        SEEK_SELENIUM = False
+    except ImportError:
+        SEEK_AVAILABLE = False
+        SEEK_SELENIUM = False
 
 try:
-    from jora_scraper import JoraScraper
+    from jora_scraper import scrape_jora_jobs
     JORA_AVAILABLE = True
 except ImportError:
     JORA_AVAILABLE = False
+
+try:
+    from scraping_stats import log_scraping_run, init_scraping_stats_table
+    STATS_AVAILABLE = True
+except ImportError:
+    STATS_AVAILABLE = False
 
 # Setup logging
 LOG_DIR = Path(__file__).parent.parent / 'data' / 'logs'
@@ -195,14 +208,17 @@ def run_daily_job():
         linkedin_searches = [s for s in enabled if s.get('source') == 'linkedin']
         seek_searches = [s for s in enabled if s.get('source') == 'seek']
         jora_searches = [s for s in enabled if s.get('source') == 'jora']
-        max_pages = config.get('linkedin_max_pages', 3)
+        
+        # Get max pages for each platform
+        linkedin_max_pages = config.get('linkedin_max_pages', 3)
+        seek_max_pages = config.get('seek_max_pages', 3)
+        jora_max_pages = config.get('jora_max_pages', 3)
         
         print(f"\n📋 CONFIGURATION:")
         print(f"   Total searches: {len(enabled)}")
-        print(f"   📘 LinkedIn: {len(linkedin_searches)}")
-        print(f"   🟣 Seek: {len(seek_searches)}")
-        print(f"   🔵 Jora: {len(jora_searches)}")
-        print(f"   Pages per search: {max_pages}")
+        print(f"   📘 LinkedIn: {len(linkedin_searches)} (max {linkedin_max_pages} pages)")
+        print(f"   🟣 Seek: {len(seek_searches)} (max {seek_max_pages} pages)")
+        print(f"   🔵 Jora: {len(jora_searches)} (max {jora_max_pages} pages)")
         print(f"   Expected jobs: ~{len(enabled) * 20}")
         print(f"   Estimated time: ~{len(enabled) * 1.5:.0f} minutes")
         print(f"\nStarting in 3 seconds...")
@@ -227,36 +243,42 @@ def run_daily_job():
         all_jobs = []
         source_stats = {'linkedin': 0, 'seek': 0, 'jora': 0}
         
-        # Fetch from LinkedIn (existing scraper)
-        if linkedin_searches:
-            logger.info(f"Fetching from LinkedIn: {len(linkedin_searches)} searches")
-            linkedin_jobs, strategy_stats = scraper.fetch_all_jobs(
-                linkedin_searches,
-                config.get('jsearch_api_key'),
-                max_pages=max_pages
-            )
-            for job in linkedin_jobs:
-                job['source'] = 'linkedin'  # Ensure source is set
-            all_jobs.extend(linkedin_jobs)
-            source_stats['linkedin'] = len(linkedin_jobs)
-            logger.info(f"LinkedIn: {len(linkedin_jobs)} jobs, Strategy: {strategy_stats}")
-        
-        # Fetch from Seek (with pagination: 3 pages per search)
+        # Fetch from Seek FIRST (with Selenium scraper, 10 pages per search)
         if seek_searches and SEEK_AVAILABLE:
             logger.info(f"Fetching from Seek: {len(seek_searches)} searches")
-            seek_scraper = SeekScraper()
             seek_jobs_count = 0
             for search in seek_searches:
                 try:
-                    jobs = seek_scraper.search_jobs(
-                        search['keyword'],
-                        search['location'],
-                        max_pages=3  # Scrape 3 pages per search
-                    )
-                    for job in jobs:
-                        job['source_search_id'] = search['id']
-                        all_jobs.append(job)
-                    seek_jobs_count += len(jobs)
+                    if SEEK_SELENIUM:
+                        # Use Selenium version (like LinkedIn)
+                        jobs = scrape_seek_jobs(
+                            search['url'],
+                            max_pages=seek_max_pages,
+                            search_config=search
+                        )
+                        for job in jobs:
+                            job['source_search_id'] = search['id']
+                            all_jobs.append(job)
+                        seek_jobs_count += len(jobs)
+                    else:
+                        # Fallback to HTTP version
+                        seek_scraper = SeekScraper()
+                        jobs, stats = seek_scraper.scrape_jobs_from_url(
+                            search['url'],
+                            max_pages=seek_max_pages
+                        )
+                        for job in jobs:
+                            job['source_search_id'] = search['id']
+                            all_jobs.append(job)
+                        seek_jobs_count += len(jobs)
+                        
+                        # Log scraping stats
+                        if STATS_AVAILABLE:
+                            log_scraping_run(
+                                platform='seek',
+                                search_name=f"{search['keyword']} - {search['location']}",
+                                stats_data=stats
+                            )
                 except Exception as e:
                     logger.error(f"Seek search error: {e}")
             source_stats['seek'] = seek_jobs_count
@@ -264,17 +286,16 @@ def run_daily_job():
         elif seek_searches:
             logger.warning("Seek searches configured but SeekScraper not available")
         
-        # Fetch from Jora (with max_results=100)
+        # Fetch from Jora SECOND (with configured max_pages)
         if jora_searches and JORA_AVAILABLE:
             logger.info(f"Fetching from Jora: {len(jora_searches)} searches")
-            jora_scraper = JoraScraper()
             jora_jobs_count = 0
             for search in jora_searches:
                 try:
-                    jobs = jora_scraper.search_jobs(
-                        search['keyword'],
-                        search['location'],
-                        max_results=100  # Increased from default 50
+                    jobs = scrape_jora_jobs(
+                        search['url'],
+                        max_pages=jora_max_pages,
+                        search_config=search
                     )
                     for job in jobs:
                         job['source_search_id'] = search['id']
@@ -285,7 +306,21 @@ def run_daily_job():
             source_stats['jora'] = jora_jobs_count
             logger.info(f"Jora: {jora_jobs_count} jobs")
         elif jora_searches:
-            logger.warning("Jora searches configured but JoraScraper not available")
+            logger.warning("Jora searches configured but scrape_jora_jobs not available")
+        
+        # Fetch from LinkedIn LAST (existing scraper)
+        if linkedin_searches:
+            logger.info(f"Fetching from LinkedIn: {len(linkedin_searches)} searches")
+            linkedin_jobs, strategy_stats = scraper.fetch_all_jobs(
+                linkedin_searches,
+                config.get('jsearch_api_key'),
+                max_pages=linkedin_max_pages
+            )
+            for job in linkedin_jobs:
+                job['source'] = 'linkedin'  # Ensure source is set
+            all_jobs.extend(linkedin_jobs)
+            source_stats['linkedin'] = len(linkedin_jobs)
+            logger.info(f"LinkedIn: {len(linkedin_jobs)} jobs, Strategy: {strategy_stats}")
         
         print(f"\n{'=' * 70}")
         print(f"✅ SCRAPING COMPLETE")
@@ -323,9 +358,9 @@ def run_daily_job():
         for job in all_jobs:
             job_title = job.get('title', '')
             job_desc = job.get('description', '')
-            job_hash = db.generate_job_hash(
-                url = job.get('url', '')
+            job_url = job.get('url', '')
             job_company = job.get('company', '')
+            job_hash = db.generate_job_hash(job_title, job_company, job_url)
             
             # TIER 2: Deduplication check (check database first - cheapest operation)
             if opt_manager:
@@ -345,7 +380,8 @@ def run_daily_job():
                 has_quality, quality_reason = opt_manager.tier3_has_quality_description(job_desc)
                 if not has_quality:
                     tier3_filtered += 1
-                    logger.debug(f"Tier 3 (Quality) filtered: {job_title} - {quality
+                    logger.debug(f"Tier 3 (Quality) filtered: {job_title} - {quality_reason}")
+                    continue
             
             # Passed all filters - insert into database
             job_id = db.insert_job(job)

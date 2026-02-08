@@ -153,27 +153,45 @@ class SeekScraper:
             max_pages: Maximum pages to scrape (default: 3)
         
         Returns:
-            List of job dictionaries with keys:
-            - title: Job title
-            - company: Company name  
-            - location: Job location
-            - description: Job description/snippet
-            - url: Full job URL
-            - posted_date: Posted date (if available)
-            - employment_type: Full-time, Part-time, etc.
-            - source: "seek"
+            Tuple of (jobs_list, stats_dict):
+            - jobs_list: List of job dictionaries
+            - stats_dict: Scraping statistics including tier filtering metrics
         """
         all_jobs = []
         
+        # Initialize cumulative stats
+        cumulative_stats = {
+            'pages_scraped': 0,
+            'total_cards_seen': 0,
+            'tier1_filtered': 0,
+            'tier2_skipped': 0,
+            'tier3_filtered': 0,
+            'jobs_collected': 0,
+            'page_details': []
+        }
+        
         # Scrape multiple pages
         for page in range(1, max_pages + 1):
-            jobs = self._search_single_page(keyword, location, time_filter, page)
+            jobs, page_stats = self._search_single_page(keyword, location, time_filter, page)
             
             if not jobs:
                 self.logger.info(f"No jobs scraped from page {page} (all filtered), continuing to next page")
                 # Don't break - continue to check other pages for potential jobs
             
             all_jobs.extend(jobs)
+            
+            # Accumulate stats
+            cumulative_stats['pages_scraped'] = page
+            cumulative_stats['total_cards_seen'] += page_stats['total_cards']
+            cumulative_stats['tier1_filtered'] += page_stats['tier1_filtered']
+            cumulative_stats['tier2_skipped'] += page_stats['tier2_skipped']
+            cumulative_stats['tier3_filtered'] += page_stats['tier3_filtered']
+            cumulative_stats['jobs_collected'] = len(all_jobs)
+            cumulative_stats['page_details'].append({
+                'page': page,
+                'cards': page_stats['total_cards'],
+                'jobs': len(jobs)
+            })
             
             # If we got less than 20 jobs, likely the last page
             if len(jobs) < 20:
@@ -185,7 +203,7 @@ class SeekScraper:
                 self._delay()
         
         self.logger.info(f"Total jobs scraped across {page} pages: {len(all_jobs)}")
-        return all_jobs
+        return all_jobs, cumulative_stats
     
     def _search_single_page(self, keyword, location="Perth", time_filter="1", page=1):
         """
@@ -198,9 +216,19 @@ class SeekScraper:
             page: Page number
         
         Returns:
-            List of jobs from this page
+            Tuple of (jobs_list, page_stats):
+            - jobs_list: List of jobs from this page
+            - page_stats: Dict with tier filtering metrics for this page
         """
         jobs = []
+        
+        # Initialize page stats
+        page_stats = {
+            'total_cards': 0,
+            'tier1_filtered': 0,
+            'tier2_skipped': 0,
+            'tier3_filtered': 0
+        }
         
         # Format keyword and location
         keyword_formatted = self._format_url_part(keyword)
@@ -235,6 +263,7 @@ class SeekScraper:
             
             # 3-Tier Optimization Metrics
             total_cards = len(job_cards)
+            page_stats['total_cards'] = total_cards
             tier1_filtered = 0
             tier2_skipped = 0
             tier3_filtered = 0
@@ -293,6 +322,11 @@ class SeekScraper:
                     self.logger.error(f"Error parsing job card: {e}")
                     continue
             
+            # Update page stats
+            page_stats['tier1_filtered'] = tier1_filtered
+            page_stats['tier2_skipped'] = tier2_skipped
+            page_stats['tier3_filtered'] = tier3_filtered
+            
             # Log detailed filtering analysis
             if self.optimizer and filtered_jobs:
                 print(f"\n📋 DETAILED FILTERING ANALYSIS (Page {page}):")
@@ -303,7 +337,7 @@ class SeekScraper:
                 print()
             
             # Log optimization metrics
-            if self.optimizer:
+            if self.optimizer and total_cards > 0:
                 self.logger.info(f"""
 3-TIER OPTIMIZATION METRICS (SEEK - Page {page}):
   Total cards seen: {total_cards}
@@ -313,6 +347,8 @@ class SeekScraper:
   Jobs scraped: {len(jobs)}
   Total filtered: {tier1_filtered + tier2_skipped + tier3_filtered}
   Efficiency gain: {(tier1_filtered + tier2_skipped + tier3_filtered)/total_cards*100:.1f}%""")
+            elif total_cards == 0:
+                self.logger.warning(f"No job cards found on page {page} - check URL or search term")
             
             # Delay before next request
             self._delay()
@@ -320,7 +356,7 @@ class SeekScraper:
         except Exception as e:
             self.logger.error(f"Error searching Seek for '{keyword}': {e}")
         
-        return jobs
+        return jobs, page_stats
     
     def _parse_job_card(self, card):
         """
@@ -392,49 +428,142 @@ class SeekScraper:
             self.logger.error(f"Error parsing job card: {e}")
             return None
     
-    def scrape_jobs_from_url(self, url, max_jobs=20):
+    def scrape_jobs_from_url(self, url, max_pages=3):
         """
-        Scrape jobs from a Seek URL
+        Scrape jobs from a Seek URL with pagination
         
         Args:
-            url: Full Seek search URL
-            max_jobs: Maximum number of jobs to scrape
+            url: Full Seek search URL (e.g., https://www.seek.com.au/ai-jobs/in-All-Australia?daterange=7)
+            max_pages: Maximum number of pages to scrape (default: 3)
         
         Returns:
-            List of job dictionaries
+            Tuple of (jobs_list, stats_dict):
+            - jobs_list: List of job dictionaries
+            - stats_dict: Scraping statistics including tier filtering metrics
         """
-        # Parse URL to extract keyword and location
-        # Example: https://www.seek.com.au/graduate-artificial-intelligence-engineer-jobs/in-All-Perth-WA?daterange=1
         import re
         from urllib.parse import urlparse, parse_qs
         
+        all_jobs = []
+        
+        # Initialize cumulative stats
+        cumulative_stats = {
+            'pages_scraped': 0,
+            'total_cards_seen': 0,
+            'tier1_filtered': 0,
+            'tier2_skipped': 0,
+            'tier3_filtered': 0,
+            'jobs_collected': 0,
+            'page_details': []
+        }
+        
         try:
-            # Extract keyword from URL path
-            path = urlparse(url).path
-            # Path format: /keyword-jobs/in-Location
-            match = re.search(r'/(.+)-jobs/in-(.+)', path)
-            
-            if match:
-                keyword = match.group(1).replace('-', ' ')
-                location_part = match.group(2)
-            else:
-                self.logger.warning(f"Could not parse URL: {url}")
-                return []
-            
-            # Extract time filter from query params
             parsed = urlparse(url)
             params = parse_qs(parsed.query)
-            time_filter = params.get('daterange', ['1'])[0]
             
-            # Use search_jobs method
-            jobs = self.search_jobs(keyword, location=location_part, time_filter=time_filter, page=1)
+            # Scrape multiple pages
+            for page in range(1, max_pages + 1):
+                # Build paginated URL
+                if page == 1:
+                    page_url = url
+                else:
+                    # Add page parameter
+                    page_url = url + ('&' if '?' in url else '?') + f'page={page}'
+                
+                self.logger.info(f"Scraping Seek page {page}/{max_pages}: {page_url}")
+                print(f"🟣 SEEK: Page {page}/{max_pages}")
+                
+                response = self.session.get(page_url)
+                response.raise_for_status()
+                
+                soup = BeautifulSoup(response.text, 'html.parser')
+                
+                # Find job cards
+                job_cards = soup.find_all('article', attrs={'data-testid': 'job-card'})
+                
+                if not job_cards:
+                    job_cards = soup.select('article[data-card-type="JobCard"]')
+                
+                if not job_cards:
+                    self.logger.warning(f"No job cards found on page {page}")
+                    break
+                
+                self.logger.info(f"Found {len(job_cards)} job cards on page {page}")
+                
+                page_jobs = []
+                page_stats = {
+                    'total_cards': len(job_cards),
+                    'tier1_filtered': 0,
+                    'tier2_skipped': 0,
+                    'tier3_filtered': 0
+                }
+                
+                for card in job_cards:
+                    try:
+                        job = self._parse_job_card(card)
+                        if not job:
+                            continue
+                        
+                        # TIER 1: Title filtering
+                        if self.optimizer and not self.optimizer.tier1_should_scrape_title(job['title']):
+                            page_stats['tier1_filtered'] += 1
+                            continue
+                        
+                        # TIER 2: Deduplication
+                        job_hash = self.optimizer.generate_job_hash(job['title'], job.get('company', ''), job['url']) if self.optimizer else None
+                        if self.optimizer and self.optimizer.tier2_is_duplicate(job_hash):
+                            page_stats['tier2_skipped'] += 1
+                            continue
+                        
+                        # Fetch full description from job detail page
+                        full_description = self.get_job_details(job['url'])
+                        if full_description:
+                            job['description'] = full_description
+                        
+                        # TIER 3: Quality check
+                        if self.optimizer:
+                            has_quality, reason = self.optimizer.tier3_has_quality_description(job.get('description', ''))
+                            if not has_quality:
+                                page_stats['tier3_filtered'] += 1
+                                self.logger.debug(f"Tier 3 filtered: {job['title'][:50]} - {reason}")
+                                continue
+                        
+                        job['job_hash'] = job_hash
+                        page_jobs.append(job)
+                        print(f"   ✅ {job['title'][:70]}")
+                        
+                    except Exception as e:
+                        self.logger.debug(f"Error parsing job card: {e}")
+                        continue
+                
+                all_jobs.extend(page_jobs)
+                
+                # Update cumulative stats
+                cumulative_stats['pages_scraped'] = page
+                cumulative_stats['total_cards_seen'] += page_stats['total_cards']
+                cumulative_stats['tier1_filtered'] += page_stats['tier1_filtered']
+                cumulative_stats['tier2_skipped'] += page_stats['tier2_skipped']
+                cumulative_stats['tier3_filtered'] += page_stats['tier3_filtered']
+                cumulative_stats['jobs_collected'] = len(all_jobs)
+                cumulative_stats['page_details'].append({
+                    'page': page,
+                    'cards': page_stats['total_cards'],
+                    'jobs': len(page_jobs)
+                })
+                
+                self.logger.info(f"Page {page}: {len(page_jobs)} jobs scraped")
+                
+                # Stop if fewer jobs than expected
+                if len(job_cards) < 20:
+                    self.logger.info(f"Page {page} has < 20 cards, likely last page")
+                    break
             
-            # Limit to max_jobs
-            return jobs[:max_jobs]
+            self.logger.info(f"Total jobs scraped across {cumulative_stats['pages_scraped']} pages: {len(all_jobs)}")
+            return all_jobs, cumulative_stats
             
         except Exception as e:
             self.logger.error(f"Error scraping from URL {url}: {e}")
-            return []
+            return [], cumulative_stats
     
     def get_job_details(self, job_url):
         """
