@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejected Jobs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f9fafb;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+        
+        .header-tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 2px;
+        }
+        
+        .tab-link {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #6b7280;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+        
+        .tab-link:hover {
+            color: #111827;
+            border-bottom-color: #d1d5db;
+        }
+        
+        .tab-link.active {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+        
+        .job-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .job-title h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .job-title h3 a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .job-title h3 a:hover {
+            text-decoration: underline;
+        }
+        
+        .job-meta {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .score {
+            font-size: 28px;
+            font-weight: bold;
+            color: #6b7280;
+        }
+        
+        .rejection-info {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .rejection-category {
+            font-weight: 600;
+            color: #991b1b;
+            margin-bottom: 5px;
+        }
+        
+        .rejection-notes {
+            color: #4b5563;
+            font-size: 14px;
+            font-style: italic;
+        }
+        
+        .dates {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .empty-state {
+            background: white;
+            padding: 60px 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: #6b7280;
+        }
+        
+        .empty-state h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #9ca3af;
+        }
+        
+        .source-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .source-linkedin {
+            background: #0077b5;
+            color: white;
+        }
+        
+        .source-seek {
+            background: #e12287;
+            color: white;
+        }
+        
+        .source-jora {
+            background: #0052cc;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗑️ Rejected Jobs</h1>
+            <div class="header-tabs">
+                <a href="/" class="tab-link">🏠 Dashboard</a>
+                <a href="/applied" class="tab-link">📝 Applied Jobs</a>
+                <a href="/rejected" class="tab-link active">🗑️ Rejected Jobs</a>
+                <a href="/stats" class="tab-link">📊 Statistics</a>
+            </div>
+        </div>
+
+        {% if jobs %}
+            {% for job in jobs %}
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="job-title">
+                        <h3>
+                            <a href="{{ job.url }}" target="_blank">{{ job.title }}</a>
+                            {% if job.source %}
+                            <span class="source-badge source-{{ job.source }}">
+                                {% if job.source == 'linkedin' %}📘{% elif job.source == 'seek' %}🟣{% elif job.source == 'jora' %}🔵{% endif %}
+                                {{ job.source|capitalize }}
+                            </span>
+                            {% endif %}
+                        </h3>
+                        <div class="job-meta">
+                            <strong>{{ job.company }}</strong> · {{ job.location }}
+                        </div>
+                    </div>
+                    <div class="score">{{ job.score }}%</div>
+                </div>
+                
+                <div class="rejection-info">
+                    <div class="rejection-category">
+                        ❌ Rejection Reason: {{ job.rejection_category|replace('_', ' ')|title }}
+                    </div>
+                    {% if job.rejection_notes %}
+                    <div class="rejection-notes">
+                        💬 {{ job.rejection_notes }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="dates">
+                    Rejected: {{ job.rejected_date or job.first_seen_date }} | 
+                    First Seen: {{ job.first_seen_date }}
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <a href="{{ job.url }}" target="_blank" class="btn btn-secondary">View Job Posting</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <h2>No Rejected Jobs</h2>
+                <p>Jobs you reject from the dashboard will appear here with rejection reasons.</p>
+                <div style="margin-top: 20px;">
+                    <a href="/" class="btn btn-secondary">Go to Dashboard</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

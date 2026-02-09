@@ -733,7 +733,7 @@ def get_job(job_id):
 
 
 def get_applied_jobs():
-    """Get all jobs where applied=1, ordered by applied_date"""
+    """Get all jobs where applied=1 and not rejected, ordered by applied_date"""
     import json
     conn = get_connection()
     cursor = conn.cursor()
@@ -742,7 +742,7 @@ def get_applied_jobs():
         SELECT j.*, s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used
         FROM jobs j
         LEFT JOIN scores s ON j.id = s.job_id
-        WHERE j.applied = 1
+        WHERE j.applied = 1 AND j.rejected = 0
         ORDER BY j.applied_date DESC, j.first_seen_date DESC
     ''')
     

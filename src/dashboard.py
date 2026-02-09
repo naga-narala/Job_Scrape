@@ -86,8 +86,8 @@ def index():
     # Get jobs within date range
     jobs = db.get_jobs_by_date_range(days, hide_old_days)
     
-    # Filter to only high-scoring jobs (≥50%)
-    jobs = [j for j in jobs if j.get('score', 0) >= threshold]
+    # Filter to only high-scoring jobs (≥50%) and exclude applied/rejected jobs
+    jobs = [j for j in jobs if j.get('score', 0) >= threshold and not j.get('applied', 0) and not j.get('rejected', 0)]
     
     # Apply region filter
     if region_filter == 'australia':
@@ -142,8 +142,8 @@ def show_all():
     
     jobs = db.get_all_jobs(include_inactive=False)
     
-    # Filter to high-scoring
-    jobs = [j for j in jobs if j.get('score', 0) >= threshold]
+    # Filter to high-scoring and exclude applied/rejected jobs
+    jobs = [j for j in jobs if j.get('score', 0) >= threshold and not j.get('applied', 0) and not j.get('rejected', 0)]
     
     # Apply region filter
     if region_filter == 'australia':
@@ -203,10 +203,28 @@ def stats():
 @app.route('/applied')
 def applied_jobs():
     """Show jobs marked as applied with timeline tracking"""
+    status_filter = request.args.get('status', 'all')
+    
     jobs = db.get_applied_jobs()
+    
+    # Filter by status if specified
+    if status_filter != 'all':
+        jobs = [j for j in jobs if j.get('status') == status_filter]
     
     return render_template(
         'applied.html',
+        jobs=jobs,
+        status_filter=status_filter
+    )
+
+
+@app.route('/rejected')
+def rejected_jobs():
+    """Show rejected jobs with rejection reasons"""
+    jobs = db.get_rejected_jobs()
+    
+    return render_template(
+        'rejected.html',
         jobs=jobs
     )
 

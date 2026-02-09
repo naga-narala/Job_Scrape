@@ -53,8 +53,17 @@ class OptimizationManager:
         with open(keywords_path, 'r') as f:
             keywords = json.load(f)
         
-        # New universal keyword structure
-        self.title_required_keywords = set(k.lower() for k in keywords.get('title_required_keywords', keywords.get('title_keywords', [])))
+        # New hybrid keyword structure (domain + role OR standalone)
+        self.title_domain_keywords = set(k.lower() for k in keywords.get('title_domain_keywords', []))
+        self.title_role_keywords = set(k.lower() for k in keywords.get('title_role_keywords', []))
+        self.title_standalone_keywords = set(k.lower() for k in keywords.get('title_standalone_keywords', []))
+        
+        # Fallback to old structure if new structure not available (backward compatibility)
+        if not self.title_domain_keywords:
+            self.title_domain_keywords = set(k.lower() for k in keywords.get('title_required_keywords', keywords.get('title_keywords', [])))
+            # Role keywords will be empty in fallback mode (uses old single-list logic)
+            logger.warning("Using legacy keyword structure - regenerate keywords for hybrid filtering")
+        
         self.title_required_phrases = [p.lower() for p in keywords.get('title_required_phrases', [])]
         self.title_exclude_keywords = set(k.lower() for k in keywords.get('title_exclude_keywords', []))
         self.acronym_mappings = {k.lower(): v.lower() for k, v in keywords.get('acronym_mappings', {}).items()}
@@ -93,26 +102,40 @@ class OptimizationManager:
         }
         
         logger.info(f"Optimization enabled: {self.enabled}")
-        logger.info(f"Title required keywords: {len(self.title_required_keywords)}")
+        logger.info(f"Title domain keywords: {len(self.title_domain_keywords)}")
+        logger.info(f"Title role keywords: {len(self.title_role_keywords)}")
+        logger.info(f"Title standalone keywords: {len(self.title_standalone_keywords)}")
         logger.info(f"Title required phrases: {len(self.title_required_phrases)}")
         logger.info(f"Title exclude keywords: {len(self.title_exclude_keywords)}")
         logger.info(f"Acronym mappings: {len(self.acronym_mappings)}")
         logger.info(f"False positive patterns: {len(self.compiled_false_positive_patterns)}")
         logger.info(f"Exclude seniority (from dealbreakers): {len(self.exclude_seniority)}")
         logger.info(f"Description quality threshold: {self.description_quality_threshold}")
+        
+        # Log hybrid keyword structure info
+        if self.title_domain_keywords and self.title_role_keywords:
+            logger.info(f"✅ Hybrid filtering enabled - Domain: {len(self.title_domain_keywords)}, Role: {len(self.title_role_keywords)}, Standalone: {len(self.title_standalone_keywords)}")
+        else:
+            logger.info(f"⚠️  Legacy filtering - Title keywords: {len(self.title_domain_keywords)}")
     
     def tier1_should_scrape_title(self, title: str) -> Tuple[bool, Optional[str]]:
         """
-        Tier 1: Title Pre-Filtering with Universal Patterns
+        Tier 1: Title Pre-Filtering with Hybrid Two-Tier System
         Check if job title is relevant before clicking/scraping
         
-        Uses 13 universal patterns:
+        NEW HYBRID LOGIC (Universal - works for any profile):
         - PRIORITY 0: False positive filtering (Pattern 13)
         - PRIORITY 1: Excluded seniority from dealbreakers (Pattern 3)
         - PRIORITY 2: Title exclude keywords (Pattern 10)
         - PRIORITY 2.5: Required phrase matching (Pattern 11)
-        - PRIORITY 3: Required keyword matching with acronym expansion (Pattern 12)
-        - REMOVED: tech_indicators fallback (was causing false positives)
+        - PRIORITY 3: Standalone keyword matching (graduate, junior, intern) → ACCEPT
+        - PRIORITY 4: Domain + Role combination matching → ACCEPT
+        
+        Examples:
+        - "Infrastructure Engineer" → Role "engineer" but NO domain keyword → REJECT
+        - "ML Engineer" → Domain "ml" + Role "engineer" → ACCEPT
+        - "Graduate Software Engineer" → Standalone "graduate" → ACCEPT (no domain needed)
+        - "Java Developer" → Role "developer" but "java" not in domain → REJECT
         
         Args:
             title: Job title
@@ -166,15 +189,51 @@ class OptimizationManager:
             if phrase in title_expanded:
                 return True, f"Matched required phrase: {phrase}"
         
-        # PRIORITY 3: Required Keyword Matching (Pattern 1, 2, 5)
-        # Check if title contains ANY required keywords (with acronym expansion)
-        for keyword in self.title_required_keywords:
-            if keyword in title_expanded:
-                return True, f"Matched required keyword: {keyword}"
+        # PRIORITY 3: Standalone Keyword Matching (graduate, junior, intern, etc.)
+        # These are specific enough to accept WITHOUT domain keywords
+        for standalone_kw in self.title_standalone_keywords:
+            if standalone_kw in title_expanded:
+                return True, f"Matched standalone keyword: {standalone_kw}"
         
-        # No match at all - REJECT (no fallback)
-        self.metrics['tier1_title_filtered'] += 1
-        return False, "Title doesn't match required keywords or phrases"
+        # PRIORITY 4: Hybrid Domain + Role Matching
+        # Require BOTH domain keyword AND role keyword
+        if self.title_role_keywords:  # Hybrid mode enabled
+            has_domain = False
+            matched_domain = None
+            for domain_kw in self.title_domain_keywords:
+                if domain_kw in title_expanded:
+                    has_domain = True
+                    matched_domain = domain_kw
+                    break
+            
+            has_role = False
+            matched_role = None
+            for role_kw in self.title_role_keywords:
+                if role_kw in title_expanded:
+                    has_role = True
+                    matched_role = role_kw
+                    break
+            
+            if has_domain and has_role:
+                return True, f"Matched domain+role: {matched_domain} + {matched_role}"
+            elif has_domain and not has_role:
+                self.metrics['tier1_title_filtered'] += 1
+                return False, f"Has domain '{matched_domain}' but no role keyword"
+            elif has_role and not has_domain:
+                self.metrics['tier1_title_filtered'] += 1
+                return False, f"Has role '{matched_role}' but no domain keyword (generic job)"
+            else:
+                self.metrics['tier1_title_filtered'] += 1
+                return False, "No domain or role keywords found"
+        else:
+            # Legacy mode: Check if title contains ANY domain keywords
+            for keyword in self.title_domain_keywords:
+                if keyword in title_expanded:
+                    return True, f"Matched keyword (legacy): {keyword}"
+            
+            # No match at all - REJECT
+            self.metrics['tier1_title_filtered'] += 1
+            return False, "Title doesn't match required keywords or phrases"
     
     def tier2_is_duplicate(self, job_url: str, title: str, company: str, 
                           existing_jobs: List[Dict]) -> Tuple[bool, Optional[str]]:

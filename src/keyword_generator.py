@@ -162,7 +162,9 @@ class KeywordGenerator:
             json.dump(keywords, f, indent=2, ensure_ascii=False)
         
         print(f"✅ Keywords generated and saved to {self.output_file}")
-        print(f"   - Title required keywords: {len(keywords.get('title_required_keywords', []))}")
+        print(f"   - Title domain keywords: {len(keywords.get('title_domain_keywords', []))}")
+        print(f"   - Title role keywords: {len(keywords.get('title_role_keywords', []))}")
+        print(f"   - Title standalone keywords: {len(keywords.get('title_standalone_keywords', []))}")
         print(f"   - Title required phrases: {len(keywords.get('title_required_phrases', []))}")
         print(f"   - Title exclude keywords: {len(keywords.get('title_exclude_keywords', []))}")
         print(f"   - Acronym mappings: {len(keywords.get('acronym_mappings', {}))}")
@@ -262,12 +264,14 @@ PATTERN 13: False Positive Prevention
 - Generate 20 regex patterns to catch false positives early
 - Examples: "(?i)(ai|ml|data)\\s+(sales|marketing|hr|recruiting)"
 
-Generate JSON with these keys:
+Generate JSON with these keys - HYBRID TWO-TIER KEYWORD SYSTEM:
 
 {{
-  "title_required_keywords": [150 words],  // PATTERN 1: Core domain keywords (ai, machine learning, backend, react, etc.)
-  "title_required_phrases": [50 phrases],  // PATTERN 11: Multi-word phrases ("machine learning", "data science")
-  "title_exclude_keywords": [25 words],    // PATTERN 10: Non-core functions (sales, marketing, hr, recruiting)
+  "title_domain_keywords": [80 words],      // NEW: Profile-specific domain terms (ai, ml, nlp, vision, data science, pytorch, etc.)
+  "title_role_keywords": [12 words],        // NEW: Universal role types (engineer, developer, analyst, scientist, consultant, architect)
+  "title_standalone_keywords": [15 words],  // NEW: Specific enough alone (graduate, junior, associate, intern, entry, trainee)
+  "title_required_phrases": [50 phrases],   // PATTERN 11: Multi-word phrases ("machine learning", "data science")
+  "title_exclude_keywords": [25 words],     // PATTERN 10: Non-core functions (sales, marketing, hr, recruiting)
   "acronym_mappings": {{...}},              // PATTERN 12: {{"ml": "machine learning", "ai": "artificial intelligence"}}
   "false_positive_patterns": [20 patterns], // PATTERN 13: Regex patterns like "(?i)(ai|ml)\\s+(sales|marketing)"
   "description_required_keywords": [200 words], // Technical terms for description quality check
@@ -280,22 +284,68 @@ Generate JSON with these keys:
   "search_keywords": [30 items]             // LEGACY: Keep for compatibility
 }}
 
-CRITICAL INSTRUCTIONS:
-- Extract domain from job titles (AI/ML, Marketing, Finance, Backend, etc.)
-- title_required_keywords: 150 unique DOMAIN-SPECIFIC words (lowercase, no duplicates)
-  * NEVER include generic role words alone: engineer, developer, analyst, software, programmer
-  * ONLY domain-specific: ai, machine, learning, nlp, vision, data, scientist, mlops, etc.
-  * If domain is AI/ML: include ai, ml, machine, learning, deep, neural, vision, nlp, data, scientist, mlops, etc.
-  * Generic role words should be in title_exclude_keywords instead
-- title_required_phrases: 50 multi-word DOMAIN-SPECIFIC exact-match phrases
-  * Examples: "machine learning", "data science", "ai engineer", "computer vision"
-  * NOT: "software engineer", "developer", "full stack developer"
-- title_exclude_keywords: 25 non-core function words (sales, marketing, hr, recruiting, AND generic role words WITHOUT domain context)
-- acronym_mappings: 10-15 common acronyms in this domain
-- false_positive_patterns: 20 regex patterns (format: "(?i)pattern")
-- description_required_keywords: 200 unique technical terms (lowercase)
-- All arrays must have unique values (no duplicates)
-- Ensure proper JSON format (no trailing commas, escape special chars)
+CRITICAL INSTRUCTIONS - HYBRID KEYWORD SYSTEM:
+
+1. title_domain_keywords: 80 unique PROFILE-SPECIFIC domain terms (lowercase, no duplicates)
+   
+   ✅ INCLUDE (AI/ML profile example):
+   - Core AI/ML terms: ai, ml, machine, learning, deep, neural, vision, nlp, data, scientist, mlops
+   - Frameworks/Tools: pytorch, tensorflow, huggingface, langchain, crewai, n8n
+   - Techniques: rag, llm, generative, retrieval, vector, embedding, transformer
+   - Specific skills: prompt, optimization, fine-tuning, deployment
+   - Specific to domain: agentic, workflows, orchestration, multi-agent
+   
+   ❌ ABSOLUTELY FORBIDDEN in title_domain_keywords:
+   - Generic roles: engineer, developer, analyst, scientist, consultant, architect, specialist, designer, researcher, technician, coordinator, manager, officer, assistant
+   - Generic tech: software, application, system, systems, platform, infrastructure, backend, frontend, fullstack, full-stack
+   - Seniority: graduate, junior, associate, intern, entry, trainee, apprentice, cadet, student, early, new, senior, lead, principal
+   - Generic descriptors: technology, digital, innovation, applied, research (unless "research" is AI-specific like "ai research")
+   
+   If you include ANY word from the FORBIDDEN list, the entire generation FAILS.
+   DOUBLE-CHECK: No duplicates, no role keywords, no seniority terms, ONLY domain-specific technical terms.
+
+2. title_role_keywords: 12 universal role types (lowercase, no duplicates)
+   * Generic job functions that apply to ANY field
+   * Examples: engineer, developer, analyst, scientist, consultant, architect, specialist, designer, researcher, technician, coordinator, manager
+   * These words alone mean nothing - MUST be combined with domain keywords
+   * "Infrastructure Engineer" = role word WITHOUT domain keyword = REJECT
+   * "ML Engineer" = role word WITH domain keyword = ACCEPT
+
+3. title_standalone_keywords: 15 seniority/level terms (lowercase, no duplicates)
+   * Specific enough to accept WITHOUT domain keywords
+   * Examples: graduate, junior, associate, intern, entry, trainee, apprentice, cadet, student, early, new
+   * "Graduate Engineer" = standalone keyword present = ACCEPT (regardless of domain)
+   * "Infrastructure Engineer" = no standalone keyword = needs domain check
+   * DO NOT duplicate these in title_domain_keywords - they ONLY go here!
+
+4. title_required_phrases: 50 multi-word DOMAIN-SPECIFIC exact-match phrases
+   * Examples: "machine learning", "data science", "ai engineer", "computer vision", "backend developer"
+   * NOT: "software engineer", "developer", "full stack developer" (unless domain-specific)
+
+5. title_exclude_keywords: 25 non-core function words
+   * sales, marketing, hr, recruiting, retail, warehouse, customer, support, etc.
+
+6. acronym_mappings: 10-15 common acronyms in this domain
+7. false_positive_patterns: 20 regex patterns (format: "(?i)pattern")
+8. description_required_keywords: 200 unique technical terms (lowercase)
+9. All arrays must have unique values (no duplicates)
+10. Ensure proper JSON format (no trailing commas, escape special chars)
+
+LOGIC EXPLANATION:
+- Job title matching now requires: (domain keyword + role keyword) OR standalone keyword
+- "Infrastructure Engineer" → role keyword "engineer" but NO domain keyword → REJECT
+- "ML Engineer" → role keyword "engineer" + domain keyword "ml" → ACCEPT
+- "Graduate Software Engineer" → standalone keyword "graduate" → ACCEPT (domain not needed)
+- "Java Developer" → role keyword "developer" but "java" not in domain keywords → REJECT
+
+VALIDATION CHECKLIST (verify before returning):
+☐ title_domain_keywords has NO role words (engineer, developer, analyst, etc.)
+☐ title_domain_keywords has NO seniority words (graduate, junior, intern, etc.)  
+☐ title_domain_keywords has NO generic tech words (software, platform, systems, infrastructure, backend)
+☐ title_role_keywords has ONLY generic role types (engineer, developer, etc.)
+☐ title_standalone_keywords has ONLY seniority/level terms (graduate, junior, etc.)
+☐ NO duplicates within any array
+☐ NO overlap between domain, role, and standalone arrays
 
 Return ONLY valid JSON. No markdown, no explanations, no duplicates.
 """
@@ -320,7 +370,7 @@ Return ONLY valid JSON. No markdown, no explanations, no duplicates.
         }
         
         payload = {
-            "model": self.config.get("ai_models", {}).get("primary", "deepseek/deepseek-chat"),
+            "model": keygen_config.get('model', "deepseek/deepseek-chat"),
             "messages": [
                 {
                     "role": "system",

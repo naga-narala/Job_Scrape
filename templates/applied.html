@@ -38,6 +38,38 @@
             color: #111827;
         }
         
+        .header-tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 2px;
+        }
+        
+        .tab-link {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #6b7280;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+        
+        .tab-link:hover {
+            color: #111827;
+            border-bottom-color: #d1d5db;
+        }
+        
+        .tab-link.active {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+        
         .nav-buttons {
             margin-top: 20px;
             display: flex;
@@ -271,19 +303,366 @@
             margin-bottom: 10px;
             color: #9ca3af;
         }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .section-header:first-child {
+            margin-top: 0;
+        }
+        
+        .section-header h2 {
+            font-size: 20px;
+            color: #111827;
+            margin: 0;
+        }
+        
+        .section-count {
+            background: #e5e7eb;
+            color: #6b7280;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .sub-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+        
+        .sub-tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: #f3f4f6;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .sub-tab:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .sub-tab.active {
+            background: #0066cc;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>📝 Applied Jobs Tracker</h1>
-            <div class="nav-buttons">
-                <a href="/" class="btn btn-primary">← Back to Dashboard</a>
-                <a href="/stats" class="btn btn-secondary">Statistics</a>
+            <div class="header-tabs">
+                <a href="/" class="tab-link">🏠 Dashboard</a>
+                <a href="/applied" class="tab-link active">📝 Applied Jobs</a>
+                <a href="/rejected" class="tab-link">🗑️ Rejected Jobs</a>
+                <a href="/stats" class="tab-link">📊 Statistics</a>
             </div>
+        </div>
+        
+        <div class="sub-tabs">
+            <a href="/applied?status=all" class="sub-tab {% if status_filter == 'all' %}active{% endif %}">
+                📋 All Applications
+            </a>
+            <a href="/applied?status=applied" class="sub-tab {% if status_filter == 'applied' %}active{% endif %}">
+                ⏳ Awaiting Response
+            </a>
+            <a href="/applied?status=interview" class="sub-tab {% if status_filter == 'interview' %}active{% endif %}">
+                📅 Interview Scheduled
+            </a>
+            <a href="/applied?status=selected" class="sub-tab {% if status_filter == 'selected' %}active{% endif %}">
+                🎉 Offer Received
+            </a>
+            <a href="/applied?status=rejected" class="sub-tab {% if status_filter == 'rejected' %}active{% endif %}">
+                ❌ Rejected
+            </a>
         </div>
 
         {% if jobs %}
+            {% if status_filter == 'all' %}
+            {% set jobs_by_status = {'selected': [], 'interview': [], 'applied': [], 'rejected': []} %}
+            {% for job in jobs %}
+                {% set status = job.status or 'applied' %}
+                {% if jobs_by_status[status] is defined %}
+                    {% set _ = jobs_by_status[status].append(job) %}
+                {% endif %}
+            {% endfor %}
+            
+            <!-- When showing all, display sections -->
+            <!-- Offer Received / Selected Section -->
+            {% if jobs_by_status.selected|length > 0 %}
+            <div class="section-header">
+                <h2>🎉 Offer Received / Selected</h2>
+                <span class="section-count">{{ jobs_by_status.selected|length }}</span>
+            </div>
+            <div class="timeline-container">
+                {% for job in jobs_by_status.selected %}
+                <div class="timeline-item">
+                    <div class="timeline-dot selected"></div>
+                    
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div class="job-title">
+                                <h3><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></h3>
+                                <div class="job-meta">
+                                    <strong>{{ job.company }}</strong> · {{ job.location }}
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-badge status-{{ job.status }}">{{ job.status }}</span>
+                                <div class="score {% if job.score >= 90 %}score-90{% elif job.score >= 80 %}score-80{% else %}score-75{% endif %}">
+                                    {{ job.score }}%
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dates">
+                            Applied: {{ job.applied_date or job.first_seen_date }} | 
+                            First Seen: {{ job.first_seen_date }}
+                        </div>
+                        
+                        {% if job.remarks %}
+                        <div class="remarks">
+                            📌 {{ job.remarks }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="status-update-form">
+                            <form method="POST" action="/update-status/{{ job.id }}">
+                                <div class="form-group">
+                                    <label for="status-{{ job.id }}">Update Status</label>
+                                    <select name="status" id="status-{{ job.id }}">
+                                        <option value="applied" {% if job.status == 'applied' %}selected{% endif %}>Applied</option>
+                                        <option value="interview" {% if job.status == 'interview' %}selected{% endif %}>Interview Scheduled</option>
+                                        <option value="rejected" {% if job.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                        <option value="selected" {% if job.status == 'selected' %}selected{% endif %}>Offer Received / Selected</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="remarks-{{ job.id }}">Remarks / Notes</label>
+                                    <textarea name="remarks" id="remarks-{{ job.id }}" placeholder="Add notes about interview date, feedback, etc.">{{ job.remarks or '' }}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{{ job.url }}" target="_blank" class="btn btn-secondary">View Job</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <!-- Interview Scheduled Section -->
+            {% if jobs_by_status.interview|length > 0 %}
+            <div class="section-header">
+                <h2>📅 Interview Scheduled</h2>
+                <span class="section-count">{{ jobs_by_status.interview|length }}</span>
+            </div>
+            <div class="timeline-container">
+                {% for job in jobs_by_status.interview %}
+                <div class="timeline-item">
+                    <div class="timeline-dot interview"></div>
+                    
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div class="job-title">
+                                <h3><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></h3>
+                                <div class="job-meta">
+                                    <strong>{{ job.company }}</strong> · {{ job.location }}
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-badge status-{{ job.status }}">{{ job.status }}</span>
+                                <div class="score {% if job.score >= 90 %}score-90{% elif job.score >= 80 %}score-80{% else %}score-75{% endif %}">
+                                    {{ job.score }}%
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dates">
+                            Applied: {{ job.applied_date or job.first_seen_date }} | 
+                            First Seen: {{ job.first_seen_date }}
+                        </div>
+                        
+                        {% if job.remarks %}
+                        <div class="remarks">
+                            📌 {{ job.remarks }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="status-update-form">
+                            <form method="POST" action="/update-status/{{ job.id }}">
+                                <div class="form-group">
+                                    <label for="status-{{ job.id }}">Update Status</label>
+                                    <select name="status" id="status-{{ job.id }}">
+                                        <option value="applied" {% if job.status == 'applied' %}selected{% endif %}>Applied</option>
+                                        <option value="interview" {% if job.status == 'interview' %}selected{% endif %}>Interview Scheduled</option>
+                                        <option value="rejected" {% if job.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                        <option value="selected" {% if job.status == 'selected' %}selected{% endif %}>Offer Received / Selected</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="remarks-{{ job.id }}">Remarks / Notes</label>
+                                    <textarea name="remarks" id="remarks-{{ job.id }}" placeholder="Add notes about interview date, feedback, etc.">{{ job.remarks or '' }}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{{ job.url }}" target="_blank" class="btn btn-secondary">View Job</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <!-- Applied (Awaiting Response) Section -->
+            {% if jobs_by_status.applied|length > 0 %}
+            <div class="section-header">
+                <h2>⏳ Applied (Awaiting Response)</h2>
+                <span class="section-count">{{ jobs_by_status.applied|length }}</span>
+            </div>
+            <div class="timeline-container">
+                {% for job in jobs_by_status.applied %}
+                <div class="timeline-item">
+                    <div class="timeline-dot applied"></div>
+                    
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div class="job-title">
+                                <h3><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></h3>
+                                <div class="job-meta">
+                                    <strong>{{ job.company }}</strong> · {{ job.location }}
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-badge status-{{ job.status }}">{{ job.status }}</span>
+                                <div class="score {% if job.score >= 90 %}score-90{% elif job.score >= 80 %}score-80{% else %}score-75{% endif %}">
+                                    {{ job.score }}%
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dates">
+                            Applied: {{ job.applied_date or job.first_seen_date }} | 
+                            First Seen: {{ job.first_seen_date }}
+                        </div>
+                        
+                        {% if job.remarks %}
+                        <div class="remarks">
+                            📌 {{ job.remarks }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="status-update-form">
+                            <form method="POST" action="/update-status/{{ job.id }}">
+                                <div class="form-group">
+                                    <label for="status-{{ job.id }}">Update Status</label>
+                                    <select name="status" id="status-{{ job.id }}">
+                                        <option value="applied" {% if job.status == 'applied' %}selected{% endif %}>Applied</option>
+                                        <option value="interview" {% if job.status == 'interview' %}selected{% endif %}>Interview Scheduled</option>
+                                        <option value="rejected" {% if job.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                        <option value="selected" {% if job.status == 'selected' %}selected{% endif %}>Offer Received / Selected</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="remarks-{{ job.id }}">Remarks / Notes</label>
+                                    <textarea name="remarks" id="remarks-{{ job.id }}" placeholder="Add notes about interview date, feedback, etc.">{{ job.remarks or '' }}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{{ job.url }}" target="_blank" class="btn btn-secondary">View Job</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <!-- Rejected Section -->
+            {% if jobs_by_status.rejected|length > 0 %}
+            <div class="section-header">
+                <h2>❌ Rejected / Not Selected</h2>
+                <span class="section-count">{{ jobs_by_status.rejected|length }}</span>
+            </div>
+            <div class="timeline-container">
+                {% for job in jobs_by_status.rejected %}
+                <div class="timeline-item">
+                    <div class="timeline-dot rejected"></div>
+                    
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div class="job-title">
+                                <h3><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></h3>
+                                <div class="job-meta">
+                                    <strong>{{ job.company }}</strong> · {{ job.location }}
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-badge status-{{ job.status }}">{{ job.status }}</span>
+                                <div class="score {% if job.score >= 90 %}score-90{% elif job.score >= 80 %}score-80{% else %}score-75{% endif %}">
+                                    {{ job.score }}%
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dates">
+                            Applied: {{ job.applied_date or job.first_seen_date }} | 
+                            First Seen: {{ job.first_seen_date }}
+                        </div>
+                        
+                        {% if job.remarks %}
+                        <div class="remarks">
+                            📌 {{ job.remarks }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="status-update-form">
+                            <form method="POST" action="/update-status/{{ job.id }}">
+                                <div class="form-group">
+                                    <label for="status-{{ job.id }}">Update Status</label>
+                                    <select name="status" id="status-{{ job.id }}">
+                                        <option value="applied" {% if job.status == 'applied' %}selected{% endif %}>Applied</option>
+                                        <option value="interview" {% if job.status == 'interview' %}selected{% endif %}>Interview Scheduled</option>
+                                        <option value="rejected" {% if job.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                        <option value="selected" {% if job.status == 'selected' %}selected{% endif %}>Offer Received / Selected</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="remarks-{{ job.id }}">Remarks / Notes</label>
+                                    <textarea name="remarks" id="remarks-{{ job.id }}" placeholder="Add notes about interview date, feedback, etc.">{{ job.remarks or '' }}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{{ job.url }}" target="_blank" class="btn btn-secondary">View Job</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% else %}
+            <!-- Filtered view: show only selected status -->
             <div class="timeline-container">
                 {% for job in jobs %}
                 <div class="timeline-item">
@@ -339,12 +718,18 @@
                 </div>
                 {% endfor %}
             </div>
+            {% endif %}
+            
         {% else %}
             <div class="empty-state">
-                <h2>No Applications Yet</h2>
-                <p>Mark jobs as "Applied" from the main dashboard to track them here!</p>
+                <h2>No Applications{% if status_filter != 'all' %} in this category{% endif %}</h2>
+                <p>{% if status_filter == 'all' %}Mark jobs as "Applied" from the main dashboard to track them here!{% else %}No jobs with status "{{ status_filter }}" found.{% endif %}</p>
                 <div style="margin-top: 20px;">
+                    {% if status_filter != 'all' %}
+                    <a href="/applied?status=all" class="btn btn-primary">View All Applications</a>
+                    {% else %}
                     <a href="/" class="btn btn-primary">Go to Dashboard</a>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}

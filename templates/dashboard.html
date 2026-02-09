@@ -38,6 +38,38 @@
             color: #111827;
         }
         
+        .header-tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 2px;
+        }
+        
+        .tab-link {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #6b7280;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+        
+        .tab-link:hover {
+            color: #111827;
+            border-bottom-color: #d1d5db;
+        }
+        
+        .tab-link.active {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -475,6 +507,12 @@
     <div class="container">
         <div class="header">
             <h1>🎯 Job Matches Dashboard</h1>
+            <div class="header-tabs">
+                <a href="/" class="tab-link active">🏠 Dashboard</a>
+                <a href="/applied" class="tab-link">📝 Applied Jobs</a>
+                <a href="/rejected" class="tab-link">🗑️ Rejected Jobs</a>
+                <a href="/stats" class="tab-link">📊 Statistics</a>
+            </div>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="label">Total Matches</div>
@@ -518,14 +556,6 @@
                     <a href="/?days={{ current_days }}&region={{ region_filter }}&location=perth" class="btn {% if location_filter == 'perth' %}btn-primary{% else %}btn-secondary{% endif %}">Perth (Any)</a>
                     <a href="/?days={{ current_days }}&region={{ region_filter }}&location=australia" class="btn {% if location_filter == 'australia' %}btn-primary{% else %}btn-secondary{% endif %}">Australia (Remote/Hybrid)</a>
                     <a href="/?days={{ current_days }}&region={{ region_filter }}&location=world" class="btn {% if location_filter == 'world' %}btn-primary{% else %}btn-secondary{% endif %}">World (Remote)</a>
-                </div>
-            </div>
-            
-            <div class="filter-section">
-                <span class="filter-label">NAVIGATION</span>
-                <div class="filter-buttons">
-                    <a href="/applied" class="btn btn-secondary">Applied Jobs</a>
-                    <a href="/stats" class="btn btn-secondary">Statistics</a>
                 </div>
             </div>
         </div>
@@ -594,7 +624,13 @@
                     </div>
                     
                     <div class="job-actions">
+                        {% if job.source == 'seek' %}
+                        <a href="{{ job.url }}" target="_blank" class="btn btn-primary">Apply on Seek</a>
+                        {% elif job.source == 'jora' %}
+                        <a href="{{ job.url }}" target="_blank" class="btn btn-primary">Apply on Jora</a>
+                        {% else %}
                         <a href="{{ job.url }}" target="_blank" class="btn btn-primary">Apply on LinkedIn</a>
+                        {% endif %}
                         
                         {% if job.applied %}
                         <span class="applied-badge">✓ Applied</span>
