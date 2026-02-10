@@ -194,6 +194,94 @@
             background: #0052cc;
             color: white;
         }
+        
+        /* Professional Filter Styling */
+        .filters-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-button {
+            padding: 8px 16px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #6b7280;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        
+        .filter-button:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+            color: #374151;
+        }
+        
+        .filter-button.active {
+            background: #0066cc;
+            border-color: #0066cc;
+            color: white;
+        }
+        
+        .filter-button.active:hover {
+            background: #0052cc;
+            border-color: #0052cc;
+        }
+        
+        /* Dropdown filter styles */
+        .filter-dropdown {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+        
+        .filter-dropdown:hover {
+            border-color: #9ca3af;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .filter-dropdown:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -205,6 +293,28 @@
                 <a href="/applied" class="tab-link">📝 Applied Jobs</a>
                 <a href="/rejected" class="tab-link active">🗑️ Rejected Jobs</a>
                 <a href="/stats" class="tab-link">📊 Statistics</a>
+            </div>
+        </div>
+        
+        <!-- Professional Filters -->
+        <div class="filters-bar">
+            <div class="filter-group">
+                <span class="filter-label">Region</span>
+                <select name="region" class="filter-dropdown" onchange="updateFilters()">
+                    <option value="all" {% if region_filter == 'all' %}selected{% endif %}>All Regions</option>
+                    <option value="australia" {% if region_filter == 'australia' %}selected{% endif %}>🇦🇺 Australia</option>
+                    <option value="us" {% if region_filter == 'us' %}selected{% endif %}>🇺🇸 US</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <span class="filter-label">Location</span>
+                <select name="location" class="filter-dropdown" onchange="updateFilters()">
+                    <option value="all" {% if location_filter == 'all' %}selected{% endif %}>All Locations</option>
+                    <option value="perth" {% if location_filter == 'perth' %}selected{% endif %}>Perth</option>
+                    <option value="australia" {% if location_filter == 'australia' %}selected{% endif %}>Australia</option>
+                    <option value="world" {% if location_filter == 'world' %}selected{% endif %}>World</option>
+                </select>
             </div>
         </div>
 
@@ -260,5 +370,38 @@
             </div>
         {% endif %}
     </div>
+    
+    <script>
+        function updateFilters() {
+            // Get current URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Get filter values from dropdowns
+            const regionSelect = document.querySelector('select[name="region"]');
+            const locationSelect = document.querySelector('select[name="location"]');
+            
+            // Update URL parameters
+            if (regionSelect) {
+                urlParams.set('region', regionSelect.value);
+            }
+            if (locationSelect) {
+                urlParams.set('location', locationSelect.value);
+            }
+            
+            // Build new URL
+            let newUrl = '/rejected';
+            const params = [];
+            
+            if (regionSelect && regionSelect.value !== 'all') params.push(`region=${regionSelect.value}`);
+            if (locationSelect && locationSelect.value !== 'all') params.push(`location=${locationSelect.value}`);
+            
+            if (params.length > 0) {
+                newUrl += '?' + params.join('&');
+            }
+            
+            // Navigate to new URL
+            window.location.href = newUrl;
+        }
+    </script>
 </body>
 </html>

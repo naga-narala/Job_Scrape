@@ -23,6 +23,14 @@ def load_config():
         return json.load(f)
 
 
+def build_filter_params():
+    """Build filter query string from current request"""
+    days = request.args.get('days', 7, type=int)
+    location = request.args.get('location', 'all')
+    region = request.args.get('region', 'all')
+    return f"days={days}&location={location}&region={region}"
+
+
 def get_perth_now():
     """Get current datetime in Perth"""
     perth_tz = pytz.timezone('Australia/Perth')
@@ -120,14 +128,16 @@ def index():
     }
     
     return render_template(
-        'dashboard.html',
+        'dashboard_new.html',
         jobs_by_date=jobs_by_date,
         stats=stats,
         current_days=days,
         threshold=threshold,
         show_all=False,
         location_filter=location_filter,
-        region_filter=region_filter
+        region_filter=region_filter,
+        current_path=request.path,
+        filter_params=build_filter_params()
     )
 
 
@@ -171,20 +181,25 @@ def show_all():
     }
     
     return render_template(
-        'dashboard.html',
+        'dashboard_new.html',
         jobs_by_date=jobs_by_date,
         stats=stats,
         current_days=999,
         threshold=threshold,
         show_all=True,
         location_filter=location_filter,
-        region_filter=region_filter
+        region_filter=region_filter,
+        current_path=request.path,
+        filter_params=build_filter_params()
     )
 
 
 @app.route('/stats')
 def stats():
     """Statistics page"""
+    location_filter = request.args.get('location', 'all')
+    region_filter = request.args.get('region', 'all')
+    
     config = load_config()
     threshold = config.get('match_threshold', 30)
     
@@ -197,15 +212,41 @@ def stats():
         'threshold': threshold
     }
     
-    return render_template('stats.html', stats=stats_data)
+    return render_template(
+        'stats.html',
+        stats=stats_data,
+        location_filter=location_filter,
+        region_filter=region_filter,
+        current_path=request.path,
+        filter_params=build_filter_params()
+    )
 
 
 @app.route('/applied')
 def applied_jobs():
     """Show jobs marked as applied with timeline tracking"""
     status_filter = request.args.get('status', 'all')
+    location_filter = request.args.get('location', 'all')
+    region_filter = request.args.get('region', 'all')
     
     jobs = db.get_applied_jobs()
+    
+    # Apply region filter
+    if region_filter == 'australia':
+        jobs = [j for j in jobs if j.get('region', 'australia') == 'australia']
+    elif region_filter == 'us':
+        jobs = [j for j in jobs if j.get('region', 'australia') == 'us']
+    
+    # Apply location filter
+    if location_filter == 'perth':
+        jobs = [j for j in jobs if j.get('location') and 'perth' in j['location'].lower()]
+    elif location_filter == 'australia':
+        jobs = [j for j in jobs if j.get('location') and 
+                ('australia' in j['location'].lower() or any(city in j['location'].lower() 
+                 for city in ['sydney', 'melbourne', 'perth', 'brisbane', 'adelaide', 'canberra'])) and
+                ('remote' in j['location'].lower() or 'hybrid' in j['location'].lower())]
+    elif location_filter == 'world':
+        jobs = [j for j in jobs if j.get('location') and 'remote' in j['location'].lower()]
     
     # Filter by status if specified
     if status_filter != 'all':
@@ -214,18 +255,46 @@ def applied_jobs():
     return render_template(
         'applied.html',
         jobs=jobs,
-        status_filter=status_filter
+        status_filter=status_filter,
+        location_filter=location_filter,
+        region_filter=region_filter,
+        current_path=request.path,
+        filter_params=build_filter_params()
     )
 
 
 @app.route('/rejected')
 def rejected_jobs():
     """Show rejected jobs with rejection reasons"""
+    location_filter = request.args.get('location', 'all')
+    region_filter = request.args.get('region', 'all')
+    
     jobs = db.get_rejected_jobs()
+    
+    # Apply region filter
+    if region_filter == 'australia':
+        jobs = [j for j in jobs if j.get('region', 'australia') == 'australia']
+    elif region_filter == 'us':
+        jobs = [j for j in jobs if j.get('region', 'australia') == 'us']
+    
+    # Apply location filter
+    if location_filter == 'perth':
+        jobs = [j for j in jobs if j.get('location') and 'perth' in j['location'].lower()]
+    elif location_filter == 'australia':
+        jobs = [j for j in jobs if j.get('location') and 
+                ('australia' in j['location'].lower() or any(city in j['location'].lower() 
+                 for city in ['sydney', 'melbourne', 'perth', 'brisbane', 'adelaide', 'canberra'])) and
+                ('remote' in j['location'].lower() or 'hybrid' in j['location'].lower())]
+    elif location_filter == 'world':
+        jobs = [j for j in jobs if j.get('location') and 'remote' in j['location'].lower()]
     
     return render_template(
         'rejected.html',
-        jobs=jobs
+        jobs=jobs,
+        location_filter=location_filter,
+        region_filter=region_filter,
+        current_path=request.path,
+        filter_params=build_filter_params()
     )
 
 

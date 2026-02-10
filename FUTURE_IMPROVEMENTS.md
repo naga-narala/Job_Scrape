@@ -2,19 +2,7 @@
 
 ## Dashboard Issues
 
-### 1. Applied Jobs Still Appearing on Dashboard
-**Current Behavior**: Jobs marked as "Applied" continue to show in the main dashboard view.
 
-**Expected Behavior**: Applied jobs should be hidden from the main view (similar to rejected jobs).
-
-**Proposed Solution**:
-- Add filter in `src/dashboard.py` to exclude jobs with `status='applied'` from main view
-- Create separate "Applied Jobs" view/tab to review application history
-- Update database query in `get_all_jobs()` to accept status filter parameter
-
-**Files to Modify**:
-- [src/dashboard.py](src/dashboard.py) - Update job listing logic
-- [templates/dashboard.html](templates/dashboard.html) - Add filter toggle or separate tab
 
 ---
 
