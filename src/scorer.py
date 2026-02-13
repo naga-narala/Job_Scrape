@@ -91,95 +91,108 @@ def load_jobs_txt_metadata():
 
 
 def build_dynamic_prompt_template():
-    """Build prompt template with dynamic keywords (role-agnostic)"""
+    """Build component-based weighted scoring prompt template"""
     keywords = load_keywords()
     metadata = load_jobs_txt_metadata()
-    
+
     # Build role list from title_keywords and adjacent_roles
     role_list = ', '.join(keywords['title_keywords'] + keywords['adjacent_roles'])
-    
+
     # Build strong keywords list
     strong_keywords_list = ', '.join(keywords['strong_keywords'])
-    
+
     # Build technical skills list
     technical_skills_list = ', '.join(keywords['technical_skills'][:20])  # Top 20 for readability
-    
+
     # Build seniority exclusions
     seniority_list = '/'.join(metadata['exclude_seniority'][:10])  # Top 10
-    
+
     # Build locations preference
     locations_list = ' > '.join(metadata['locations'])
-    
-    max_exp = metadata['max_experience']
-    
-    return f"""You are an expert job matching assistant. Analyze how well this job matches the candidate's profile using EXTREMELY STRICT scoring criteria.
 
-CANDIDATE PROFILE:
+    max_exp = metadata['max_experience']
+
+    # Return component-based scoring template
+    template = """You are an expert job matching system. Your task is to analyze a job posting and score it against a candidate profile using component-based weighted scoring.
+
+===== CANDIDATE CONTEXT =====
+
+PROFILE (What the candidate HAS):
 {{profile_content}}
 
-JOB POSTING:
+TARGET ROLES (What the candidate WANTS):
+{{jobs_txt_content}}
+
+===== JOB POSTING =====
+
 Title: {{job_title}}
 Company: {{job_company}}
 Location: {{job_location}}
-Description: {{job_description}}
+Description:
+{{job_description}}
 
-⚠️ CRITICAL SCORING CRITERIA - APPLY WITH ZERO TOLERANCE ⚠️
+===== YOUR TASK =====
 
-AUTOMATIC REJECTION (Score 0-30) - BE EXTREMELY STRICT:
-- NOT a target role - Must match one of these or closely related: {role_list}
-- Requires Australian PR/Citizenship/Security Clearance (candidate has 485 visa with full work rights - NOT a citizen)
-- Requires {max_exp}+ years professional experience (candidate is FRESH GRADUATE - only academic projects)
-- Requires {max_exp+1}+ years in ANY technology (candidate has NO professional experience)
-- Requires {max_exp+2}+ years, {max_exp+3}+ years, or more (ABSOLUTE DEALBREAKER for fresh graduate)
-- {seniority_list} position (candidate needs GRADUATE or JUNIOR level ONLY)
-- "Preference for citizens" or "citizens preferred" (candidate only has 485 visa, not PR or citizen)
-- Role outside target domain with no relevant component
+STEP 1: Extract all scoreable components from the job description.
+Identify components in these categories:
+- Technical Requirements (skills, tools, languages, frameworks)
+- Experience Requirements (years, level, seniority)
+- Education Requirements (degree, certifications)
+- Location Requirements (remote, onsite, city, visa/immigration)
+- Soft Skills (communication, leadership, teamwork)
+- Company Benefits (salary, culture, growth opportunities)
 
-🚨 IF ANY OF THE ABOVE APPLY, SCORE MUST BE 0-30. NO EXCEPTIONS. 🚨
+STEP 2: For EACH component, determine:
+a) Does the candidate profile satisfy this requirement? (yes/partial/no)
+b) How critical is this component? (dealbreaker/important/preferred/nice_to_have)
+c) What weight should it have? (Total across all components must sum to 100)
 
-LOW MATCH (Score 40-60):
-- Heavy focus on unfamiliar technologies (candidate learning new stack)
-- Role without core technical component
-- Full-stack or general development as primary skill
-- Location outside preference without remote option
-- No mention of visa flexibility for 485 holders
-- Missing key technical requirements from candidate's stack
-- Requires 1-{max_exp} years experience (borderline for fresh graduate)
+CRITICAL WEIGHTING RULES:
+- "MUST have", "Required", "Essential" = dealbreaker
+- "Preferred", "Desirable", "Plus" = nice_to_have
+- Visa/citizenship requirements = dealbreaker if candidate cannot satisfy
+- Years of experience significantly exceeding candidate level = dealbreaker
+- Technical skills mentioned multiple times = higher weight
+- Skills in job title = higher weight than skills in description
 
-HIGH MATCH (Score 70-100):
-MUST have most of these:
-- Junior/Graduate/Entry-level explicitly mentioned OR "0-{max_exp} years" OR "fresh graduate welcome"
-- Core technologies required: {technical_skills_list}
-- Strong keywords: {strong_keywords_list}
-- Location: {locations_list}
-- "Visa sponsorship available" OR "485 visa acceptable" OR no visa requirements mentioned
-- Growth potential, mentorship opportunities, learning environment
+STEP 3: Calculate weighted score:
+- If ANY dealbreaker component is NOT satisfied → final_score = 0-20%
+- Each satisfied component contributes its weight to final score
+- Partial satisfaction contributes 50% of component weight
+- Components not satisfied contribute 0%
 
-Analyze the job and provide:
-1. Match score (0-100) based on criteria above
-2. What matches (3-5 specific points aligned with candidate strengths)
-3. What doesn't match (2-4 concerns, red flags, or mismatches)
-4. Key takeaways (2-3 critical points about fit and opportunity)
+STEP 4: Return ONLY valid JSON (no markdown, no explanation):
 
-⚠️ REMEMBER: Fresh graduate with 485 visa = NO professional experience, NOT a citizen. Be STRICT about experience requirements.
-
-Return ONLY valid JSON in this exact format:
-{{{{
-  "score": <integer 0-100 based on strict criteria above>,
-  "matched": [
-    "Specific match with candidate expertise",
-    "Another alignment point",
-    "Third matching aspect"
+{{
+  "components": [
+    {{
+      "name": "Component Name",
+      "category": "technical_requirements",
+      "match_status": "yes",
+      "criticality": "important",
+      "weight": 15,
+      "reasoning": "Brief explanation of match"
+    }}
   ],
-  "not_matched": [
-    "Specific concern or red flag",
-    "Gap or mismatch point"
-  ],
-  "key_points": [
-    "Critical insight about this role",
-    "Important consideration"
-  ]
-}}}}"""
+  "final_score": 75,
+  "score_breakdown": {{
+    "total_possible": 100,
+    "earned": 75,
+    "lost_to_dealbreakers": 0,
+    "lost_to_gaps": 25
+  }},
+  "recommendation": "APPLY"
+}}
+
+IMPORTANT:
+- Weights must sum to exactly 100
+- match_status must be: "yes", "partial", or "no"
+- criticality must be: "dealbreaker", "important", "preferred", or "nice_to_have"
+- recommendation must be: "APPLY" (70-100%), "REVIEW" (40-69%), or "SKIP" (0-39%)
+- Return ONLY the JSON, no other text
+"""
+
+    return template
 
 
 # Load prompt template at module initialization (will be dynamic)
@@ -301,23 +314,90 @@ def call_openrouter(model, prompt, api_key, max_tokens=None):
 
 
 def parse_score_response(response_content):
-    """Parse JSON response from AI model"""
+    """Parse JSON response from AI model with component extraction (v3.0 - Hireability)"""
+    
+    # Clean response content - remove markdown code blocks if present
+    content_clean = response_content.strip()
+    if content_clean.startswith('```'):
+        # Remove ```json and ``` markers
+        import re
+        content_clean = re.sub(r'^```(?:json)?\s*', '', content_clean)
+        content_clean = re.sub(r'\s*```$', '', content_clean)
+        content_clean = content_clean.strip()
+    
     try:
         # Try to parse as JSON
-        result = json.loads(response_content)
+        result = json.loads(content_clean)
         
-        # Validate structure
+        # Validate structure for hireability format
+        if 'components' in result and 'score_breakdown' in result:
+            # New hireability format with components
+            components = result.get('components', [])
+            final_score = result.get('score_breakdown', {}).get('final_score', 0)
+            
+            # Validate score
+            if not 0 <= final_score <= 100:
+                raise ValueError(f"Score out of range: {final_score}")
+            
+            # Extract matched/not_matched from components with safe access
+            matched = []
+            partial = []
+            not_matched = []
+            
+            for c in components:
+                if not isinstance(c, dict):
+                    continue
+                label = c.get('label', 'Unknown')
+                status = c.get('status', 'unknown')
+                
+                if status == 'match':
+                    matched.append(label)
+                elif status == 'partial':
+                    partial.append(label)
+                elif status == 'miss':
+                    not_matched.append(label)
+                elif status == 'concern':
+                    not_matched.append(label)  # Treat concerns as not matched
+            
+            # Combine partial with not_matched for concerns
+            concerns = partial + not_matched
+            
+            # Build reasoning from explanation
+            reasoning = result.get('explanation', '')
+            if not reasoning:
+                reasoning = f"{result.get('recommendation', 'UNKNOWN')}: {len(matched)} matches, {len(concerns)} concerns"
+            
+            # Extract risk profile and hard gate failure
+            response_data = {
+                'score': final_score,
+                'reasoning': reasoning,
+                'matched': matched,
+                'not_matched': concerns,
+                'key_points': components  # Store full component structure in key_points
+            }
+            
+            # Add risk profile if present
+            risk_profile = result.get('risk_profile')
+            if risk_profile:
+                response_data['risk_profile'] = risk_profile
+            
+            # Add hard gate failure if present
+            hard_gate_failed = result.get('hard_gate_failed')
+            if hard_gate_failed:
+                response_data['hard_gate_failed'] = hard_gate_failed
+            
+            return response_data
+        
+        # Handle old format for backward compatibility
         if 'score' not in result:
             raise ValueError("Response missing score field")
         
-        # Validate score range
         score = int(result['score'])
         if not 0 <= score <= 100:
             raise ValueError(f"Score out of range: {score}")
         
-        # Handle both old and new format
+        # Old format handling
         if 'reasoning' in result:
-            # Old format - convert to new format
             return {
                 'score': score,
                 'reasoning': result['reasoning'],
@@ -326,7 +406,6 @@ def parse_score_response(response_content):
                 'key_points': [result['reasoning']]
             }
         else:
-            # New format with structured data
             return {
                 'score': score,
                 'reasoning': ' '.join(result.get('key_points', [])),
@@ -336,25 +415,57 @@ def parse_score_response(response_content):
             }
         
     except json.JSONDecodeError:
-        # Try to extract score and reasoning from text
-        logger.warning("Failed to parse JSON, attempting text extraction")
+        # Enhanced regex fallback for component extraction
+        logger.warning("Failed to parse JSON, attempting component extraction from text")
         
-        # Look for score
         import re
-        score_match = re.search(r'"score":\s*(\d+)', response_content)
         
+        # Try to extract components array
+        components_match = re.search(r'"components":\s*\[(.*?)\]', response_content, re.DOTALL)
+        if components_match:
+            components_text = components_match.group(1)
+            
+            # Extract component objects
+            component_pattern = r'\{\s*"label":\s*"([^"]+)"\s*,\s*"score":\s*(\d+)\s*,\s*"status":\s*"([^"]+)"\s*\}'
+            components = []
+            for match in re.finditer(component_pattern, components_text):
+                components.append({
+                    'label': match.group(1),
+                    'score': int(match.group(2)),
+                    'status': match.group(3)
+                })
+            
+            # Extract final score
+            score_match = re.search(r'"final_score":\s*(\d+)', response_content)
+            final_score = int(score_match.group(1)) if score_match else sum(c['score'] for c in components)
+            
+            # Extract explanation
+            explanation_match = re.search(r'"explanation":\s*"([^"]+)"', response_content)
+            explanation = explanation_match.group(1) if explanation_match else "Component-based scoring"
+            
+            # Build response
+            matched = [c['label'] for c in components if c.get('status') == 'match']
+            concerns = [c['label'] for c in components if c.get('status') in ['partial', 'miss']]
+            
+            return {
+                'score': final_score,
+                'reasoning': explanation,
+                'matched': matched,
+                'not_matched': concerns,
+                'key_points': components
+            }
+        
+        # Ultimate fallback - old format extraction
+        score_match = re.search(r'"score":\s*(\d+)', response_content)
         if score_match:
             score = int(score_match.group(1))
             
-            # Try to extract lists - simplified approach
             matched = []
             not_matched = []
             key_points = []
             
-            # Try to find array content
             matched_match = re.search(r'"matched":\s*\[(.*?)\]', response_content, re.DOTALL)
             if matched_match:
-                # Extract quoted strings from array
                 matched = re.findall(r'"([^"]+)"', matched_match.group(1))
             
             not_matched_match = re.search(r'"not_matched":\s*\[(.*?)\]', response_content, re.DOTALL)
@@ -367,30 +478,27 @@ def parse_score_response(response_content):
             
             return {
                 'score': score,
-                'reasoning': ' '.join(key_points),
+                'reasoning': ' '.join(key_points) if key_points else 'Fallback parsing',
                 'matched': matched,
                 'not_matched': not_matched,
-                'key_points': key_points
+                'key_points': key_points if key_points else []
             }
         
-        # Fallback - look for old format
-        reasoning_match = re.search(r'"reasoning":\s*"([^"]+)"', response_content)
-        if score_match and reasoning_match:
-            return {
-                'score': int(score_match.group(1)),
-                'reasoning': reasoning_match.group(1),
-                'matched': [],
-                'not_matched': [],
-                'key_points': [reasoning_match.group(1)]
-            }
-        
-        raise ScoringError("Failed to parse AI response")
+        # Absolute fallback - return minimal valid structure
+        logger.error("Could not parse any recognizable scoring format")
+        return {
+            'score': 0,
+            'reasoning': 'ERROR: Could not parse AI response',
+            'matched': [],
+            'not_matched': ['Parsing failed'],
+            'key_points': []
+        }
 
 
 def score_job_with_fallback(job, profile_content, models_config, api_key):
     """
     Score a job using AI with model fallback chain
-    Returns: {score: int, reasoning: str, model_used: str}
+    Returns: {score: int, reasoning: str, model_used: str, risk_profile: dict, hard_gate_failed: str|None}
     """
     model_chain = [models_config['primary']] + models_config['fallbacks']
     failed_models = []  # Track which models failed and why
@@ -404,6 +512,36 @@ def score_job_with_fallback(job, profile_content, models_config, api_key):
             
             result = parse_score_response(response_content)
             result['model_used'] = model
+            
+            # Extract risk profile from result if available
+            risk_profile = result.get('risk_profile', {})
+            if risk_profile:
+                result['risk_profile'] = risk_profile
+                logger.debug(f"Extracted risk profile: {risk_profile}")
+            
+            # Handle hard gate failures
+            hard_gate_failed = result.get('hard_gate_failed')
+            if hard_gate_failed:
+                logger.warning(f"Hard gate failed for {job.get('title', 'Unknown')}: {hard_gate_failed}")
+                result['hard_gate_failed'] = hard_gate_failed
+                result['score'] = 0  # Override score for hard gate failures
+                result['recommendation'] = 'SKIP'
+            
+            # Map component statuses correctly
+            components = result.get('key_points', [])
+            if components and isinstance(components, list):
+                # Ensure all components have proper status values
+                for comp in components:
+                    if isinstance(comp, dict):
+                        status = comp.get('status', 'unknown')
+                        # Normalize status values
+                        if status not in ['match', 'partial', 'miss', 'concern']:
+                            if status == 'yes':
+                                comp['status'] = 'match'
+                            elif status == 'no':
+                                comp['status'] = 'miss'
+                            else:
+                                comp['status'] = 'partial'  # Default to partial for unknown
             
             logger.info(f"✓ Scored: {job.get('title', 'Unknown')} - {result['score']}%")
             return result
@@ -421,6 +559,19 @@ def score_job_with_fallback(job, profile_content, models_config, api_key):
                 response_content = call_openrouter(model, prompt, api_key)
                 result = parse_score_response(response_content)
                 result['model_used'] = model
+                
+                # Extract risk profile from retry result
+                risk_profile = result.get('risk_profile', {})
+                if risk_profile:
+                    result['risk_profile'] = risk_profile
+                
+                # Handle hard gate failures in retry
+                hard_gate_failed = result.get('hard_gate_failed')
+                if hard_gate_failed:
+                    result['hard_gate_failed'] = hard_gate_failed
+                    result['score'] = 0
+                    result['recommendation'] = 'SKIP'
+                
                 logger.info(f"✓ Scored after retry: {job.get('title', 'Unknown')} - {result['score']}%")
                 return result
             except Exception as retry_error:

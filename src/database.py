@@ -517,7 +517,7 @@ def get_all_jobs(include_inactive=False):
     query = '''
         SELECT j.*, s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used
         FROM jobs j
-        JOIN scores s ON j.job_id_hash = s.job_id
+        JOIN scores s ON j.id = s.job_id
     '''
     
     if not include_inactive:
