@@ -91,7 +91,7 @@ def load_jobs_txt_metadata():
 
 
 def build_dynamic_prompt_template():
-    """Build hireability-based prompt template with component scoring (v3.1 - NO COMPANY BIAS MODE)"""
+    """Build prompt template with dynamic keywords (role-agnostic)"""
     keywords = load_keywords()
     metadata = load_jobs_txt_metadata()
     
@@ -112,165 +112,74 @@ def build_dynamic_prompt_template():
     
     max_exp = metadata['max_experience']
     
-    # Return template string with:
-    # - Static values (role_list, max_exp, etc.) filled in now with .format()
-    # - Job-specific placeholders ({{profile_content}}, {{job_title}}, etc.) escaped with {{}} for later .format()
-    template = """PROFILE-DRIVEN HIREABILITY SCORING ENGINE (NO COMPANY BIAS MODE - v3.1)
+    return f"""You are an expert job matching assistant. Analyze how well this job matches the candidate's profile using EXTREMELY STRICT scoring criteria.
 
-You are a profile-driven hireability scoring engine. Your task is to estimate shortlisting probability based on candidate-role compatibility, WITHOUT using company size, brand, or employer category as a scoring factor.
-
-⚠️ CRITICAL: Do NOT adjust scores based on company type (startup, enterprise, government, etc.). All roles must be evaluated as if company risk tolerance is unknown or neutral.
-
-═══════════════════════════════════════════════════════════════════
-📂 INPUTS
-═══════════════════════════════════════════════════════════════════
-
-CANDIDATE PROFILE (Ground Truth):
+CANDIDATE PROFILE:
 {{profile_content}}
 
-JOB POSTING TO EVALUATE:
+JOB POSTING:
 Title: {{job_title}}
 Company: {{job_company}}
 Location: {{job_location}}
 Description: {{job_description}}
 
-═══════════════════════════════════════════════════════════════════
-🧱 STEP 1: HARD GATE ANALYSIS (Binary, Non-Negotiable)
-═══════════════════════════════════════════════════════════════════
+⚠️ CRITICAL SCORING CRITERIA - APPLY WITH ZERO TOLERANCE ⚠️
 
-Before any scoring, check these conditions STRICTLY against the profile.
-If ANY hard gate fails → FINAL SCORE = 15-25, RECOMMENDATION = SKIP, STOP ANALYSIS.
+AUTOMATIC REJECTION (Score 0-30) - BE EXTREMELY STRICT:
+- NOT a target role - Must match one of these or closely related: {role_list}
+- Requires Australian PR/Citizenship/Security Clearance (candidate has 485 visa with full work rights - NOT a citizen)
+- Requires {max_exp}+ years professional experience (candidate is FRESH GRADUATE - only academic projects)
+- Requires {max_exp+1}+ years in ANY technology (candidate has NO professional experience)
+- Requires {max_exp+2}+ years, {max_exp+3}+ years, or more (ABSOLUTE DEALBREAKER for fresh graduate)
+- {seniority_list} position (candidate needs GRADUATE or JUNIOR level ONLY)
+- "Preference for citizens" or "citizens preferred" (candidate only has 485 visa, not PR or citizen)
+- Role outside target domain with no relevant component
 
-⚠️ Absence of information ≠ restriction. Apply gates ONLY when explicitly stated.
+🚨 IF ANY OF THE ABOVE APPLY, SCORE MUST BE 0-30. NO EXCEPTIONS. 🚨
 
-❌ Citizenship/PR Required
-  - "Australian citizen", "PR required", "must hold citizenship"
-  - Candidate has 485 visa (temporary graduate visa) — NOT a citizen, NOT PR
+LOW MATCH (Score 40-60):
+- Heavy focus on unfamiliar technologies (candidate learning new stack)
+- Role without core technical component
+- Full-stack or general development as primary skill
+- Location outside preference without remote option
+- No mention of visa flexibility for 485 holders
+- Missing key technical requirements from candidate's stack
+- Requires 1-{max_exp} years experience (borderline for fresh graduate)
 
-❌ Security Clearance Required
-  - "NV1", "NV2", "baseline security clearance"
-  - Candidate is NOT an Australian citizen → cannot obtain clearance
+HIGH MATCH (Score 70-100):
+MUST have most of these:
+- Junior/Graduate/Entry-level explicitly mentioned OR "0-{max_exp} years" OR "fresh graduate welcome"
+- Core technologies required: {technical_skills_list}
+- Strong keywords: {strong_keywords_list}
+- Location: {locations_list}
+- "Visa sponsorship available" OR "485 visa acceptable" OR no visa requirements mentioned
+- Growth potential, mentorship opportunities, learning environment
 
-❌ No Visa Sponsorship + Candidate Needs It
-  - "No visa sponsorship", "must have permanent work rights"
-  - Candidate has 485 visa with FULL current work rights
+Analyze the job and provide:
+1. Match score (0-100) based on criteria above
+2. What matches (3-5 specific points aligned with candidate strengths)
+3. What doesn't match (2-4 concerns, red flags, or mismatches)
+4. Key takeaways (2-3 critical points about fit and opportunity)
 
-❌ Licensed/Regulated Degree Required
-  - Medicine, Law, Civil/Mining Engineering, Nursing, Teaching
-  - Candidate has AI/Data Science degree → cannot practice licensed profession
+⚠️ REMEMBER: Fresh graduate with 485 visa = NO professional experience, NOT a citizen. Be STRICT about experience requirements.
 
-❌ Minimum Commercial Experience Not Met
-  - "5+ years", "3+ years professional experience", {seniority_list} titles
-  - Candidate is FRESH GRADUATE with ZERO commercial experience
-
-If ANY hard gate fails → Return:
+Return ONLY valid JSON in this exact format:
 {{{{
-  "components": [
-    {{{{"label": "HARD GATE: <specific reason>", "score": 0, "status": "concern"}}}}
+  "score": <integer 0-100 based on strict criteria above>,
+  "matched": [
+    "Specific match with candidate expertise",
+    "Another alignment point",
+    "Third matching aspect"
   ],
-  "score_breakdown": {{{{
-    "final_score": 20
-  }}}},
-  "recommendation": "SKIP",
-  "explanation": "Application impossible: <reason>"
-}}}}
-
-═══════════════════════════════════════════════════════════════════
-🧠 STEP 2: COMPONENT SCORING (SMART WEIGHTING - 0-100 points)
-═══════════════════════════════════════════════════════════════════
-
-If hard gates passed, score EACH requirement/skill individually with DYNAMIC weights:
-
-COMPONENT CATEGORIES & SCORING GUIDELINES:
-
-1. **Role Level Match** (0-25 points total across components):
-   - Graduate/Junior role + Fresh grad candidate → 25 pts ("Junior Level" component)
-   - Entry-level undefined + Fresh grad → 20 pts
-   - Mid-level role + Fresh grad → 5 pts (stretch but possible)
-   - {seniority_list} + Fresh grad → 0 pts (dealbreaker, caught in Step 1)
-
-2. **Technical Skills** (0-40 points total across components):
-   - Target skills: {technical_skills_list}
-   - Each matched skill: 10-20 pts (weight by emphasis in job description)
-   - Example: "Python" mentioned 5x → 20 pts, mentioned 1x → 10 pts
-   - Partial match (related skill) → 5-10 pts
-   - Missing critical skill → 0 pts (include in components as "miss")
-
-3. **Domain Knowledge** (0-20 points total):
-   - Target domains: {strong_keywords_list}
-   - Strong domain fit (AI grad → AI role) → 15-20 pts
-   - Adjacent domain (AI grad → Data Science) → 10-15 pts
-   - Weak domain (AI grad → General SWE) → 5 pts
-
-4. **Location Fit** (0-10 points):
-   - Preferences: {locations_list}
-   - Perfect match or Remote → 10 pts
-   - Preferred city → 8 pts
-   - Willing to relocate → 5 pts
-   - International (requires relocation) → 2 pts
-
-5. **Visa Compatibility** (0-10 points):
-   - No sponsorship needed OR sponsorship available → 10 pts
-   - Unclear sponsorship situation → 5 pts
-   - "Preference for citizens" → 3 pts
-   - Hard gate (caught in Step 1) → 0 pts
-
-MATCH STATUS VALUES:
-- "match" = Candidate satisfies this requirement (✅)
-- "partial" = Candidate has related/adjacent skill (⚠️)
-- "miss" = Candidate lacks this requirement (❌)
-- "concern" = Dealbreaker or major gap (❌)
-
-═══════════════════════════════════════════════════════════════════
-🧠 STEP 3: CALCULATE FINAL SCORE (NO COMPANY BIAS MODE)
-═══════════════════════════════════════════════════════════════════
-
-1. Sum all component scores (each component contributes its individual score)
-2. **NO MULTIPLIERS** - Ignore company type, employer size, contract status
-3. Clamp final score between 0-100
-4. Make recommendation:
-   - **APPLY** (≥70%): Strong hireability, worth applying
-   - **CLARIFY** (50-69%): Borderline, consider reaching out first
-   - **SKIP** (<50%): Low probability, time better spent elsewhere
-
-═══════════════════════════════════════════════════════════════════
-OUTPUT FORMAT (Return ONLY valid JSON, no markdown)
-═══════════════════════════════════════════════════════════════════
-
-{{{{
-  "components": [
-    {{{{"label": "Python Programming", "score": 20, "status": "match"}}}},
-    {{{{"label": "Machine Learning", "score": 15, "status": "match"}}}},
-    {{{{"label": "Junior/Graduate Level", "score": 25, "status": "match"}}}},
-    {{{{"label": "Remote Work", "score": 10, "status": "match"}}}},
-    {{{{"label": "AWS Experience", "score": 5, "status": "partial"}}}},
-    {{{{"label": "5+ Years Experience", "score": 0, "status": "miss"}}}},
-    {{{{"label": "Security Clearance", "score": 0, "status": "concern"}}}}
+  "not_matched": [
+    "Specific concern or red flag",
+    "Gap or mismatch point"
   ],
-  "score_breakdown": {{{{
-    "final_score": 95
-  }}}},
-  "recommendation": "APPLY",
-  "explanation": "Strong match for junior AI role with relevant skills. Perfect role level fit and technical alignment."
-}}}}
-
-⚠️ CRITICAL REMINDERS:
-- 485 visa holder ≠ Australian citizen ≠ PR holder (temporary visa with full work rights)
-- Fresh graduate = ZERO commercial experience (academic projects don't count)
-- Component scores should reflect EMPHASIS in job description (smart weighting)
-- Include BOTH matched AND missed requirements in components array
-- Output PURE JSON only (no ```json``` markers or extra text)
-"""
-    
-    # Fill in static values now, leave job-specific placeholders for later
-    return template.format(
-        role_list=role_list,
-        strong_keywords_list=strong_keywords_list,
-        technical_skills_list=technical_skills_list,
-        seniority_list=seniority_list,
-        locations_list=locations_list,
-        max_exp=max_exp
-    )
+  "key_points": [
+    "Critical insight about this role",
+    "Important consideration"
+  ]
+}}}}"""
 
 
 # Load prompt template at module initialization (will be dynamic)
@@ -392,75 +301,23 @@ def call_openrouter(model, prompt, api_key, max_tokens=None):
 
 
 def parse_score_response(response_content):
-    """Parse JSON response from AI model with component extraction (v3.0 - Hireability)"""
-    
-    # Clean response content - remove markdown code blocks if present
-    content_clean = response_content.strip()
-    if content_clean.startswith('```'):
-        # Remove ```json and ``` markers
-        import re
-        content_clean = re.sub(r'^```(?:json)?\s*', '', content_clean)
-        content_clean = re.sub(r'\s*```$', '', content_clean)
-        content_clean = content_clean.strip()
-    
+    """Parse JSON response from AI model"""
     try:
         # Try to parse as JSON
-        result = json.loads(content_clean)
+        result = json.loads(response_content)
         
-        # Validate structure for hireability format
-        if 'components' in result and 'score_breakdown' in result:
-            # New hireability format with components
-            components = result.get('components', [])
-            final_score = result.get('score_breakdown', {}).get('final_score', 0)
-            
-            # Validate score
-            if not 0 <= final_score <= 100:
-                raise ValueError(f"Score out of range: {final_score}")
-            
-            # Extract matched/not_matched from components with safe access
-            matched = []
-            partial = []
-            not_matched = []
-            
-            for c in components:
-                if not isinstance(c, dict):
-                    continue
-                label = c.get('label', 'Unknown')
-                status = c.get('status', 'unknown')
-                
-                if status == 'match':
-                    matched.append(label)
-                elif status == 'partial':
-                    partial.append(label)
-                elif status == 'miss':
-                    not_matched.append(label)
-            
-            # Combine partial with not_matched for concerns
-            concerns = partial + not_matched
-            
-            # Build reasoning from explanation
-            reasoning = result.get('explanation', '')
-            if not reasoning:
-                reasoning = f"{result.get('recommendation', 'UNKNOWN')}: {len(matched)} matches, {len(concerns)} concerns"
-            
-            return {
-                'score': final_score,
-                'reasoning': reasoning,
-                'matched': matched,
-                'not_matched': concerns,
-                'key_points': components  # Store full component structure in key_points
-            }
-        
-        # Handle old format for backward compatibility
+        # Validate structure
         if 'score' not in result:
             raise ValueError("Response missing score field")
         
+        # Validate score range
         score = int(result['score'])
         if not 0 <= score <= 100:
             raise ValueError(f"Score out of range: {score}")
         
-        # Old format handling
+        # Handle both old and new format
         if 'reasoning' in result:
+            # Old format - convert to new format
             return {
                 'score': score,
                 'reasoning': result['reasoning'],
@@ -469,6 +326,7 @@ def parse_score_response(response_content):
                 'key_points': [result['reasoning']]
             }
         else:
+            # New format with structured data
             return {
                 'score': score,
                 'reasoning': ' '.join(result.get('key_points', [])),
@@ -478,57 +336,25 @@ def parse_score_response(response_content):
             }
         
     except json.JSONDecodeError:
-        # Enhanced regex fallback for component extraction
-        logger.warning("Failed to parse JSON, attempting component extraction from text")
+        # Try to extract score and reasoning from text
+        logger.warning("Failed to parse JSON, attempting text extraction")
         
+        # Look for score
         import re
-        
-        # Try to extract components array
-        components_match = re.search(r'"components":\s*\[(.*?)\]', response_content, re.DOTALL)
-        if components_match:
-            components_text = components_match.group(1)
-            
-            # Extract component objects
-            component_pattern = r'\{\s*"label":\s*"([^"]+)"\s*,\s*"score":\s*(\d+)\s*,\s*"status":\s*"([^"]+)"\s*\}'
-            components = []
-            for match in re.finditer(component_pattern, components_text):
-                components.append({
-                    'label': match.group(1),
-                    'score': int(match.group(2)),
-                    'status': match.group(3)
-                })
-            
-            # Extract final score
-            score_match = re.search(r'"final_score":\s*(\d+)', response_content)
-            final_score = int(score_match.group(1)) if score_match else sum(c['score'] for c in components)
-            
-            # Extract explanation
-            explanation_match = re.search(r'"explanation":\s*"([^"]+)"', response_content)
-            explanation = explanation_match.group(1) if explanation_match else "Component-based scoring"
-            
-            # Build response
-            matched = [c['label'] for c in components if c.get('status') == 'match']
-            concerns = [c['label'] for c in components if c.get('status') in ['partial', 'miss']]
-            
-            return {
-                'score': final_score,
-                'reasoning': explanation,
-                'matched': matched,
-                'not_matched': concerns,
-                'key_points': components
-            }
-        
-        # Ultimate fallback - old format extraction
         score_match = re.search(r'"score":\s*(\d+)', response_content)
+        
         if score_match:
             score = int(score_match.group(1))
             
+            # Try to extract lists - simplified approach
             matched = []
             not_matched = []
             key_points = []
             
+            # Try to find array content
             matched_match = re.search(r'"matched":\s*\[(.*?)\]', response_content, re.DOTALL)
             if matched_match:
+                # Extract quoted strings from array
                 matched = re.findall(r'"([^"]+)"', matched_match.group(1))
             
             not_matched_match = re.search(r'"not_matched":\s*\[(.*?)\]', response_content, re.DOTALL)
@@ -541,21 +367,24 @@ def parse_score_response(response_content):
             
             return {
                 'score': score,
-                'reasoning': ' '.join(key_points) if key_points else 'Fallback parsing',
+                'reasoning': ' '.join(key_points),
                 'matched': matched,
                 'not_matched': not_matched,
-                'key_points': key_points if key_points else []
+                'key_points': key_points
             }
         
-        # Absolute fallback - return minimal valid structure
-        logger.error("Could not parse any recognizable scoring format")
-        return {
-            'score': 0,
-            'reasoning': 'ERROR: Could not parse AI response',
-            'matched': [],
-            'not_matched': ['Parsing failed'],
-            'key_points': []
-        }
+        # Fallback - look for old format
+        reasoning_match = re.search(r'"reasoning":\s*"([^"]+)"', response_content)
+        if score_match and reasoning_match:
+            return {
+                'score': int(score_match.group(1)),
+                'reasoning': reasoning_match.group(1),
+                'matched': [],
+                'not_matched': [],
+                'key_points': [reasoning_match.group(1)]
+            }
+        
+        raise ScoringError("Failed to parse AI response")
 
 
 def score_job_with_fallback(job, profile_content, models_config, api_key):
