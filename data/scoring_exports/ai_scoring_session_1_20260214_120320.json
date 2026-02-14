@@ -1,0 +1,20 @@
+{
+  "session": {
+    "session_id": 1,
+    "session_started_at": "2026-02-14 12:03:20.278166+08:00",
+    "session_completed_at": "2026-02-14 12:03:20.298135+08:00",
+    "model_used": "anthropic/claude-3.5-haiku",
+    "scoring_method": "intelligent_extraction",
+    "total_jobs_scored": 0,
+    "total_api_calls": 0,
+    "total_cost_usd": 0.0,
+    "average_score": 0.0,
+    "profile_hash": "12377a0fe51ac9c0122f33eaeee585d3",
+    "config_snapshot": "{\"model\": \"anthropic/claude-3.5-haiku\", \"num_jobs\": 3, \"profile_hash\": \"12377a0fe51ac9c0122f33eaeee585d3\"}",
+    "status": "completed",
+    "error_message": null,
+    "created_at": "2026-02-14 04:03:20"
+  },
+  "jobs": [],
+  "total_jobs": 0
+}

@@ -151,7 +151,7 @@ def init_database():
         )
     ''')
     
-    # Scores table
+    # Scores table - Extended for new scoring methods
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS scores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -164,6 +164,17 @@ def init_database():
             model_used TEXT,
             profile_hash TEXT,
             scored_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            -- New columns for component-based scoring
+            components TEXT,                    -- JSON array of component objects
+            score_breakdown TEXT,              -- JSON object with score breakdown
+            recommendation TEXT,               -- AI recommendation (APPLY/SKIP)
+            -- New columns for hireability-based scoring
+            hard_gate_failed TEXT,             -- Reason if hard gate failed (NULL if passed)
+            risk_profile TEXT,                 -- JSON object with risk factors
+            hireability_factors TEXT,          -- JSON array of hireability factors
+            explanation TEXT,                  -- Detailed explanation
+            -- Metadata
+            scoring_method TEXT DEFAULT 'legacy', -- 'legacy', 'component_based', 'hireability_based'
             FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE
         )
     ''')
@@ -207,6 +218,49 @@ def init_database():
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_jobs_search ON jobs(source_search_id)')
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_jobs_dates ON jobs(first_seen_date, is_active)')
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_scores_job ON scores(job_id)')
+    
+    # Migration: Add new columns to scores table if they don't exist
+    # Check and add component-based scoring columns
+    try:
+        cursor.execute("SELECT components FROM scores LIMIT 1")
+    except sqlite3.OperationalError:
+        cursor.execute("ALTER TABLE scores ADD COLUMN components TEXT")
+    
+    try:
+        cursor.execute("SELECT score_breakdown FROM scores LIMIT 1")
+    except sqlite3.OperationalError:
+        cursor.execute("ALTER TABLE scores ADD COLUMN score_breakdown TEXT")
+    
+    try:
+        cursor.execute("SELECT recommendation FROM scores LIMIT 1")
+    except sqlite3.OperationalError:
+        cursor.execute("ALTER TABLE scores ADD COLUMN recommendation TEXT")
+    
+    # Check and add hireability-based scoring columns
+    try:
+        cursor.execute("SELECT hard_gate_failed FROM scores LIMIT 1")
+    except sqlite3.OperationalError:
+        cursor.execute("ALTER TABLE scores ADD COLUMN hard_gate_failed TEXT")
+    
+    try:
+        cursor.execute("SELECT risk_profile FROM scores LIMIT 1")
+    except sqlite3.OperationalError:
+        cursor.execute("ALTER TABLE scores ADD COLUMN risk_profile TEXT")
+    
+    try:
+        cursor.execute("SELECT hireability_factors FROM scores LIMIT 1")
+    except sqlite3.OperationalError:
+        cursor.execute("ALTER TABLE scores ADD COLUMN hireability_factors TEXT")
+    
+    try:
+        cursor.execute("SELECT explanation FROM scores LIMIT 1")
+    except sqlite3.OperationalError:
+        cursor.execute("ALTER TABLE scores ADD COLUMN explanation TEXT")
+    
+    try:
+        cursor.execute("SELECT scoring_method FROM scores LIMIT 1")
+    except sqlite3.OperationalError:
+        cursor.execute("ALTER TABLE scores ADD COLUMN scoring_method TEXT DEFAULT 'legacy'")
     
     conn.commit()
     conn.close()
@@ -322,7 +376,7 @@ def get_unscored_jobs():
 
 
 def insert_score(job_id, score_data, profile_hash):
-    """Insert score for a job"""
+    """Insert score for a job - Enhanced for new scoring methods"""
     import json
     conn = get_connection()
     cursor = conn.cursor()
@@ -337,9 +391,43 @@ def insert_score(job_id, score_data, profile_hash):
     if not reasoning and score_data.get('key_points'):
         reasoning = ' '.join(score_data['key_points'])
     
+    # Determine scoring method
+    scoring_method = score_data.get('scoring_method', 'legacy')
+    
+    # Handle new scoring method data structures
+    components_json = None
+    score_breakdown_json = None
+    recommendation = None
+    hard_gate_failed = None
+    risk_profile_json = None
+    hireability_factors_json = None
+    explanation = None
+    
+    if scoring_method == 'component_based':
+        # Component-based scoring data
+        components_json = json.dumps(score_data.get('components', []))
+        score_breakdown_json = json.dumps(score_data.get('score_breakdown', {}))
+        recommendation = score_data.get('recommendation')
+        explanation = score_data.get('explanation')
+        
+    elif scoring_method == 'hireability_based':
+        # Hireability-based scoring data
+        hard_gate_failed = score_data.get('hard_gate_failed')
+        risk_profile_json = json.dumps(score_data.get('risk_profile', {}))
+        hireability_factors_json = json.dumps(score_data.get('hireability_factors', []))
+        explanation = score_data.get('explanation')
+        recommendation = score_data.get('recommendation')
+        
+        # For hireability scoring, also store score_breakdown if available
+        if 'score_breakdown' in score_data:
+            score_breakdown_json = json.dumps(score_data['score_breakdown'])
+    
     cursor.execute('''
-        INSERT INTO scores (job_id, score, reasoning, matched, not_matched, key_points, model_used, profile_hash)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO scores (
+            job_id, score, reasoning, matched, not_matched, key_points, model_used, profile_hash,
+            components, score_breakdown, recommendation, hard_gate_failed, risk_profile, 
+            hireability_factors, explanation, scoring_method
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''', (
         job_id,
         score_data['score'],
@@ -348,7 +436,15 @@ def insert_score(job_id, score_data, profile_hash):
         not_matched_json,
         key_points_json,
         score_data.get('model_used'),
-        profile_hash
+        profile_hash,
+        components_json,
+        score_breakdown_json,
+        recommendation,
+        hard_gate_failed,
+        risk_profile_json,
+        hireability_factors_json,
+        explanation,
+        scoring_method
     ))
     
     conn.commit()

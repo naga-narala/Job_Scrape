@@ -459,10 +459,35 @@ def run_daily_job():
             print(f"{'=' * 70}")
             logger.info(f"Scoring {len(unscored)} unscored jobs...")
             
+            # Load scoring configuration
+            scoring_config = config.get('scoring', {})
+            scoring_method = scoring_config.get('method', 'legacy')
+            fallback_methods = scoring_config.get('fallback_methods', [])
+            
+            # Prepare scoring parameters based on method
+            if scoring_method == 'component_based':
+                scoring_params = {
+                    'method': 'component_based',
+                    'models': config.get('ai', {}).get('models', {}),
+                    'api_key': config.get('openrouter_api_key')
+                }
+            elif scoring_method == 'hireability_based':
+                scoring_params = {
+                    'method': 'hireability_based',
+                    'models': config.get('ai', {}).get('models', {}),
+                    'api_key': config.get('openrouter_api_key')
+                }
+            else:  # legacy
+                scoring_params = {
+                    'method': 'legacy',
+                    'models': config.get('ai', {}).get('models', {}),
+                    'api_key': config.get('openrouter_api_key')
+                }
+            
             score_summary = scorer.score_batch(
                 unscored,
                 profile_content,
-                config.get('ai_models', {}),
+                scoring_params,
                 config.get('openrouter_api_key')
             )
             
@@ -471,6 +496,7 @@ def run_daily_job():
             print(f"   ❌ Parser Rejected: {score_summary.get('parser_rejected', 0)}")
             print(f"   ❌ Failed: {score_summary.get('failed', 0)}")
             print(f"   📊 Average score: {score_summary.get('avg_score', 0):.1f}%")
+            print(f"   🎯 Scoring Method: {scoring_method}")
             
             # Insert scores into database
             profile_hash = db.get_profile_hash()

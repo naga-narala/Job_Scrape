@@ -501,7 +501,312 @@
                 width: 100%;
             }
         }
-    </style>
+        
+        /* Component-Based Scoring Styles */
+        .component-breakdown {
+            margin-top: 15px;
+        }
+        
+        .component-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .component-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .component-name {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        
+        .component-category {
+            background: #e2e8f0;
+            color: #475569;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .component-weight {
+            font-weight: 600;
+            color: #7c3aed;
+            font-size: 13px;
+        }
+        
+        .component-details {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        
+        .match-status {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .status-yes {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-partial {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-no {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .criticality {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .criticality-dealbreaker {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .criticality-important {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .criticality-preferred {
+            background: #ecfdf5;
+            color: #059669;
+        }
+        
+        .criticality-nice_to_have {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .component-reasoning {
+            font-size: 13px;
+            color: #64748b;
+            font-style: italic;
+            margin-top: 4px;
+        }
+        
+        .score-breakdown {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+        }
+        
+        .score-breakdown h5 {
+            margin-bottom: 10px;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        
+        .breakdown-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 13px;
+        }
+        
+        .breakdown-stats span {
+            background: #e2e8f0;
+            padding: 6px 8px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .ai-recommendation {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .recommendation-apply {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .recommendation-skip {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        /* Hireability-Based Scoring Styles */
+        .hard-gate-failure {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .hard-gate-failure h5 {
+            color: #dc2626;
+            margin-bottom: 8px;
+        }
+        
+        .gate-reason {
+            color: #991b1b;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        
+        .gate-note {
+            color: #7f1d1d;
+            font-size: 13px;
+            font-style: italic;
+        }
+        
+        .risk-profile {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .risk-profile h5 {
+            margin-bottom: 10px;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        
+        .risk-factors {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .risk-factor {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .risk-low {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .risk-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .risk-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .hireability-factors {
+            margin-top: 15px;
+        }
+        
+        .hireability-factors h5 {
+            margin-bottom: 12px;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        
+        .factor-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .factor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        
+        .factor-name {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 13px;
+        }
+        
+        .factor-score {
+            font-weight: 600;
+            font-size: 13px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .score-high {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .score-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .score-low {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .factor-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .factor-label {
+            color: #64748b;
+            flex: 1;
+        }
+        
+        .factor-status {
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        
+        .status-positive {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-caution {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-negative {
+            background: #fee2e2;
+            color: #991b1b;
+        }
 </head>
 <body>
     <div class="container">
@@ -619,6 +924,110 @@
                                 <li>{{ item }}</li>
                                 {% endfor %}
                             </ul>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Component-Based Scoring Details -->
+                        {% if job.scoring_method == 'component_based' and job.components %}
+                        <div class="detail-section">
+                            <h4>🔧 Component Analysis</h4>
+                            <div class="component-breakdown">
+                                {% for component in job.components %}
+                                <div class="component-item">
+                                    <div class="component-header">
+                                        <span class="component-name">{{ component.name }}</span>
+                                        <span class="component-category">{{ component.category|replace('_', ' ')|title }}</span>
+                                        <span class="component-weight">{{ component.weight }}pts</span>
+                                    </div>
+                                    <div class="component-details">
+                                        <span class="match-status status-{{ component.match_status }}">
+                                            {% if component.match_status == 'yes' %}✅{% elif component.match_status == 'partial' %}⚠️{% else %}❌{% endif %}
+                                            {{ component.match_status|title }}
+                                        </span>
+                                        <span class="criticality criticality-{{ component.criticality }}">
+                                            {% if component.criticality == 'dealbreaker' %}🚨{% elif component.criticality == 'important' %}⚡{% elif component.criticality == 'preferred' %}👍{% else %}ℹ️{% endif %}
+                                            {{ component.criticality|replace('_', ' ')|title }}
+                                        </span>
+                                    </div>
+                                    {% if component.reasoning %}
+                                    <div class="component-reasoning">{{ component.reasoning }}</div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% if job.score_breakdown %}
+                            <div class="score-breakdown">
+                                <h5>Score Breakdown</h5>
+                                <div class="breakdown-stats">
+                                    <span>Total Possible: {{ job.score_breakdown.total_possible or 100 }}</span>
+                                    <span>Earned: {{ job.score_breakdown.earned or job.score }}</span>
+                                    <span>Lost to Dealbreakers: {{ job.score_breakdown.lost_to_dealbreakers or 0 }}</span>
+                                    <span>Lost to Gaps: {{ job.score_breakdown.lost_to_gaps or 0 }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if job.recommendation %}
+                            <div class="ai-recommendation recommendation-{{ job.recommendation|lower }}">
+                                <strong>AI Recommendation:</strong> {{ job.recommendation }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Hireability-Based Scoring Details -->
+                        {% if job.scoring_method == 'hireability_based' %}
+                        <div class="detail-section">
+                            <h4>🎯 Hireability Analysis</h4>
+                            
+                            {% if job.hard_gate_failed %}
+                            <div class="hard-gate-failure">
+                                <h5>🚫 Hard Gate Failure</h5>
+                                <p class="gate-reason">{{ job.hard_gate_failed }}</p>
+                                <p class="gate-note">This job cannot be pursued due to fundamental incompatibility.</p>
+                            </div>
+                            {% else %}
+                            {% if job.risk_profile %}
+                            <div class="risk-profile">
+                                <h5>Risk Assessment</h5>
+                                <div class="risk-factors">
+                                    {% for risk_type, level in job.risk_profile.items() %}
+                                    <span class="risk-factor risk-{{ level }}">
+                                        {{ risk_type|replace('_', ' ')|title }}: {{ level|title }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if job.hireability_factors %}
+                            <div class="hireability-factors">
+                                <h5>Hireability Factors</h5>
+                                {% for factor in job.hireability_factors %}
+                                <div class="factor-item">
+                                    <div class="factor-header">
+                                        <span class="factor-name">{{ factor.factor|replace('_', ' ')|title }}</span>
+                                        <span class="factor-score score-{{ 'high' if factor.score >= 80 else 'medium' if factor.score >= 60 else 'low' }}">
+                                            {{ factor.score }}/100
+                                        </span>
+                                    </div>
+                                    <div class="factor-details">
+                                        <span class="factor-label">{{ factor.label }}</span>
+                                        <span class="factor-status status-{{ factor.status }}">
+                                            {% if factor.status == 'positive' %}✅{% elif factor.status == 'caution' %}⚠️{% else %}❌{% endif %}
+                                            {{ factor.status|title }}
+                                        </span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            
+                            {% if job.recommendation %}
+                            <div class="ai-recommendation recommendation-{{ job.recommendation|lower }}">
+                                <strong>AI Recommendation:</strong> {{ job.recommendation }}
+                            </div>
+                            {% endif %}
+                            {% endif %}
                         </div>
                         {% endif %}
                     </div>
