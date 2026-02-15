@@ -1,17 +1,8 @@
-
 import requests
 import json
 import time
 import logging
 from pathlib import Path
-
-# Import new scoring database
-from scoring_database import (
-    init_scoring_database,
-    start_scoring_session,
-    insert_job_score,
-    complete_scoring_session
-)
 
 logger = logging.getLogger(__name__)
 
@@ -19,17 +10,6 @@ logger = logging.getLogger(__name__)
 config_path = Path(__file__).parent.parent / 'config.json'
 with open(config_path, 'r') as f:
     _SCORER_CONFIG = json.load(f)
-
-# Enforce model selection strictly from config
-def get_model_chain():
-    ai_models = _SCORER_CONFIG.get('ai', {}).get('models', {})
-    primary = ai_models.get('primary')
-    fallbacks = ai_models.get('fallbacks', [])
-    if not primary:
-        raise ValueError("No primary model defined in config.json under ai.models.primary")
-    # Only allow models listed in config
-    allowed_models = [primary] + [m for m in fallbacks if m]
-    return allowed_models
 
 # Import job parser for hard filtering
 try:
@@ -409,25 +389,33 @@ def parse_score_response(response_content):
 
 def score_job_with_fallback(job, profile_content, models_config, api_key):
     """
-    Score a job using AI with model fallback chain (strictly from config)
+    Score a job using AI with model fallback chain
     Returns: {score: int, reasoning: str, model_used: str}
     """
-    model_chain = get_model_chain()
+    model_chain = [models_config['primary']] + models_config['fallbacks']
     failed_models = []  # Track which models failed and why
+    
     for model in model_chain:
         try:
             logger.info(f"Scoring with model: {model}")
+            
             prompt = build_prompt(job, profile_content)
             response_content = call_openrouter(model, prompt, api_key)
+            
             result = parse_score_response(response_content)
             result['model_used'] = model
+            
             logger.info(f"✓ Scored: {job.get('title', 'Unknown')} - {result['score']}%")
             return result
+            
         except RateLimitError as e:
             ai_config = _SCORER_CONFIG.get('ai', {})
             retry_delay = ai_config.get('rate_limit_retry_delay', 3600)
             logger.warning(f"Rate limit hit for {model}, waiting {retry_delay}s...")
+            # Pause then retry same model
             time.sleep(retry_delay)
+            
+            # Retry this model after waiting
             try:
                 prompt = build_prompt(job, profile_content)
                 response_content = call_openrouter(model, prompt, api_key)
@@ -438,522 +426,134 @@ def score_job_with_fallback(job, profile_content, models_config, api_key):
             except Exception as retry_error:
                 logger.error(f"Retry failed for {model}: {retry_error}")
                 continue
+                
         except ModelUnavailableError as e:
             failed_models.append((model, f"Unavailable: {e}"))
             logger.warning(f"Model {model} unavailable, trying fallback: {e}")
             continue
+            
         except ScoringError as e:
             failed_models.append((model, f"Error: {e}"))
             logger.error(f"Scoring error with {model}: {e}")
             continue
+            
         except Exception as e:
             failed_models.append((model, f"Exception: {e}"))
             logger.error(f"Unexpected error with {model}: {e}")
             continue
+    
+    # All models failed - provide detailed summary
     failure_summary = "\n".join([f"  - {m}: {reason}" for m, reason in failed_models])
     logger.error(f"❌ ALL AI MODELS FAILED ({len(failed_models)} models tried):\n{failure_summary}")
     raise ScoringError(f"All {len(failed_models)} AI models failed to score job")
 
 
-def score_job_component_based(job, profile_content, models_config, api_key):
-    """
-    Score a job using component-based weighted scoring
-    Returns: {score: int, reasoning: str, model_used: str, components: list, score_breakdown: dict, recommendation: str}
-    """
-    model_chain = [models_config['primary']] + models_config['fallbacks']
-
-    # Build component scoring prompt
-    COMPONENT_SCORING_PROMPT = """You are an expert job matching system. Your task is to analyze a job posting and score it against a candidate profile using component-based weighted scoring.
-
-===== CANDIDATE CONTEXT =====
-
-PROFILE (What the candidate HAS):
-{profile_content}
-
-TARGET ROLES (What the candidate WANTS):
-{jobs_txt_content}
-
-===== JOB POSTING =====
-
-Title: {job_title}
-Company: {job_company}
-Location: {job_location}
-Description:
-{job_description}
-
-===== YOUR TASK =====
-
-STEP 1: Extract all scoreable components from the job description.
-Identify components in these categories:
-- Technical Requirements (skills, tools, languages, frameworks)
-- Experience Requirements (years, level, seniority)
-- Education Requirements (degree, certifications)
-- Location Requirements (remote, onsite, city, visa/immigration)
-- Soft Skills (communication, leadership, teamwork)
-- Company Benefits (salary, culture, growth opportunities)
-
-STEP 2: For EACH component, determine:
-a) Does the candidate profile satisfy this requirement? (yes/partial/no)
-b) How critical is this component? (dealbreaker/important/preferred/nice_to_have)
-c) What weight should it have? (Total across all components must sum to 100)
-
-CRITICAL WEIGHTING RULES:
-- "MUST have", "Required", "Essential" = dealbreaker
-- "Preferred", "Desirable", "Plus" = nice_to_have
-- Visa/citizenship requirements = dealbreaker if candidate cannot satisfy
-- Years of experience significantly exceeding candidate level = dealbreaker
-- Technical skills mentioned multiple times = higher weight
-- Skills in job title = higher weight than skills in description
-
-STEP 3: Calculate weighted score:
-- If ANY dealbreaker component is NOT satisfied → final_score = 0-20%
-- Each satisfied component contributes its weight to final score
-- Partial satisfaction contributes 50% of component weight
-- Components not satisfied contribute 0%
-
-STEP 4: Return ONLY valid JSON (no markdown, no explanation):
-
-{{
-  "components": [
-    {{
-      "name": "Component Name",
-      "category": "technical_requirements",
-      "match_status": "yes",
-      "criticality": "important",
-      "weight": 15,
-      "reasoning": "Brief explanation of match"
-    }}
-  ],
-  "final_score": 75,
-  "score_breakdown": {{
-    "total_possible": 100,
-    "earned": 75,
-    "lost_to_dealbreakers": 0,
-    "lost_to_gaps": 25
-  }},
-  "recommendation": "APPLY"
-}}
-
-IMPORTANT:
-- Weights must sum to exactly 100
-- match_status must be: "yes", "partial", or "no"
-- criticality must be: "dealbreaker", "important", "preferred", or "nice_to_have"
-"""
-
-    # Load jobs.txt content for context
-    jobs_txt_path = Path(__file__).parent.parent / 'jobs.txt'
-    try:
-        with open(jobs_txt_path, 'r', encoding='utf-8') as f:
-            jobs_txt_content = f.read()
-    except FileNotFoundError:
-        jobs_txt_content = "Graduate AI Engineer, Junior Machine Learning Engineer"
-
-    prompt = COMPONENT_SCORING_PROMPT.format(
-        profile_content=profile_content,
-        jobs_txt_content=jobs_txt_content,
-        job_title=job.get('title', 'Unknown'),
-        job_company=job.get('company', 'Unknown'),
-        job_location=job.get('location', 'Unknown'),
-        job_description=job.get('description', 'No description available')
-    )
-
-    for model in model_chain:
-        try:
-            logger.info(f"Scoring with component-based method using model: {model}")
-
-            response_content = call_openrouter(model, prompt, api_key)
-            result = parse_score_response(response_content)
-
-            # Validate component-based response structure
-            if 'components' not in result or 'score_breakdown' not in result:
-                logger.warning(f"Component scoring response missing required fields, trying fallback model")
-                continue
-
-            result['model_used'] = model
-            result['scoring_method'] = 'component_based'
-
-            logger.info(f"✓ Component scored: {job.get('title', 'Unknown')} - {result['final_score']}%")
-            return result
-
-        except Exception as e:
-            logger.warning(f"Component scoring failed with {model}: {e}")
-            continue
-
-    raise ScoringError("All models failed for component-based scoring")
-
-
-def score_job_hireability_based(job, profile_content, models_config, api_key):
-    """
-    Score a job using hireability-based scoring with hard gates
-    Returns: {score: int, reasoning: str, model_used: str, hard_gate_failed: str|None, risk_profile: dict, hireability_factors: list, explanation: str}
-    """
-    model_chain = [models_config['primary']] + models_config['fallbacks']
-
-    # Build hireability scoring prompt
-    HIREABILITY_SCORING_PROMPT = """PROFILE-DRIVEN HIREABILITY SCORING ENGINE (NO COMPANY BIAS MODE)
-
-You are a profile-driven hireability scoring engine. Your task is to estimate shortlisting probability based on candidate-role compatibility, WITHOUT using company size, brand, or employer category as a scoring factor.
-
-⚠️ CRITICAL: Do NOT adjust scores based on company type (startup, enterprise, government, etc.). All roles must be evaluated as if company risk tolerance is unknown or neutral. This mode focuses on structural feasibility and credibility first.
-
-═══════════════════════════════════════════════════════════════════
-📂 INPUTS
-═══════════════════════════════════════════════════════════════════
-
-CANDIDATE PROFILE (Ground Truth):
-{profile_content}
-
-JOB POSTING TO EVALUATE:
-Title: {job_title}
-Company: {job_company}
-Location: {job_location}
-
-Description:
-{job_description}
-
-═══════════════════════════════════════════════════════════════════
-🧱 STEP 1: HARD GATE ANALYSIS (Binary, Non-Negotiable)
-═══════════════════════════════════════════════════════════════════
-
-Before any scoring, check these conditions STRICTLY against the profile.
-If ANY hard gate fails → FINAL SCORE = 0, RECOMMENDATION = SKIP, STOP ANALYSIS.
-
-⚠️ Absence of information ≠ restriction. Apply gates ONLY when explicitly stated.
-
-❌ Citizenship/PR Required
-  - "Australian citizen", "PR required", "must hold citizenship"
-  - Candidate has 485 visa (temporary graduate visa) — NOT a citizen, NOT PR
-  - FAIL only if explicitly required
-
-❌ Security Clearance Required
-  - "NV1", "NV2", "baseline security clearance", "must be able to obtain clearance"
-  - Candidate is NOT an Australian citizen → cannot obtain clearance
-  - FAIL only if explicitly required
-
-❌ No Visa Sponsorship + Candidate Needs It
-  - "No visa sponsorship", "must have permanent work rights"
-  - Candidate has 485 visa with FULL current work rights
-  - FAIL only if "no sponsorship" AND 485 will expire soon
-
-❌ Licensed/Regulated Degree Required
-  - Medicine, Law, Civil/Mining Engineering, Nursing, Teaching, Accredited Chemistry
-  - Candidate has AI/Data Science degree → cannot practice licensed profession
-  - FAIL if role requires specific regulated profession
-
-❌ Minimum Commercial Experience Not Met
-  - "5+ years", "3+ years professional experience", Senior/Lead/Principal title
-  - Candidate is FRESH GRADUATE with ZERO commercial experience (academic projects only)
-  - FAIL if requires 3+ years OR uses Senior/Lead/Principal title
-
-❌ Location Explicitly Incompatible
-  - Role in India/US/overseas AND profile states Australia-only
-  - FAIL only if geographic impossibility
-
-If ANY hard gate fails → Return immediately:
-{{
-  "hard_gate_failed": "<specific reason>",
-  "final_score": 0,
-  "recommendation": "SKIP",
-  "explanation": "Application impossible: <reason>"
-}}
-
-═══════════════════════════════════════════════════════════════════
-🧠 STEP 2: ROLE-PROFILE COMPATIBILITY PROFILING
-═══════════════════════════════════════════════════════════════════
-
-If hard gates passed, classify these factors (do NOT score yet — just label):
-
-LEGAL/VISA FACTOR:
-- visa_sponsorship_available: true/false (explicitly mentioned)
-- visa_restrictions: "none"/"citizenship_required"/"pr_required"/"unclear"
-- immigration_friction: "low"/"medium"/"high"
-
-EXPERIENCE FACTOR:
-- experience_required: "0-1_years"/"1-2_years"/"2-3_years"/"3+_years"/"senior_level"
-- candidate_experience_level: "fresh_graduate"/"junior"/"mid_level"
-- experience_gap: "none"/"small"/"large"/"impossible"
-
-RECRUITER FRICTION FACTOR:
-- application_complexity: "simple"/"moderate"/"complex"
-- screening_intensity: "low"/"medium"/"high"
-- competition_level: "low"/"medium"/"high"
-
-SKILL MATCH FACTOR:
-- technical_alignment: "perfect"/"good"/"partial"/"poor"
-- domain_expertise: "strong"/"moderate"/"weak"/"none"
-- skill_gaps: "none"/"minor"/"major"
-
-NARRATIVE COHERENCE FACTOR:
-- role_progression: "natural"/"stretch"/"reach"/"impossible"
-- career_trajectory: "aligned"/"adjacent"/"tangential"/"unrelated"
-- growth_potential: "high"/"medium"/"low"/"none"
-
-═══════════════════════════════════════════════════════════════════
-🧮 STEP 3: MULTI-FACTOR SCORING (0-100 Scale)
-═══════════════════════════════════════════════════════════════════
-
-Calculate score using this formula:
-
-BASE_SCORE = 50  # Starting point
-
-LEGAL_VISA_MULTIPLIER:
-- visa_sponsorship_available = true → ×1.0 (no change)
-- visa_restrictions = "none" → ×1.0
-- visa_restrictions = "unclear" → ×0.9
-- visa_restrictions = "pr_required" → ×0.7
-- visa_restrictions = "citizenship_required" → ×0.5
-
-EXPERIENCE_MULTIPLIER:
-- experience_gap = "none" → ×1.0
-- experience_gap = "small" → ×0.9
-- experience_gap = "large" → ×0.8
-- experience_gap = "impossible" → ×0.3
-
-RECRUITER_MULTIPLIER:
-- application_complexity = "simple" → ×1.0
-- application_complexity = "moderate" → ×0.95
-- application_complexity = "complex" → ×0.9
-- screening_intensity = "low" → ×1.0
-- screening_intensity = "medium" → ×0.95
-- screening_intensity = "high" → ×0.9
-- competition_level = "low" → ×1.1
-- competition_level = "medium" → ×1.0
-- competition_level = "high" → ×0.9
-
-SKILL_MULTIPLIER:
-- technical_alignment = "perfect" → ×1.2
-- technical_alignment = "good" → ×1.0
-- technical_alignment = "partial" → ×0.8
-- technical_alignment = "poor" → ×0.6
-- domain_expertise = "strong" → ×1.1
-- domain_expertise = "moderate" → ×1.0
-- domain_expertise = "weak" → ×0.9
-- domain_expertise = "none" → ×0.7
-
-NARRATIVE_MULTIPLIER:
-- role_progression = "natural" → ×1.1
-- role_progression = "stretch" → ×1.0
-- role_progression = "reach" → ×0.9
-- role_progression = "impossible" → ×0.5
-- career_trajectory = "aligned" → ×1.1
-- career_trajectory = "adjacent" → ×1.0
-- career_trajectory = "tangential" → ×0.9
-- career_trajectory = "unrelated" → ×0.7
-- growth_potential = "high" → ×1.1
-- growth_potential = "medium" → ×1.0
-- growth_potential = "low" → ×0.9
-- growth_potential = "none" → ×0.7
-
-FINAL_SCORE = BASE_SCORE × LEGAL × EXPERIENCE × RECRUITER × SKILL × NARRATIVE
-
-═══════════════════════════════════════════════════════════════════
-📤 OUTPUT FORMAT
-═══════════════════════════════════════════════════════════════════
-
-Return ONLY valid JSON:
-
-{{
-  "hard_gate_failed": null,
-  "final_score": 78,
-  "recommendation": "APPLY",
-  "explanation": "Strong technical match with visa sponsorship available",
-  "risk_profile": {{
-    "visa_risk": "low",
-    "experience_risk": "medium",
-    "competition_risk": "high"
-  }},
-  "hireability_factors": [
-    {{
-      "factor": "legal_visa",
-      "label": "Visa sponsorship available",
-      "score": 95,
-      "status": "positive"
-    }},
-    {{
-      "factor": "experience",
-      "label": "2-3 years required, candidate has 0",
-      "score": 70,
-      "status": "caution"
-    }},
-    {{
-      "factor": "recruiter",
-      "label": "ATS screening, moderate competition",
-      "score": 80,
-      "status": "neutral"
-    }},
-    {{
-      "factor": "skill",
-      "label": "Perfect technical alignment",
-      "score": 95,
-      "status": "positive"
-    }},
-    {{
-      "factor": "narrative",
-      "label": "Natural progression from graduate to junior",
-      "score": 90,
-      "status": "positive"
-    }}
-  ]
-}}
-
-⚠️ REMEMBER: NO COMPANY BIAS. Evaluate structural feasibility first.
-"""
-
-    prompt = HIREABILITY_SCORING_PROMPT.format(
-        profile_content=profile_content,
-        job_title=job.get('title', 'Unknown'),
-        job_company=job.get('company', 'Unknown'),
-        job_location=job.get('location', 'Unknown'),
-        job_description=job.get('description', 'No description available')
-    )
-
-    for model in model_chain:
-        try:
-            logger.info(f"Scoring with hireability-based method using model: {model}")
-
-            response_content = call_openrouter(model, prompt, api_key)
-            result = parse_score_response(response_content)
-
-            # Validate hireability-based response structure
-            if 'hard_gate_failed' not in result or 'hireability_factors' not in result:
-                logger.warning(f"Hireability scoring response missing required fields, trying fallback model")
-                continue
-
-            result['model_used'] = model
-            result['scoring_method'] = 'hireability_based'
-
-            # Handle hard gate failures
-            if result.get('hard_gate_failed'):
-                result['score'] = 0
-                result['recommendation'] = 'SKIP'
-            else:
-                result['score'] = result.get('final_score', 0)
-
-            logger.info(f"✓ Hireability scored: {job.get('title', 'Unknown')} - {result['score']}%")
-            return result
-
-        except Exception as e:
-            logger.warning(f"Hireability scoring failed with {model}: {e}")
-            continue
-
-    raise ScoringError("All models failed for hireability-based scoring")
-
-
-def score_batch(jobs, profile_content, models_config, api_key, scoring_method='legacy', use_db=True):
+def score_batch(jobs, profile_content, models_config, api_key):
     """
     Score a batch of jobs with hard dealbreaker filtering
-    Supports multiple scoring methods: legacy, component_based, hireability_based
-
-    Args:
-        jobs: List of job dictionaries
-        profile_content: User profile text
-        models_config: AI model configuration
-        api_key: OpenRouter API key
-        scoring_method: Scoring method to use ('legacy', 'component_based', 'hireability_based')
-
-    Returns: {processed: int, ai_scored: int, parser_rejected: int, failed: int, avg_score: float, scores: list}
+    Returns: {scored: int, failed: int, avg_score: float, scores: list}
     """
     scored = 0
     failed = 0
     rejected_by_parser = 0
     total_score = 0
     scores = []
-
+    
     # Initialize parser if available
     parser = JobDescriptionParser() if PARSER_AVAILABLE else None
-
-    logger.info(f"Starting batch scoring of {len(jobs)} jobs using {scoring_method} method")
+    
+    logger.info(f"Starting batch scoring of {len(jobs)} jobs")
     if parser:
         logger.info("Parser enabled - enforcing hard dealbreaker filters")
-
-    # Initialize scoring database if needed
-    if use_db:
-        init_scoring_database()
-        # Use config snapshot for session
-        profile_hash = None
-        try:
-            from database import get_profile_hash
-            profile_hash = get_profile_hash()
-        except Exception:
-            pass
-        session_id = start_scoring_session(get_model_chain()[0], scoring_method, profile_hash, config=_SCORER_CONFIG)
-    else:
-        session_id = None
-
+    
     for i, job in enumerate(jobs, 1):
         try:
             logger.info(f"Scoring job {i}/{len(jobs)}: {job.get('title', 'Unknown')}")
-
+            
             # HARD FILTER: Pre-check for dealbreakers using parser
             if parser:
+                # Phase 4: Check BOTH description and requirements section
                 description = job.get('description', '')
                 requirement_text = job.get('requirement_text', '')
+                
+                # Combine for comprehensive check, with requirements weighted higher
                 full_text = description
                 if requirement_text:
+                    # Prepend requirements to give them priority in parsing
                     full_text = f"REQUIREMENTS:\n{requirement_text}\n\nDESCRIPTION:\n{description}"
+                
                 parsed = parser.parse(
                     full_text,
                     job.get('title', ''),
                     job.get('location', '')
                 )
+                
+                # If dealbreakers found, force score to 15-25 and skip AI scoring
                 if parsed['dealbreakers']['has_dealbreakers']:
                     reasons = parsed['dealbreakers']['reasons']
+                    
+                    # Extract evidence snippets to show what triggered rejection
                     evidence = []
                     full_text_lower = full_text.lower()
+                    
                     for reason in reasons:
                         if 'Senior' in reason or 'Lead' in reason:
+                            # Find the actual text mentioning senior/lead
                             import re
                             senior_match = re.search(r'\b(senior|lead|principal|staff|architect)\s+\w+', full_text_lower)
                             if senior_match:
                                 evidence.append(f"Found: '{senior_match.group(0)}' in description")
                         elif 'years' in reason:
+                            # Find the years requirement
                             years_match = re.search(r'(\d+)\+?\s*years?', full_text_lower)
                             if years_match:
                                 evidence.append(f"Found: '{years_match.group(0)}' requirement")
                         elif 'PR' in reason or 'Citizenship' in reason:
+                            # Find citizenship/PR mention
                             pr_match = re.search(r'(australian\s+citizen|pr\s+required|security\s+clearance)', full_text_lower)
                             if pr_match:
                                 evidence.append(f"Found: '{pr_match.group(0)}'")
+                    
                     logger.warning(f"❌ PARSER REJECTION: {job.get('title', 'Unknown')} at {job.get('company', 'Unknown')}")
                     logger.warning(f"   Dealbreakers: {', '.join(reasons)}")
                     if evidence:
                         logger.warning(f"   Evidence: {' | '.join(evidence)}")
+                    
+                    # Add evidence to reasons for database storage
                     if evidence:
                         reasons.append(f"Evidence: {'; '.join(evidence)}")
-                    score_data = {
+                    
+                    scores.append({
                         'job_id': job.get('id'),
-                        'score': 20,
+                        'score': 20,  # Auto-reject score
                         'reasoning': f"AUTO-REJECTED: {', '.join(reasons)}",
                         'matched': [],
                         'not_matched': reasons,
                         'key_points': [f"Not suitable for fresh graduate with 485 visa"],
-                        'model_used': 'parser-filter',
-                        'scoring_method': scoring_method
-                    }
-                    scores.append(score_data)
-                    if use_db and session_id:
-                        insert_job_score(session_id, job, score_data)
+                        'model_used': 'parser-filter'
+                    })
+                    
                     rejected_by_parser += 1
                     scored += 1
                     total_score += 20
                     ai_config = _SCORER_CONFIG.get('ai', {})
-                    time.sleep(ai_config.get('batch_delay', 0.1))
+                    time.sleep(ai_config.get('batch_delay', 0.1))  # Minimal delay
                     continue
-
-            # Job passed parser check - proceed with AI scoring based on method
-            if scoring_method == 'component_based':
-                result = score_job_component_based(job, profile_content, models_config, api_key)
-            elif scoring_method == 'hireability_based':
-                result = score_job_hireability_based(job, profile_content, models_config, api_key)
-            else:
-                result = score_job_with_fallback(job, profile_content, models_config, api_key)
-            result['scoring_method'] = scoring_method
+            
+            # Job passed parser check - proceed with AI scoring
+            result = score_job_with_fallback(job, profile_content, models_config, api_key)
+            
+            # HARD FILTER: Post-AI validation for experience years in AI response
             final_score = result['score']
-            final_reasoning = result.get('reasoning', '')
+            final_reasoning = result['reasoning']
             final_not_matched = result.get('not_matched', [])
+            
+            # Override high scores if dealbreakers detected in AI's own analysis
             if final_score >= 70:
                 reasoning_lower = final_reasoning.lower()
                 not_matched_text = ' '.join(final_not_matched).lower()
+                
+                # Check if AI itself mentioned experience dealbreakers
                 if any(pattern in reasoning_lower or pattern in not_matched_text for pattern in [
                     '5+ years', '5 years', '3+ years', '4+ years', '4 years',
                     'citizen', 'citizenship', 'pr required', 'security clearance',
@@ -962,37 +562,24 @@ def score_batch(jobs, profile_content, models_config, api_key, scoring_method='l
                     logger.warning(f"⚠️  OVERRIDING score from {final_score}% to 25% due to dealbreakers in AI analysis")
                     final_score = 25
                     final_reasoning = f"AUTO-OVERRIDE: {final_reasoning} [Score reduced due to dealbreakers]"
-            score_data = {
+            
+            scores.append({
                 'job_id': job.get('id'),
                 'score': final_score,
                 'reasoning': final_reasoning,
                 'matched': result.get('matched', []),
                 'not_matched': final_not_matched,
                 'key_points': result.get('key_points', []),
-                'model_used': result['model_used'],
-                'scoring_method': scoring_method
-            }
-            if scoring_method == 'component_based':
-                score_data.update({
-                    'components': result.get('components', []),
-                    'score_breakdown': result.get('score_breakdown', {}),
-                    'recommendation': result.get('recommendation')
-                })
-            elif scoring_method == 'hireability_based':
-                score_data.update({
-                    'hard_gate_failed': result.get('hard_gate_failed'),
-                    'risk_profile': result.get('risk_profile', {}),
-                    'hireability_factors': result.get('hireability_factors', []),
-                    'explanation': result.get('explanation'),
-                    'recommendation': result.get('recommendation')
-                })
-            scores.append(score_data)
-            if use_db and session_id:
-                insert_job_score(session_id, job, score_data)
+                'model_used': result['model_used']
+            })
+            
             scored += 1
             total_score += final_score
+            
+            # Rate limiting between jobs
             ai_config = _SCORER_CONFIG.get('ai', {})
             time.sleep(ai_config.get('score_retry_delay', 1))
+            
         except ScoringError as e:
             logger.error(f"Failed to score job {job.get('title', 'Unknown')}: {e}")
             failed += 1
@@ -1001,28 +588,29 @@ def score_batch(jobs, profile_content, models_config, api_key, scoring_method='l
             logger.error(f"Unexpected error scoring job: {e}")
             failed += 1
             continue
+    
     avg_score = round(total_score / scored, 1) if scored > 0 else 0
+    
+    # Check if primary model was never used successfully
     models_config = _SCORER_CONFIG.get('ai', {}).get('models', {})
     primary_model = models_config.get('primary', 'unknown')
     models_used = set(s.get('model_used', '') for s in scores if s.get('model_used'))
+    
     if primary_model and primary_model not in models_used and scored > 0:
         logger.warning(f"⚠️  PRIMARY MODEL NEVER SUCCEEDED: '{primary_model}' failed for all jobs. Used fallbacks: {', '.join(models_used)}")
+    
     summary = {
-        'processed': scored,
-        'ai_scored': scored - rejected_by_parser,
-        'parser_rejected': rejected_by_parser,
+        'processed': scored,  # Total jobs processed (includes AI scored + parser rejected)
+        'ai_scored': scored - rejected_by_parser,  # Jobs that got numeric scores from AI
+        'parser_rejected': rejected_by_parser,  # Jobs rejected before AI scoring
         'failed': failed,
         'avg_score': avg_score,
         'scores': scores
     }
-    if use_db and session_id:
-        complete_scoring_session(session_id, stats={
-            'total_jobs_scored': scored,
-            'total_api_calls': scored,
-            'average_score': avg_score
-        })
+    
     if parser:
         logger.info(f"Batch scoring complete: {scored - rejected_by_parser} AI scored, {rejected_by_parser} parser rejected, {failed} failed, avg: {avg_score}%")
     else:
         logger.info(f"Batch scoring complete: {scored} AI scored, {failed} failed, avg: {avg_score}%")
+    
     return summary
