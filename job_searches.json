@@ -1,474 +1,379 @@
 {
   "searches": [
     {
-      "id": "graduate_ai_engineer_au",
-      "name": "Graduate Artificial Intelligence Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20artificial%20intelligence%20engineer&refresh=true",
+      "id": "ai_engineer_linkedin_au",
+      "name": "AI Engineer - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20engineer&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "junior_ai_engineer_au",
-      "name": "Junior AI Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20ai%20engineer&refresh=true",
+      "id": "ai_engineer_seek_au",
+      "name": "AI Engineer - Seek AU",
+      "url": "https://www.seek.com.au/ai-engineer-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "graduate_ml_engineer_au",
-      "name": "Graduate Machine Learning Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20machine%20learning%20engineer&refresh=true",
+      "id": "ai_engineer_jora_au",
+      "name": "AI Engineer - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=ai+engineer&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "junior_ml_engineer_au",
-      "name": "Junior Machine Learning Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20machine%20learning%20engineer&refresh=true",
+      "id": "ml_engineer_linkedin_au",
+      "name": "Machine Learning Engineer - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=machine%20learning%20engineer&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "ai_graduate_au",
-      "name": "AI Graduate - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20graduate&refresh=true",
+      "id": "ml_engineer_seek_au",
+      "name": "Machine Learning Engineer - Seek AU",
+      "url": "https://www.seek.com.au/machine-learning-engineer-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "ml_graduate_engineer_au",
-      "name": "ML Graduate Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ml%20graduate%20engineer&refresh=true",
+      "id": "ml_engineer_jora_au",
+      "name": "Machine Learning Engineer - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=machine+learning+engineer&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "associate_ai_engineer_au",
-      "name": "Associate AI Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=associate%20ai%20engineer&refresh=true",
+      "id": "data_scientist_linkedin_au",
+      "name": "Data Scientist - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=data%20scientist&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "associate_ml_engineer_au",
-      "name": "Associate Machine Learning Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=associate%20machine%20learning%20engineer&refresh=true",
+      "id": "data_scientist_seek_au",
+      "name": "Data Scientist - Seek AU",
+      "url": "https://www.seek.com.au/data-scientist-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "graduate_deep_learning_au",
-      "name": "Graduate Deep Learning Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20deep%20learning%20engineer&refresh=true",
+      "id": "data_scientist_jora_au",
+      "name": "Data Scientist - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=data+scientist&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "junior_deep_learning_au",
-      "name": "Junior Deep Learning Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20deep%20learning%20engineer&refresh=true",
+      "id": "deep_learning_engineer_linkedin_au",
+      "name": "Deep Learning Engineer - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=deep%20learning%20engineer&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "graduate_computer_vision_au",
-      "name": "Graduate Computer Vision Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20computer%20vision%20engineer&refresh=true",
+      "id": "deep_learning_engineer_seek_au",
+      "name": "Deep Learning Engineer - Seek AU",
+      "url": "https://www.seek.com.au/deep-learning-engineer-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "junior_computer_vision_au",
-      "name": "Junior Computer Vision Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20computer%20vision%20engineer&refresh=true",
+      "id": "deep_learning_engineer_jora_au",
+      "name": "Deep Learning Engineer - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=deep+learning+engineer&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "computer_vision_analyst_au",
-      "name": "Computer Vision Analyst - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=computer%20vision%20analyst&refresh=true",
+      "id": "computer_vision_engineer_linkedin_au",
+      "name": "Computer Vision Engineer - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=computer%20vision%20engineer&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "graduate_nlp_engineer_au",
-      "name": "Graduate NLP Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20nlp%20engineer&refresh=true",
+      "id": "computer_vision_engineer_seek_au",
+      "name": "Computer Vision Engineer - Seek AU",
+      "url": "https://www.seek.com.au/computer-vision-engineer-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "junior_nlp_engineer_au",
-      "name": "Junior NLP Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20nlp%20engineer&refresh=true",
+      "id": "computer_vision_engineer_jora_au",
+      "name": "Computer Vision Engineer - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=computer+vision+engineer&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "graduate_data_scientist_au",
-      "name": "Graduate Data Scientist - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20data%20scientist&refresh=true",
+      "id": "nlp_engineer_linkedin_au",
+      "name": "NLP Engineer - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=nlp%20engineer&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "junior_data_scientist_au",
-      "name": "Junior Data Scientist - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20data%20scientist&refresh=true",
+      "id": "nlp_engineer_seek_au",
+      "name": "NLP Engineer - Seek AU",
+      "url": "https://www.seek.com.au/nlp-engineer-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "associate_data_scientist_au",
-      "name": "Associate Data Scientist - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=associate%20data%20scientist&refresh=true",
+      "id": "nlp_engineer_jora_au",
+      "name": "NLP Engineer - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=nlp+engineer&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "graduate_data_analyst_au",
-      "name": "Graduate Data Analyst - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20data%20analyst&refresh=true",
+      "id": "genai_engineer_linkedin_au",
+      "name": "Generative AI Engineer - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=generative%20ai%20engineer&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "junior_data_analyst_au",
-      "name": "Junior Data Analyst - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20data%20analyst&refresh=true",
+      "id": "genai_engineer_seek_au",
+      "name": "Generative AI Engineer - Seek AU",
+      "url": "https://www.seek.com.au/generative-ai-engineer-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "graduate_mlops_engineer_au",
-      "name": "Graduate MLOps Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20mlops%20engineer&refresh=true",
+      "id": "genai_engineer_jora_au",
+      "name": "Generative AI Engineer - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=generative+ai+engineer&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "junior_mlops_engineer_au",
-      "name": "Junior MLOps Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20mlops%20engineer&refresh=true",
+      "id": "llm_engineer_linkedin_au",
+      "name": "LLM Engineer - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=llm%20engineer&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "ml_platform_engineer_au",
-      "name": "ML Platform Engineer Graduate - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ml%20platform%20engineer%20graduate&refresh=true",
+      "id": "llm_engineer_seek_au",
+      "name": "LLM Engineer - Seek AU",
+      "url": "https://www.seek.com.au/llm-engineer-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "graduate_software_engineer_ai_au",
-      "name": "Graduate Software Engineer AI - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20software%20engineer%20ai&refresh=true",
+      "id": "llm_engineer_jora_au",
+      "name": "LLM Engineer - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=llm+engineer&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "junior_software_engineer_ml_au",
-      "name": "Junior Software Engineer ML - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20software%20engineer%20machine%20learning&refresh=true",
+      "id": "mlops_engineer_linkedin_au",
+      "name": "MLOps Engineer - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=mlops%20engineer&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "graduate_genai_engineer_au",
-      "name": "Graduate Generative AI Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20generative%20ai%20engineer&refresh=true",
+      "id": "mlops_engineer_seek_au",
+      "name": "MLOps Engineer - Seek AU",
+      "url": "https://www.seek.com.au/mlops-engineer-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "junior_genai_engineer_au",
-      "name": "Junior Generative AI Engineer - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=junior%20generative%20ai%20engineer&refresh=true",
+      "id": "mlops_engineer_jora_au",
+      "name": "MLOps Engineer - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=mlops+engineer&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "llm_engineer_graduate_au",
-      "name": "LLM Engineer Graduate - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=llm%20engineer%20graduate&refresh=true",
+      "id": "data_analyst_linkedin_au",
+      "name": "Data Analyst - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=data%20analyst&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "ai_agent_developer_au",
-      "name": "AI Agent Developer Graduate - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20agent%20developer%20graduate&refresh=true",
+      "id": "data_analyst_seek_au",
+      "name": "Data Analyst - Seek AU",
+      "url": "https://www.seek.com.au/data-analyst-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "prompt_engineer_au",
-      "name": "Prompt Engineer Graduate - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=prompt%20engineer%20graduate&refresh=true",
+      "id": "data_analyst_jora_au",
+      "name": "Data Analyst - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=data+analyst&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "graduate_research_assistant_ai_au",
-      "name": "Graduate Research Assistant AI - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20research%20assistant%20ai&refresh=true",
+      "id": "ai_consultant_linkedin_au",
+      "name": "AI Consultant - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20consultant&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "ai_research_engineer_au",
-      "name": "AI Research Engineer Graduate - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20research%20engineer%20graduate&refresh=true",
+      "id": "ai_consultant_seek_au",
+      "name": "AI Consultant - Seek AU",
+      "url": "https://www.seek.com.au/ai-consultant-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "graduate_analytics_consultant_au",
-      "name": "Graduate Analytics Consultant - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=graduate%20analytics%20consultant&refresh=true",
+      "id": "ai_consultant_jora_au",
+      "name": "AI Consultant - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=ai+consultant&l=Australia",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "ai_business_analyst_au",
-      "name": "AI Business Analyst Graduate - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20business%20analyst%20graduate&refresh=true",
+      "id": "ai_intern_linkedin_au",
+      "name": "AI Intern - LinkedIn AU",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20intern&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "ai_intern_au",
-      "name": "AI Engineer Intern - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20engineer%20intern&refresh=true",
+      "id": "ai_intern_seek_au",
+      "name": "AI Intern - Seek AU",
+      "url": "https://www.seek.com.au/ai-intern-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "ml_intern_au",
-      "name": "Machine Learning Intern - AU",
+      "id": "ai_intern_jora_au",
+      "name": "AI Intern - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=ai+intern&l=Australia",
+      "enabled": true,
+      "region": "australia",
+      "source": "jora"
+    },
+    {
+      "id": "ml_intern_linkedin_au",
+      "name": "ML Intern - LinkedIn AU",
       "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=machine%20learning%20intern&refresh=true",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "linkedin"
     },
     {
-      "id": "data_science_intern_au",
-      "name": "Data Science Intern - AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=data%20science%20intern&refresh=true",
+      "id": "ml_intern_seek_au",
+      "name": "ML Intern - Seek AU",
+      "url": "https://www.seek.com.au/machine-learning-intern-jobs/in-All-Australia?daterange=7",
       "enabled": true,
-      "region": "australia"
+      "region": "australia",
+      "source": "seek"
     },
     {
-      "id": "graduate_ai_engineer_us",
-      "name": "Graduate Artificial Intelligence Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=graduate%20artificial%20intelligence%20engineer&refresh=true",
+      "id": "ml_intern_jora_au",
+      "name": "ML Intern - Jora AU",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=machine+learning+intern&l=Australia",
       "enabled": true,
-      "region": "us"
+      "region": "australia",
+      "source": "jora"
     },
     {
-      "id": "junior_ai_engineer_us",
-      "name": "Junior AI Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20ai%20engineer&refresh=true",
+      "id": "remote_ai_engineer_contractor_worldwide",
+      "name": "Remote AI Engineer Contractor - Worldwide",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=remote%20ai%20engineer%20contractor&refresh=true",
       "enabled": true,
-      "region": "us"
+      "region": "international",
+      "source": "linkedin",
+      "notes": "Contractor roles - B2B arrangements, location-agnostic"
     },
     {
-      "id": "graduate_ml_engineer_us",
-      "name": "Graduate Machine Learning Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=graduate%20machine%20learning%20engineer&refresh=true",
+      "id": "remote_ml_engineer_global_worldwide",
+      "name": "Remote ML Engineer Global - Worldwide",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=remote%20machine%20learning%20engineer%20global&refresh=true",
       "enabled": true,
-      "region": "us"
+      "region": "international",
+      "source": "linkedin",
+      "notes": "Global teams, distributed workforce"
     },
     {
-      "id": "junior_ml_engineer_us",
-      "name": "Junior Machine Learning Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20machine%20learning%20engineer&refresh=true",
+      "id": "ai_engineer_eor_worldwide",
+      "name": "AI Engineer EOR Services - Worldwide",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=ai%20engineer%20deel%20remote.com&refresh=true",
       "enabled": true,
-      "region": "us"
+      "region": "international",
+      "source": "linkedin",
+      "notes": "Companies using Employer of Record services"
     },
     {
-      "id": "associate_ai_engineer_us",
-      "name": "Associate AI Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=associate%20ai%20engineer&refresh=true",
+      "id": "international_remote_data_scientist_worldwide",
+      "name": "International Remote Data Scientist - Worldwide",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=international%20remote%20data%20scientist&refresh=true",
       "enabled": true,
-      "region": "us"
+      "region": "international",
+      "source": "linkedin",
+      "notes": "Explicitly international positions"
     },
     {
-      "id": "associate_ml_engineer_us",
-      "name": "Associate Machine Learning Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=associate%20machine%20learning%20engineer&refresh=true",
+      "id": "contractor_ml_worldwide",
+      "name": "Contractor Machine Learning - Worldwide",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=contractor%20machine%20learning&refresh=true",
       "enabled": true,
-      "region": "us"
+      "region": "international",
+      "source": "linkedin",
+      "notes": "Freelance/contract ML roles"
     },
     {
-      "id": "graduate_deep_learning_us",
-      "name": "Graduate Deep Learning Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=graduate%20deep%20learning%20engineer&refresh=true",
+      "id": "remote_ai_startup_worldwide",
+      "name": "Remote AI Engineer Startup - Worldwide",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=remote%20ai%20engineer%20startup&refresh=true",
       "enabled": true,
-      "region": "us"
+      "region": "international",
+      "source": "linkedin",
+      "notes": "Startups are more flexible with international hiring"
     },
     {
-      "id": "junior_deep_learning_us",
-      "name": "Junior Deep Learning Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20deep%20learning%20engineer&refresh=true",
+      "id": "remote_web3_ai_worldwide",
+      "name": "Remote Web3 AI Engineer - Worldwide",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=remote%20ai%20engineer%20web3%20crypto&refresh=true",
       "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "graduate_computer_vision_us",
-      "name": "Graduate Computer Vision Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=graduate%20computer%20vision%20engineer&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "junior_computer_vision_us",
-      "name": "Junior Computer Vision Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20computer%20vision%20engineer&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "graduate_nlp_engineer_us",
-      "name": "Graduate NLP Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=graduate%20nlp%20engineer&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "junior_nlp_engineer_us",
-      "name": "Junior NLP Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20nlp%20engineer&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "graduate_data_scientist_us",
-      "name": "Graduate Data Scientist - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=graduate%20data%20scientist&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "junior_data_scientist_us",
-      "name": "Junior Data Scientist - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20data%20scientist&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "associate_data_scientist_us",
-      "name": "Associate Data Scientist - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=associate%20data%20scientist&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "junior_data_analyst_us",
-      "name": "Junior Data Analyst - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20data%20analyst&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "graduate_mlops_engineer_us",
-      "name": "Graduate MLOps Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=graduate%20mlops%20engineer&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "junior_mlops_engineer_us",
-      "name": "Junior MLOps Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20mlops%20engineer&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "ml_platform_engineer_us",
-      "name": "ML Platform Engineer Graduate - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=ml%20platform%20engineer%20graduate&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "graduate_software_engineer_ai_us",
-      "name": "Graduate Software Engineer AI - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=graduate%20software%20engineer%20ai&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "junior_software_engineer_ml_us",
-      "name": "Junior Software Engineer ML - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20software%20engineer%20machine%20learning&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "graduate_genai_engineer_us",
-      "name": "Graduate Generative AI Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=graduate%20generative%20ai%20engineer&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "junior_genai_engineer_us",
-      "name": "Junior Generative AI Engineer - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=junior%20generative%20ai%20engineer&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "llm_engineer_us",
-      "name": "LLM Engineer Graduate - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=llm%20engineer%20graduate&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "ai_agent_developer_us",
-      "name": "AI Agent Developer Graduate - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=ai%20agent%20developer%20graduate&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "prompt_engineer_us",
-      "name": "Prompt Engineer Graduate - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=prompt%20engineer%20graduate&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "ai_research_engineer_us",
-      "name": "AI Research Engineer Graduate - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=ai%20research%20engineer%20graduate&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "ai_intern_us",
-      "name": "AI Engineer Intern - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=ai%20engineer%20intern&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "ml_intern_us",
-      "name": "Machine Learning Intern - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=machine%20learning%20intern&refresh=true",
-      "enabled": true,
-      "region": "us"
-    },
-    {
-      "id": "data_science_intern_us",
-      "name": "Data Science Intern - US Remote",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&geoId=103644278&keywords=data%20science%20intern&refresh=true",
-      "enabled": true,
-      "region": "us"
+      "region": "international",
+      "source": "linkedin",
+      "notes": "Crypto/Web3 companies are most location-agnostic"
     }
   ]
 }
-

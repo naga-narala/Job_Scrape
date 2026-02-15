@@ -82,19 +82,19 @@ def group_jobs_by_date(jobs):
 
 @app.route('/')
 def index():
-    """Main dashboard - last 7 days by default"""
-    days = request.args.get('days', 7, type=int)
+    """Main dashboard - last 30 days by default"""
+    days = request.args.get('days', 30, type=int)
     location_filter = request.args.get('location', 'all')
     region_filter = request.args.get('region', 'all')
     
     config = load_config()
     hide_old_days = config.get('hide_jobs_older_than_days', 30)
-    threshold = config.get('match_threshold', 30)  # Show jobs ≥threshold
+    threshold = config.get('match_threshold', 0)  # Show all jobs (changed to 0)
     
-    # Get jobs within date range
-    jobs = db.get_jobs_by_date_range(days, hide_old_days)
+    # Get jobs within date range (increased to 60 days to catch older jobs)
+    jobs = db.get_jobs_by_date_range(days, hide_old_days=60)
     
-    # Filter to only high-scoring jobs (≥50%) and exclude applied/rejected jobs
+    # Filter to exclude applied/rejected jobs only
     jobs = [j for j in jobs if j.get('score', 0) >= threshold and not j.get('applied', 0) and not j.get('rejected', 0)]
     
     # Apply region filter
@@ -121,16 +121,22 @@ def index():
     jobs_by_date = group_jobs_by_date(jobs)
     
     # Calculate stats
+    apply_count = sum(1 for j in jobs if j.get('recommendation') == 'APPLY')
     stats = {
         'total_matches': len(jobs),
+        'apply_count': apply_count,
         'avg_score': round(sum(j.get('score', 0) for j in jobs) / len(jobs), 1) if jobs else 0,
         'last_updated': db.get_last_run_time()
     }
     
+    # Get today's date formatted nicely
+    today_date = get_perth_now().strftime("%B %d, %Y")
+    
     return render_template(
-        'dashboard_new.html',
+        'dashboard_hybrid.html',
         jobs_by_date=jobs_by_date,
         stats=stats,
+        today_date=today_date,
         current_days=days,
         threshold=threshold,
         show_all=False,
@@ -174,16 +180,21 @@ def show_all():
     
     jobs_by_date = group_jobs_by_date(jobs)
     
+    apply_count = sum(1 for j in jobs if j.get('recommendation') == 'APPLY')
     stats = {
         'total_matches': len(jobs),
+        'apply_count': apply_count,
         'avg_score': round(sum(j.get('score', 0) for j in jobs) / len(jobs), 1) if jobs else 0,
         'last_updated': db.get_last_run_time()
     }
     
+    today_date = get_perth_now().strftime("%B %d, %Y")
+    
     return render_template(
-        'dashboard_new.html',
+        'dashboard_hybrid.html',
         jobs_by_date=jobs_by_date,
         stats=stats,
+        today_date=today_date,
         current_days=999,
         threshold=threshold,
         show_all=True,
@@ -298,6 +309,61 @@ def rejected_jobs():
     )
 
 
+@app.route('/job/<int:job_id>')
+def job_detail(job_id):
+    """Detailed job view with full hybrid scoring breakdown"""
+    job = db.get_job(job_id)
+    if not job:
+        return "Job not found", 404
+    
+    # Get score details
+    conn = db.get_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT s.*
+        FROM scores s
+        WHERE s.job_id = ?
+    ''', (job_id,))
+    
+    score_row = cursor.fetchone()
+    conn.close()
+    
+    if score_row:
+        score = dict(score_row)
+        # Parse hybrid fields
+        score = db._parse_job_hybrid_fields(score)
+        job.update(score)
+    
+    return render_template('job_detail.html', job=job)
+
+
+@app.route('/api/job/<int:job_id>/components')
+def job_components_api(job_id):
+    """API endpoint for job components (AJAX)"""
+    job = db.get_job(job_id)
+    if not job:
+        return {"error": "Job not found"}, 404
+    
+    # Get hybrid scoring details
+    conn = db.get_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT s.components, s.hireability_factors, s.risk_profile, s.score_breakdown
+        FROM scores s
+        WHERE s.job_id = ?
+    ''', (job_id,))
+    
+    score_row = cursor.fetchone()
+    conn.close()
+    
+    if score_row:
+        score = dict(score_row)
+        score = db._parse_job_hybrid_fields(score)
+        return score
+    
+    return {"error": "No score found"}, 404
+
+
 @app.route('/apply/<int:job_id>', methods=['POST'])
 def mark_applied(job_id):
     """Mark job as applied"""
@@ -333,7 +399,7 @@ def reject_job_route(job_id):
 
 @app.route('/rescore/<int:job_id>', methods=['POST'])
 def rescore_job(job_id):
-    """Manually rescore a single job"""
+    """Manually rescore a single job using hybrid scoring"""
     try:
         job = db.get_job(job_id)
         if not job:
@@ -342,11 +408,12 @@ def rescore_job(job_id):
         config = load_config()
         profile = scorer.load_profile()
         
-        # Score the job
+        # Score the job with hybrid system
+        models_config = config.get('ai', {}).get('models', {})
         score_result = scorer.score_job_with_fallback(
             job,
             profile,
-            config.get('ai_models', {}),
+            models_config,
             config.get('openrouter_api_key')
         )
         

@@ -9,7 +9,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException
 import time
 import random
@@ -19,6 +18,9 @@ import json
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 import re
+
+# Import shared driver utility
+from driver_utils import create_chrome_driver, safe_quit_driver, test_driver_health
 
 try:
     from optimization import OptimizationManager
@@ -34,39 +36,20 @@ logger = logging.getLogger(__name__)
 
 
 def create_seek_driver(headless=True):
-    """Create Chrome WebDriver for Seek (similar to LinkedIn)"""
-    # Load config
-    config_path = Path(__file__).parent.parent / 'config.json'
-    with open(config_path, 'r') as f:
-        config = json.load(f)
-    selenium_config = config.get('selenium', {})
-    
-    chrome_options = Options()
-    
-    if headless:
-        chrome_options.add_argument('--headless=new')
-    
-    # Anti-detection
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option('useAutomationExtension', False)
-    
-    # User agent from config
-    user_agent = selenium_config.get('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
-    chrome_options.add_argument(f'user-agent={user_agent}')
-    
-    driver = webdriver.Chrome(options=chrome_options)
-    driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-        'source': '''
-            Object.defineProperty(navigator, 'webdriver', {
-              get: () => undefined
-            })
-        '''
-    })
-    
-    return driver
+    """
+    Create Chrome WebDriver for Seek
+    Uses shared driver utility with robust error handling
+    """
+    try:
+        driver = create_chrome_driver(
+            headless=headless,
+            stealth_mode=False,  # Seek doesn't need stealth
+            user_profile=False
+        )
+        return driver
+    except Exception as e:
+        logger.error(f"Failed to create Seek driver: {e}")
+        raise
 
 
 def load_seek_cookies(driver):
@@ -278,7 +261,7 @@ def scrape_seek_jobs(url, max_pages=10, search_config=None):
         logger.info(f"Total jobs scraped: {len(all_jobs)}")
         
     finally:
-        driver.quit()
+        safe_quit_driver(driver)
     
     return all_jobs
 

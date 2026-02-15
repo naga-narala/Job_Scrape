@@ -23,14 +23,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from selenium_stealth import stealth
-from webdriver_manager.chrome import ChromeDriverManager
 
-# Import optimization manager
+# Import shared driver utility
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
+from driver_utils import create_chrome_driver, safe_quit_driver, test_driver_health
 from optimization import OptimizationManager
 
 # Setup logging
@@ -40,6 +37,7 @@ logger = logging.getLogger(__name__)
 def create_jora_driver(headless=True):
     """
     Create Chrome WebDriver with stealth mode for Jora
+    Uses shared driver utility with robust error handling
     
     Args:
         headless: Run in headless mode (default: True)
@@ -48,42 +46,11 @@ def create_jora_driver(headless=True):
         Selenium WebDriver instance
     """
     try:
-        # Load config
-        config_path = Path(__file__).parent.parent / 'config.json'
-        with open(config_path, 'r') as f:
-            config = json.load(f)
-        selenium_config = config.get('selenium', {})
-        
-        chrome_options = Options()
-        
-        if headless:
-            chrome_options.add_argument('--headless=new')
-        
-        # Anti-detection measures
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--disable-dev-shm-usage')
-        chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        chrome_options.add_experimental_option('useAutomationExtension', False)
-        
-        # User agent from config
-        user_agent = selenium_config.get('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
-        chrome_options.add_argument(f'--user-agent={user_agent}')
-        
-        # Install ChromeDriver
-        service = Service(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=chrome_options)
-        
-        # Apply stealth mode
-        stealth(driver,
-            languages=["en-AU", "en"],
-            vendor="Google Inc.",
-            platform="MacIntel",
-            webgl_vendor="Intel Inc.",
-            renderer="Intel Iris OpenGL Engine",
-            fix_hairline=True,
+        driver = create_chrome_driver(
+            headless=headless,
+            stealth_mode=True,  # Jora needs stealth mode
+            user_profile=False
         )
-        
         logger.info("✅ Jora driver initialized with stealth mode")
         return driver
         
@@ -311,7 +278,7 @@ def scrape_jora_jobs(url, max_pages=10, search_config=None):
         raise
     finally:
         if driver:
-            driver.quit()
+            safe_quit_driver(driver)
             logger.info("✅ Jora driver closed")
     
     return all_jobs

@@ -459,35 +459,17 @@ def run_daily_job():
             print(f"{'=' * 70}")
             logger.info(f"Scoring {len(unscored)} unscored jobs...")
             
-            # Load scoring configuration
+            # Use hybrid scoring system (combines component + hireability)
             scoring_config = config.get('scoring', {})
-            scoring_method = scoring_config.get('method', 'legacy')
-            fallback_methods = scoring_config.get('fallback_methods', [])
+            scoring_method = scoring_config.get('method', 'hybrid')
+            models_config = config.get('ai', {}).get('models', {})
             
-            # Prepare scoring parameters based on method
-            if scoring_method == 'component_based':
-                scoring_params = {
-                    'method': 'component_based',
-                    'models': config.get('ai', {}).get('models', {}),
-                    'api_key': config.get('openrouter_api_key')
-                }
-            elif scoring_method == 'hireability_based':
-                scoring_params = {
-                    'method': 'hireability_based',
-                    'models': config.get('ai', {}).get('models', {}),
-                    'api_key': config.get('openrouter_api_key')
-                }
-            else:  # legacy
-                scoring_params = {
-                    'method': 'legacy',
-                    'models': config.get('ai', {}).get('models', {}),
-                    'api_key': config.get('openrouter_api_key')
-                }
+            logger.info(f"Using {scoring_method} scoring method")
             
             score_summary = scorer.score_batch(
                 unscored,
                 profile_content,
-                scoring_params,
+                models_config,
                 config.get('openrouter_api_key')
             )
             

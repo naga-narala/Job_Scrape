@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Matches Dashboard</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --bg-main: #ffffff;
+            --bg-surface: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 24px;
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 2px 4px rgba(0,0,0,0.08);
+            --shadow-lg: 0 4px 8px rgba(0,0,0,0.12);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--bg-main);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-lg) var(--space-xl);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: var(--space-xl);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .header-stat {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .stat-number {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            background: var(--bg-main);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-md) var(--space-xl);
+            position: sticky;
+            top: 56px;
+            z-index: 99;
+        }
+        
+        .filter-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            gap: var(--space-lg);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-sm) var(--space-sm) 36px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+        }
+        
+        .chip-group {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .chip {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-main);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .chip:hover {
+            border-color: var(--text-secondary);
+            background: var(--bg-surface);
+        }
+        
+        .chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .chip.success { border-color: var(--success); color: var(--success); }
+        .chip.warning { border-color: var(--warning); color: var(--warning); }
+        .chip.danger { border-color: var(--danger); color: var(--danger); }
+        
+        .chip.success.active { background: var(--success); color: white; }
+        .chip.warning.active { background: var(--warning); color: white; }
+        .chip.danger.active { background: var(--danger); color: white; }
+        
+        /* Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+        
+        .section-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin: var(--space-xl) 0 var(--space-md);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Job Card */
+        .job-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+        }
+        
+        .job-card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        
+        .job-card.apply-card { border-left: 3px solid var(--success); }
+        .job-card.clarify-card { border-left: 3px solid var(--warning); }
+        .job-card.skip-card { border-left: 3px solid var(--danger); }
+        
+        .job-main {
+            display: flex;
+            gap: var(--space-lg);
+            align-items: flex-start;
+        }
+        
+        /* Score Column */
+        .score-col {
+            flex-shrink: 0;
+            width: 80px;
+            text-align: center;
+        }
+        
+        .score-number {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .score-apply { color: var(--success); }
+        .score-clarify { color: var(--warning); }
+        .score-skip { color: var(--text-secondary); }
+        
+        .rec-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        
+        .badge-apply { background: #d1fae5; color: #065f46; }
+        .badge-clarify { background: #fef3c7; color: #92400e; }
+        .badge-skip { background: #fee2e2; color: #991b1b; }
+        
+        /* Job Info Column */
+        .job-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .job-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+            line-height: 1.3;
+        }
+        
+        .job-company {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .job-meta {
+            display: flex;
+            gap: var(--space-md);
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* Why Apply Section */
+        .why-apply {
+            margin: var(--space-md) 0;
+            padding: var(--space-md);
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+        }
+        
+        .why-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .skill-chips {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+        
+        .skill-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .skill-chip strong {
+            font-size: 11px;
+            opacity: 0.8;
+            font-weight: 600;
+            margin-left: 2px;
+        }
+        
+        .skill-chip.matched { border-color: var(--success); color: var(--success); }
+        .skill-chip.partial { border-color: var(--warning); color: var(--warning); }
+        .skill-chip.missing { border-color: var(--danger); color: var(--danger); }
+        
+        /* Score Breakdown */
+        .score-breakdown {
+            display: flex;
+            gap: var(--space-lg);
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .score-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .score-bar {
+            width: 80px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .score-fill.high { background: var(--success); }
+        .score-fill.medium { background: var(--warning); }
+        
+        /* Risk/Meta Column */
+        .risk-col {
+            flex-shrink: 0;
+            width: 200px;
+            font-size: 12px;
+        }
+        
+        .risk-badges {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+        }
+        
+        .risk-badge {
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .risk-low { background: #d1fae5; color: #065f46; }
+        .risk-medium { background: #fef3c7; color: #92400e; }
+        .risk-high { background: #fee2e2; color: #991b1b; }
+        .risk-neutral { background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border); }
+        
+        /* Actions */
+        .job-actions {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text-primary);
+            background: var(--bg-main);
+        }
+        
+        .btn:hover {
+            border-color: var(--text-secondary);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #047857;
+            border-color: #047857;
+        }
+        
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+        }
+        
+        .btn-ghost:hover {
+            background: var(--bg-surface);
+        }
+        
+        /* SVG Icons */
+        .icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        
+        .icon-sm {
+            width: 12px;
+            height: 12px;
+        }
+        
+        /* Explanation */
+        .explanation {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-top: var(--space-sm);
+            padding: var(--space-md);
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            border-left: 2px solid var(--primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .job-main {
+                flex-direction: column;
+            }
+            
+            .risk-col {
+                width: 100%;
+            }
+            
+            .risk-badges {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-stats {
+                display: none;
+            }
+            
+            .chip-group {
+                width: 100%;
+            }
+            
+            .filter-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-lg);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-title">Job Matches</div>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span>{{ today_date }}</span>
+                </div>
+                <div class="header-stat">
+                    <span class="stat-number">{{ stats.total_matches }}</span>
+                    <span>total jobs</span>
+                </div>
+                {% if stats.apply_count %}
+                <div class="header-stat">
+                    <span class="stat-number">{{ stats.apply_count }}</span>
+                    <span>to apply</span>
+                </div>
+                {% endif %}
+                <div class="header-stat">
+                    <span class="stat-number">{{ stats.avg_score }}%</span>
+                    <span>avg score</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-content">
+            <div class="search-wrapper">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input type="text" class="search-input" id="searchBox" placeholder="Search by title, company, skills...">
+            </div>
+            
+            <div class="chip-group">
+                <button class="chip success active" data-filter="recommendation" data-value="APPLY">
+                    Apply (<span id="count-apply">0</span>)
+                </button>
+                <button class="chip warning" data-filter="recommendation" data-value="CLARIFY">
+                    Clarify (<span id="count-clarify">0</span>)
+                </button>
+                <button class="chip danger" data-filter="recommendation" data-value="SKIP">
+                    Skip (<span id="count-skip">0</span>)
+                </button>
+            </div>
+            
+            <div class="chip-group">
+                <button class="chip" data-filter="platform" data-value="linkedin">LinkedIn (<span id="count-linkedin">0</span>)</button>
+                <button class="chip" data-filter="platform" data-value="seek">Seek (<span id="count-seek">0</span>)</button>
+                <button class="chip" data-filter="platform" data-value="jora">Jora (<span id="count-jora">0</span>)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jobs Container -->
+    <div class="container">
+        {% if jobs_by_date %}
+            {% for date_label, jobs in jobs_by_date.items() %}
+            <div class="section-header">{{ date_label }}</div>
+            
+            {% for job in jobs %}
+            <div class="job-card {{ job.recommendation|lower if job.recommendation else 'apply' }}-card" 
+                 data-recommendation="{{ job.recommendation or 'APPLY' }}"
+                 data-risk="{{ job.risk_profile.role_level_risk if job.risk_profile else 'LOW' }}"
+                 data-source="{{ job.source|lower if job.source else 'unknown' }}">
+                
+                <div class="job-main">
+                    <!-- Score Column -->
+                    <div class="score-col">
+                        <div class="score-number score-{{ job.recommendation|lower if job.recommendation else 'apply' }}">
+                            {{ job.score }}%
+                        </div>
+                        <span class="rec-badge badge-{{ job.recommendation|lower if job.recommendation else 'apply' }}">
+                            {{ job.recommendation or 'APPLY' }}
+                        </span>
+                    </div>
+                    
+                    <!-- Job Info -->
+                    <div class="job-info">
+                        <div class="job-title">{{ job.title }}</div>
+                        <div class="job-company">{{ job.company }}</div>
+                        
+                        <div class="job-meta">
+                            <span class="meta-item">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                {{ job.location }}
+                            </span>
+                            <span class="meta-item">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                                </svg>
+                                {{ job.source|title }}
+                            </span>
+                            <span class="meta-item">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                {{ job.first_seen_date }}
+                            </span>
+                        </div>
+                        
+                        <!-- Why Apply Section -->
+                        {% if job.components %}
+                        <div class="why-apply">
+                            <div class="why-title">Why Apply</div>
+                            <div class="skill-chips">
+                                {% set matched_skills = [] %}
+                                {% set partial_skills = [] %}
+                                {% set missing_critical = [] %}
+                                
+                                {% for comp in job.components %}
+                                    {% if comp.match_status == 'yes' %}
+                                        {% set _ = matched_skills.append(comp) %}
+                                    {% elif comp.match_status == 'partial' %}
+                                        {% set _ = partial_skills.append(comp) %}
+                                    {% elif comp.criticality == 'dealbreaker' and comp.match_status == 'no' %}
+                                        {% set _ = missing_critical.append(comp) %}
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% for skill in matched_skills[:5] %}
+                                <span class="skill-chip matched">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    {{ skill.name }} <strong>({{ skill.weight }}pts)</strong>
+                                </span>
+                                {% endfor %}
+                                
+                                {% for skill in partial_skills[:2] %}
+                                <span class="skill-chip partial">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    {{ skill.name }} <strong>({{ skill.weight }}pts)</strong>
+                                </span>
+                                {% endfor %}
+                                
+                                {% for skill in missing_critical %}
+                                <span class="skill-chip missing">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                    Missing: {{ skill.name }} <strong>(-{{ skill.weight }}pts)</strong>
+                                </span>
+                                {% endfor %}
+                                
+                                {% if job.hireability_factors and job.hireability_factors.legal_visa >= 18 %}
+                                <span class="skill-chip matched">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    Visa Compatible
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Score Breakdown -->
+                        {% if job.score_breakdown %}
+                        <div class="score-breakdown">
+                            <div class="score-item">
+                                <span>Tech</span>
+                                <div class="score-bar">
+                                    <div class="score-fill {% if job.score_breakdown.component_score >= 80 %}high{% elif job.score_breakdown.component_score >= 60 %}medium{% endif %}" 
+                                         style="width: {{ job.score_breakdown.component_score }}%"></div>
+                                </div>
+                                <span>{{ job.score_breakdown.component_score }}%</span>
+                            </div>
+                            <div class="score-item">
+                                <span>Hire</span>
+                                <div class="score-bar">
+                                    <div class="score-fill {% if job.score_breakdown.hireability_score >= 80 %}high{% elif job.score_breakdown.hireability_score >= 60 %}medium{% endif %}" 
+                                         style="width: {{ job.score_breakdown.hireability_score }}%"></div>
+                                </div>
+                                <span>{{ job.score_breakdown.hireability_score }}%</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- AI Explanation (One Line) -->
+                        {% if job.explanation %}
+                        <div class="explanation">
+                            {{ job.explanation[:200] }}{% if job.explanation|length > 200 %}...{% endif %}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Actions -->
+                        <div class="job-actions">
+                            <a href="{{ job.url }}" target="_blank" class="btn btn-primary">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                                View Job
+                            </a>
+                            
+                            <form method="POST" action="{{ url_for('mark_applied', job_id=job.id) }}" style="display: inline;">
+                                <button type="submit" class="btn btn-success">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Applied
+                                </button>
+                            </form>
+                            
+                            <button class="btn btn-ghost" onclick="rejectJob({{ job.id }})">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                Pass
+                            </button>
+                            
+                            <form method="POST" action="{{ url_for('rescore_job', job_id=job.id) }}" style="display: inline;">
+                                <button type="submit" class="btn btn-ghost">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                    Rescore
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Risk Column -->
+                    <div class="risk-col">
+                        {% if job.risk_profile %}
+                        <div class="risk-badges">
+                            <span class="risk-badge risk-{{ job.risk_profile.role_level_risk|lower if job.risk_profile.role_level_risk else 'low' }}">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: inline; vertical-align: middle; margin-right: 4px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                                {{ job.risk_profile.role_level_risk }} Risk
+                            </span>
+                            <span class="risk-badge risk-neutral">{{ job.risk_profile.employer_type }}</span>
+                            <span class="risk-badge risk-{{ 'low' if job.risk_profile.visa_friction_level == 'LOW' else 'medium' if job.risk_profile.visa_friction_level == 'MEDIUM' else 'high' }}">
+                                Visa: {{ job.risk_profile.visa_friction_level }}
+                            </span>
+                            {% if job.risk_profile.experience_stretch %}
+                            <span class="risk-badge risk-{{ 'low' if job.risk_profile.experience_stretch == 'PERFECT' else 'medium' if job.risk_profile.experience_stretch == 'MODERATE' else 'high' }}">
+                                {{ job.risk_profile.experience_stretch|title }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <svg width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h2>No jobs found</h2>
+                <p>Try adjusting your filters or running a new scrape</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Initialize counts
+        function updateCounts() {
+            const jobs = document.querySelectorAll('.job-card');
+            const counts = {
+                apply: 0, clarify: 0, skip: 0,
+                linkedin: 0, seek: 0, jora: 0
+            };
+            
+            jobs.forEach(job => {
+                const rec = job.dataset.recommendation.toLowerCase();
+                const source = job.dataset.source;
+                if (rec) counts[rec] = (counts[rec] || 0) + 1;
+                if (source) counts[source] = (counts[source] || 0) + 1;
+            });
+            
+            Object.keys(counts).forEach(key => {
+                const el = document.getElementById(`count-${key}`);
+                if (el) el.textContent = counts[key];
+            });
+        }
+        
+        updateCounts();
+        
+        // Chip filter system
+        const chips = document.querySelectorAll('.chip[data-filter]');
+        const activeFilters = {
+            recommendation: new Set(['APPLY']), // Default: show APPLY jobs
+            platform: new Set()
+        };
+        
+        chips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                const filterType = this.dataset.filter;
+                const value = this.dataset.value;
+                
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    activeFilters[filterType].delete(value);
+                } else {
+                    this.classList.add('active');
+                    activeFilters[filterType].add(value);
+                }
+                
+                filterJobs();
+            });
+        });
+        
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', filterJobs);
+        
+        function filterJobs() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const jobCards = document.querySelectorAll('.job-card');
+            
+            jobCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const cardRec = card.dataset.recommendation;
+                const cardSource = card.dataset.source;
+                
+                const matchesSearch = !searchTerm || text.includes(searchTerm);
+                const matchesRec = activeFilters.recommendation.size === 0 || activeFilters.recommendation.has(cardRec);
+                const matchesPlatform = activeFilters.platform.size === 0 || activeFilters.platform.has(cardSource);
+                
+                if (matchesSearch && matchesRec && matchesPlatform) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Reject job
+        function rejectJob(jobId) {
+            if (confirm('Mark this job as not interested?')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/reject/${jobId}`;
+                
+                const catInput = document.createElement('input');
+                catInput.type = 'hidden';
+                catInput.name = 'rejection_category';
+                catInput.value = 'not_interested';
+                
+                form.appendChild(catInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+        
+        // Initial filter (show APPLY by default)
+        filterJobs();
+    </script>
+</body>
+</html>

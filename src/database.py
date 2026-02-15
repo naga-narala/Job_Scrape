@@ -403,7 +403,17 @@ def insert_score(job_id, score_data, profile_hash):
     hireability_factors_json = None
     explanation = None
     
-    if scoring_method == 'component_based':
+    if scoring_method == 'hybrid':
+        # Hybrid scoring data (combines component + hireability)
+        components_json = json.dumps(score_data.get('components', []))
+        score_breakdown_json = json.dumps(score_data.get('score_breakdown', {}))
+        recommendation = score_data.get('recommendation')
+        hard_gate_failed = score_data.get('hard_gate_failed')
+        risk_profile_json = json.dumps(score_data.get('risk_profile', {}))
+        hireability_factors_json = json.dumps(score_data.get('hireability_factors', {}))
+        explanation = score_data.get('explanation')
+        
+    elif scoring_method == 'component_based':
         # Component-based scoring data
         components_json = json.dumps(score_data.get('components', []))
         score_breakdown_json = json.dumps(score_data.get('score_breakdown', {}))
@@ -485,13 +495,16 @@ def get_jobs_for_rescore(min_score, max_score, max_age_days, exclude_profile_has
 
 
 def get_high_scoring_unnotified(threshold):
-    """Get jobs above threshold that haven't been notified"""
-    import json
+    """Get jobs above threshold that haven't been notified with all hybrid fields"""
     conn = get_connection()
     cursor = conn.cursor()
     
     cursor.execute('''
-        SELECT j.*, s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used
+        SELECT j.*, 
+               s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used,
+               s.components, s.score_breakdown, s.recommendation, 
+               s.hard_gate_failed, s.risk_profile, s.hireability_factors, 
+               s.explanation, s.scoring_method
         FROM jobs j
         JOIN scores s ON j.id = s.job_id
         LEFT JOIN notifications n ON j.id = n.job_id
@@ -503,19 +516,7 @@ def get_high_scoring_unnotified(threshold):
     jobs = []
     for row in cursor.fetchall():
         job = dict(row)
-        # Parse JSON fields
-        try:
-            job['matched'] = json.loads(job.get('matched', '[]'))
-        except:
-            job['matched'] = []
-        try:
-            job['not_matched'] = json.loads(job.get('not_matched', '[]'))
-        except:
-            job['not_matched'] = []
-        try:
-            job['key_points'] = json.loads(job.get('key_points', '[]'))
-        except:
-            job['key_points'] = []
+        job = _parse_job_hybrid_fields(job)
         jobs.append(job)
     
     conn.close()
@@ -564,17 +565,69 @@ def get_job(job_id):
     return dict(job) if job else None
 
 
-def get_jobs_by_date_range(days, hide_old_days=30):
-    """Get jobs within date range, hiding jobs older than hide_old_days"""
+def _parse_job_hybrid_fields(job):
+    """
+    Parse all hybrid scoring JSON fields from a job dict
+    
+    Args:
+        job: Job dict from database (with JSON strings)
+    
+    Returns:
+        dict: Job dict with parsed JSON fields
+    """
     import json
+    
+    # Legacy JSON fields (for backward compatibility)
+    for field in ['matched', 'not_matched', 'key_points']:
+        if job.get(field):
+            try:
+                job[field] = json.loads(job[field])
+            except:
+                job[field] = []
+    
+    # Hybrid scoring JSON fields
+    if job.get('components'):
+        try:
+            job['components'] = json.loads(job['components'])
+        except:
+            job['components'] = []
+    
+    if job.get('score_breakdown'):
+        try:
+            job['score_breakdown'] = json.loads(job['score_breakdown'])
+        except:
+            job['score_breakdown'] = {}
+    
+    if job.get('risk_profile'):
+        try:
+            job['risk_profile'] = json.loads(job['risk_profile'])
+        except:
+            job['risk_profile'] = {}
+    
+    if job.get('hireability_factors'):
+        try:
+            job['hireability_factors'] = json.loads(job['hireability_factors'])
+        except:
+            job['hireability_factors'] = {}
+    
+    return job
+
+
+def get_jobs_by_date_range(days, hide_old_days=30):
+    """Get jobs within date range with all hybrid scoring fields"""
     conn = get_connection()
     cursor = conn.cursor()
     
     start_date = get_perth_date() - timedelta(days=days)
     hide_before = get_perth_date() - timedelta(days=hide_old_days)
     
+    # Fetch all hybrid scoring fields
     cursor.execute('''
-        SELECT j.*, s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used
+        SELECT j.*, 
+               s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used,
+               s.components, s.score_breakdown, s.recommendation, 
+               s.hard_gate_failed, s.risk_profile, s.hireability_factors, 
+               s.explanation, s.scoring_method
         FROM jobs j
         JOIN scores s ON j.id = s.job_id
         WHERE j.first_seen_date >= ?
@@ -585,19 +638,7 @@ def get_jobs_by_date_range(days, hide_old_days=30):
     jobs = []
     for row in cursor.fetchall():
         job = dict(row)
-        # Parse JSON fields
-        try:
-            job['matched'] = json.loads(job.get('matched', '[]'))
-        except:
-            job['matched'] = []
-        try:
-            job['not_matched'] = json.loads(job.get('not_matched', '[]'))
-        except:
-            job['not_matched'] = []
-        try:
-            job['key_points'] = json.loads(job.get('key_points', '[]'))
-        except:
-            job['key_points'] = []
+        job = _parse_job_hybrid_fields(job)
         jobs.append(job)
     
     conn.close()
@@ -605,15 +646,19 @@ def get_jobs_by_date_range(days, hide_old_days=30):
 
 
 def get_all_jobs(include_inactive=False):
-    """Get all jobs with scores"""
-    import json
+    """Get all jobs with all hybrid scoring fields"""
     conn = get_connection()
     cursor = conn.cursor()
     
+    # Fetch all hybrid scoring fields
     query = '''
-        SELECT j.*, s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used
+        SELECT j.*, 
+               s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used,
+               s.components, s.score_breakdown, s.recommendation, 
+               s.hard_gate_failed, s.risk_profile, s.hireability_factors, 
+               s.explanation, s.scoring_method
         FROM jobs j
-        JOIN scores s ON j.job_id_hash = s.job_id
+        JOIN scores s ON j.id = s.job_id
     '''
     
     if not include_inactive:
@@ -626,19 +671,7 @@ def get_all_jobs(include_inactive=False):
     jobs = []
     for row in cursor.fetchall():
         job = dict(row)
-        # Parse JSON fields
-        try:
-            job['matched'] = json.loads(job.get('matched', '[]'))
-        except:
-            job['matched'] = []
-        try:
-            job['not_matched'] = json.loads(job.get('not_matched', '[]'))
-        except:
-            job['not_matched'] = []
-        try:
-            job['key_points'] = json.loads(job.get('key_points', '[]'))
-        except:
-            job['key_points'] = []
+        job = _parse_job_hybrid_fields(job)
         jobs.append(job)
     
     conn.close()
@@ -829,13 +862,16 @@ def get_job(job_id):
 
 
 def get_applied_jobs():
-    """Get all jobs where applied=1 and not rejected, ordered by applied_date"""
-    import json
+    """Get all applied jobs with all hybrid scoring fields"""
     conn = get_connection()
     cursor = conn.cursor()
     
     cursor.execute('''
-        SELECT j.*, s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used
+        SELECT j.*, 
+               s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used,
+               s.components, s.score_breakdown, s.recommendation, 
+               s.hard_gate_failed, s.risk_profile, s.hireability_factors, 
+               s.explanation, s.scoring_method
         FROM jobs j
         LEFT JOIN scores s ON j.id = s.job_id
         WHERE j.applied = 1 AND j.rejected = 0
@@ -845,13 +881,7 @@ def get_applied_jobs():
     jobs = []
     for row in cursor.fetchall():
         job = dict(row)
-        # Parse JSON fields
-        for field in ['matched', 'not_matched', 'key_points']:
-            if job.get(field):
-                try:
-                    job[field] = json.loads(job[field])
-                except:
-                    pass
+        job = _parse_job_hybrid_fields(job)
         jobs.append(job)
     
     conn.close()
@@ -900,13 +930,16 @@ def reject_job(job_id, rejection_category, rejection_notes=''):
 
 
 def get_rejected_jobs():
-    """Get all jobs where rejected=1, ordered by rejected_date"""
-    import json
+    """Get all rejected jobs with all hybrid scoring fields"""
     conn = get_connection()
     cursor = conn.cursor()
     
     cursor.execute('''
-        SELECT j.*, s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used,
+        SELECT j.*, 
+               s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used,
+               s.components, s.score_breakdown, s.recommendation, 
+               s.hard_gate_failed, s.risk_profile, s.hireability_factors, 
+               s.explanation, s.scoring_method,
                r.rejection_category, r.rejection_notes, r.rejected_at
         FROM jobs j
         LEFT JOIN scores s ON j.id = s.job_id
@@ -918,13 +951,7 @@ def get_rejected_jobs():
     jobs = []
     for row in cursor.fetchall():
         job = dict(row)
-        # Parse JSON fields
-        for field in ['matched', 'not_matched', 'key_points']:
-            if job.get(field):
-                try:
-                    job[field] = json.loads(job[field])
-                except:
-                    pass
+        job = _parse_job_hybrid_fields(job)
         jobs.append(job)
     
     conn.close()

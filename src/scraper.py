@@ -5,13 +5,13 @@ import random
 import json
 from pathlib import Path
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from webdriver_manager.chrome import ChromeDriverManager
+
+# Import shared driver utility
+from driver_utils import create_chrome_driver, safe_quit_driver, test_driver_health
 
 logger = logging.getLogger(__name__)
 
@@ -34,46 +34,20 @@ def _load_config():
 
 
 def create_driver(headless=True, use_profile=False):
-    config = _load_config()
-    selenium_config = config.get('selenium', {})
-    chrome_options = Options()
-    
-    # Option to use a separate Chrome profile for persistent login
-    # Note: Can't use main Chrome profile while Chrome is running
-    if use_profile:
-        import os
-        profile_dir = os.path.join(os.getcwd(), 'chrome_profile')
-        chrome_options.add_argument(f'--user-data-dir={profile_dir}')
-        logger.info(f"Using Chrome profile: {profile_dir}")
-    
-    if headless:
-        chrome_options.add_argument('--headless=new')
-    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option('useAutomationExtension', False)
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument(f'--window-size={selenium_config.get("window_size", "1920,1080")}')
-    chrome_options.add_argument(f'user-agent={selenium_config.get("user_agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36")}')
-    
-    # Fix for webdriver-manager extraction issue on Mac ARM64
-    import os
-    driver_path = ChromeDriverManager().install()
-    
-    # If path ends with wrong file, find the actual chromedriver
-    if not driver_path.endswith('chromedriver') or 'THIRD_PARTY' in driver_path:
-        driver_dir = os.path.dirname(driver_path)
-        # Look for chromedriver executable in the directory
-        for file in os.listdir(driver_dir):
-            if file == 'chromedriver' or (file.startswith('chromedriver') and not file.endswith('.txt')):
-                driver_path = os.path.join(driver_dir, file)
-                break
-    
-    service = Service(driver_path)
-    driver = webdriver.Chrome(service=service, options=chrome_options)
-    driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-    return driver
+    """
+    Create Chrome driver for LinkedIn scraping
+    Uses shared driver utility with robust error handling
+    """
+    try:
+        driver = create_chrome_driver(
+            headless=headless,
+            stealth_mode=False,  # LinkedIn doesn't need stealth
+            user_profile=use_profile
+        )
+        return driver
+    except Exception as e:
+        logger.error(f"Failed to create LinkedIn driver: {e}")
+        raise
 
 
 def save_cookies(driver):
@@ -157,7 +131,7 @@ def manual_login_helper():
             print("\nLogin failed. Please make sure you completed the login.\n")
             return False
     finally:
-        driver.quit()
+        safe_quit_driver(driver)
 
 
 def extract_job_from_card(card, search_config, driver, optimizer=None):
@@ -799,7 +773,7 @@ def fetch_all_jobs(searches, api_key=None, headless=True, max_pages=None, config
                 print(f"\n✓ Finished scraping! Found {len(all_jobs)} total jobs.")
                 print("Browser will close in 8 seconds...")
                 time.sleep(8)
-            driver.quit()
+            safe_quit_driver(driver)
     
     return all_jobs, strategy_stats
 
