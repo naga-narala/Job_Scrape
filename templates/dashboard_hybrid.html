@@ -326,6 +326,317 @@
         .skill-chip.partial { border-color: var(--warning); color: var(--warning); }
         .skill-chip.missing { border-color: var(--danger); color: var(--danger); }
         
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-top: 4px;
+        }
+        
+        .status-new { background: #f1f5f9; color: #64748b; }
+        .status-interested { background: #d1fae5; color: #065f46; }
+        .status-applied { background: #dbeafe; color: #1e40af; }
+        .status-responded { background: #e9d5ff; color: #6b21a8; }
+        .status-phone_screen { background: #fef3c7; color: #92400e; }
+        .status-interview_scheduled { background: #fce7f3; color: #9f1239; }
+        .status-interviewed { background: #e0e7ff; color: #3730a3; }
+        .status-follow_up { background: #fed7aa; color: #9a3412; }
+        .status-offer_received { background: #ccfbf1; color: #115e59; }
+        .status-accepted { background: #d9f99d; color: #365314; }
+        .status-declined_offer { background: #fed7aa; color: #9a3412; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+        .status-on_hold { background: #fed7aa; color: #9a3412; }
+        
+        /* Date Filter Bar */
+        .date-filter-bar {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .date-filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .date-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+        
+        .date-chip {
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .date-chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .date-chip:hover:not(.active) {
+            background: var(--bg-surface);
+            border-color: var(--text-secondary);
+        }
+        
+        /* Status Update Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .modal-close:hover {
+            background: var(--bg-surface);
+        }
+        
+        .status-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .status-option:hover {
+            border-color: var(--primary);
+            background: var(--bg-surface);
+        }
+        
+        .status-option input[type="radio"] {
+            margin-right: 12px;
+        }
+        
+        .status-option.selected {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn-cancel {
+            flex: 1;
+            background: white;
+            border: 1px solid var(--border);
+        }
+        
+        .btn-submit {
+            flex: 2;
+        }
+        
+        /* Component Details */
+        .component-breakdown-section {
+            margin-bottom: var(--space-md);
+        }
+        
+        .component-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .component-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .component-score-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 11px;
+        }
+        
+        .component-score-earned {
+            color: var(--success);
+        }
+        
+        .component-score-total {
+            color: var(--text-secondary);
+        }
+        
+        .component-list {
+            padding: 12px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 6px;
+            background: white;
+        }
+        
+        .component-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            background: var(--bg-surface);
+        }
+        
+        .component-item.comp-matched {
+            background: #f0fdf4;
+        }
+        
+        .component-item.comp-partial {
+            background: #fffbeb;
+        }
+        
+        .component-item.comp-missing {
+            background: #fef2f2;
+        }
+        
+        .comp-icon {
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .comp-matched .comp-icon { color: var(--success); }
+        .comp-partial .comp-icon { color: var(--warning); }
+        .comp-missing .comp-icon { color: var(--danger); }
+        
+        .comp-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 12px;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .comp-weight {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 11px;
+            white-space: nowrap;
+        }
+        
         /* Score Breakdown */
         .score-breakdown {
             display: flex;
@@ -537,6 +848,16 @@
                     <span class="stat-number">{{ stats.avg_score }}%</span>
                     <span>avg score</span>
                 </div>
+                <div class="header-stat" style="margin-left: auto;">
+                    <button class="btn {% if view_mode == 'status' %}btn-primary{% else %}btn-ghost{% endif %}" 
+                            onclick="window.location='?view=status'"  style="margin-right: 8px;">
+                        📊 By Status
+                    </button>
+                    <button class="btn {% if view_mode == 'date' %}btn-primary{% else %}btn-ghost{% endif %}" 
+                            onclick="window.location='?view=date'">
+                        📅 By Date
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -568,20 +889,51 @@
                 <button class="chip" data-filter="platform" data-value="seek">Seek (<span id="count-seek">0</span>)</button>
                 <button class="chip" data-filter="platform" data-value="jora">Jora (<span id="count-jora">0</span>)</button>
             </div>
+            
+            <div class="chip-group" style="flex-wrap: wrap;">
+                <button class="chip chip-status-all active" onclick="showAllStatuses()">Show All</button>
+                <button class="chip" data-filter="status" data-value="new">📋 New (<span id="count-new">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="interested">💚 Interested (<span id="count-interested">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="applied">📤 Applied (<span id="count-applied">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="responded">📧 Responded (<span id="count-responded">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="phone_screen">📞 Phone (<span id="count-phone_screen">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="interview_scheduled">🎯 Interview (<span id="count-interview_scheduled">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="interviewed">💼 Done (<span id="count-interviewed">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="follow_up">🔄 Follow-up (<span id="count-follow_up">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="offer_received">🎉 Offer (<span id="count-offer_received">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="on_hold">⏸️ On Hold (<span id="count-on_hold">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="accepted">✅ Accepted (<span id="count-accepted">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="declined_offer">❌ Declined (<span id="count-declined_offer">0</span>)</button>
+                <button class="chip" data-filter="status" data-value="rejected">🚫 Rejected (<span id="count-rejected">0</span>)</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Date Filter Bar -->
+    <div class="date-filter-bar" style="max-width: 1600px; margin: 16px auto 0;">
+        <span class="date-filter-label">📅 Date Range:</span>
+        <div class="date-chips">
+            <button class="date-chip" data-days="1">Today</button>
+            <button class="date-chip active" data-days="7">This Week</button>
+            <button class="date-chip" data-days="30">This Month</button>
+            <button class="date-chip" data-days="90">Last 90 Days</button>
+            <button class="date-chip" data-days="999">All Time</button>
         </div>
     </div>
 
     <!-- Jobs Container -->
     <div class="container">
-        {% if jobs_by_date %}
-            {% for date_label, jobs in jobs_by_date.items() %}
-            <div class="section-header">{{ date_label }}</div>
+        {% if jobs_by_status %}
+            {% for status_label, jobs in jobs_by_status.items() %}
+            <div class="section-header">{{ status_label }} ({{ jobs|length }})</div>
             
             {% for job in jobs %}
             <div class="job-card {{ job.recommendation|lower if job.recommendation else 'apply' }}-card" 
                  data-recommendation="{{ job.recommendation or 'APPLY' }}"
                  data-risk="{{ job.risk_profile.role_level_risk if job.risk_profile else 'LOW' }}"
-                 data-source="{{ job.source|lower if job.source else 'unknown' }}">
+                 data-source="{{ job.source|lower if job.source else 'unknown' }}"
+                 data-status="{{ job.status or 'new' }}"
+                 data-job-id="{{ job.id }}">
                 
                 <div class="job-main">
                     <!-- Score Column -->
@@ -591,6 +943,170 @@
                         </div>
                         <span class="rec-badge badge-{{ job.recommendation|lower if job.recommendation else 'apply' }}">
                             {{ job.recommendation or 'APPLY' }}
+                        </span>
+                        <span class="status-badge status-{{ job.status or 'new' }}">
+                            {% if job.status == 'interested' %}💚
+                            {% elif job.status == 'applied' %}📤
+                            {% elif job.status == 'responded' %}📧
+                            {% elif job.status == 'phone_screen' %}📞
+                            {% elif job.status == 'interview_scheduled' %}🎯
+                            {% elif job.status == 'interviewed' %}💼
+                            {% elif job.status == 'offer_received' %}🎉
+                            {% elif job.status == 'accepted' %}✅
+                            {% elif job.status == 'rejected' %}🚫
+                            {% else %}📋
+                            {% endif %}
+                            {{ job.status|replace('_', ' ')|title if job.status else 'New' }}
+                        </span>
+                    </div>
+                    
+                    <!-- Job Info -->
+                    <div class="job-info">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">{{ job.title }}</div>
+                                <div class="job-company">{{ job.company }}</div>
+                            </div>
+                            <div class="job-meta">
+                                <span>{{ job.source|upper }}</span>
+                                <span>{{ job.location }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Why Apply -->
+                        {% if job.matched_skills or job.partial_matched_skills or job.missing_critical_skills %}
+                        <div class="why-apply">
+                            {% for skill in job.matched_skills %}
+                                <span class="skill-chip matched">{{ skill.skill }} <strong>({{ skill.weight }}pts)</strong></span>
+                            {% endfor %}
+                            {% for skill in job.partial_matched_skills %}
+                                <span class="skill-chip partial">{{ skill.skill }} <strong>({{ skill.weight }}pts)</strong></span>
+                            {% endfor %}
+                            {% for skill in job.missing_critical_skills %}
+                                <span class="skill-chip missing">{{ skill.skill }} <strong>(-{{ skill.weight }}pts)</strong></span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Component Scores -->
+                        {% if job.components %}
+                        <div class="component-breakdown-section">
+                            <div class="component-header">
+                                <span class="component-title">Requirements</span>
+                                <span class="component-score-badge">
+                                    <span class="component-score-earned">{{ job.score_breakdown.earned if job.score_breakdown else '?' }}</span>
+                                    <span class="component-score-total">/{{ job.score_breakdown.total_possible if job.score_breakdown else 100 }}</span>
+                                </span>
+                            </div>
+                            <div class="component-list">
+                                {% for comp in job.components %}
+                                <div class="component-item {% if comp.match_status == 'yes' %}comp-matched{% elif comp.match_status == 'partial' %}comp-partial{% else %}comp-missing{% endif %}">
+                                    <span class="comp-icon">
+                                        {% if comp.match_status == 'yes' %}✓
+                                        {% elif comp.match_status == 'partial' %}~
+                                        {% else %}✗
+                                        {% endif %}
+                                    </span>
+                                    <span class="comp-name">{{ comp.name }}</span>
+                                    <span class="comp-weight">{{ comp.weight }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Score Breakdown -->
+                        {% if job.score_breakdown %}
+                        <div class="score-breakdown">
+                            <div class="score-item">
+                                <span>Skills</span>
+                                <div class="score-bar">
+                                    <div class="score-fill {% if job.score_breakdown.component_score >= 80 %}high{% elif job.score_breakdown.component_score >= 60 %}medium{% endif %}" 
+                                         style="width: {{ job.score_breakdown.component_score }}%"></div>
+                                </div>
+                                <span>{{ job.score_breakdown.component_score }}%</span>
+                            </div>
+                            <div class="score-item">
+                                <span>Hire</span>
+                                <div class="score-bar">
+                                    <div class="score-fill {% if job.score_breakdown.hireability_score >= 80 %}high{% elif job.score_breakdown.hireability_score >= 60 %}medium{% endif %}" 
+                                         style="width: {{ job.score_breakdown.hireability_score }}%"></div>
+                                </div>
+                                <span>{{ job.score_breakdown.hireability_score }}%</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- AI Explanation -->
+                        {% if job.explanation %}
+                        <div class="explanation">
+                            {{ job.explanation[:200] }}{% if job.explanation|length > 200 %}...{% endif %}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Actions -->
+                        <div class="job-actions">
+                            <a href="{{ job.url }}" target="_blank" class="btn btn-primary">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                                View Job
+                            </a>
+                            
+                            <button class="btn btn-ghost" onclick="openStatusModal({{ job.id }}, '{{ job.status or 'new' }}', '{{ job.title|replace("'", "\\'") }}')">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                                Update Status
+                            </button>
+                            
+                            <button class="btn btn-ghost" onclick="rejectJob({{ job.id }})">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                Pass
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            {% endfor %}
+        {% elif jobs_by_date %}
+            {% for date_label, jobs in jobs_by_date.items() %}
+            <div class="section-header">{{ date_label }}</div>
+            
+            {% for job in jobs %}
+            <div class="job-card {{ job.recommendation|lower if job.recommendation else 'apply' }}-card" 
+                 data-recommendation="{{ job.recommendation or 'APPLY' }}"
+                 data-risk="{{ job.risk_profile.role_level_risk if job.risk_profile else 'LOW' }}"
+                 data-source="{{ job.source|lower if job.source else 'unknown' }}"
+                 data-status="{{ job.status or 'new' }}"
+                 data-job-id="{{ job.id }}">
+                
+                <div class="job-main">
+                    <!-- Score Column -->
+                    <div class="score-col">
+                        <div class="score-number score-{{ job.recommendation|lower if job.recommendation else 'apply' }}">
+                            {{ job.score }}%
+                        </div>
+                        <span class="rec-badge badge-{{ job.recommendation|lower if job.recommendation else 'apply' }}">
+                            {{ job.recommendation or 'APPLY' }}
+                        </span>
+                        <span class="status-badge status-{{ job.status or 'new' }}">
+                            {% if job.status == 'interested' %}💚
+                            {% elif job.status == 'applied' %}📤
+                            {% elif job.status == 'responded' %}📧
+                            {% elif job.status == 'phone_screen' %}📞
+                            {% elif job.status == 'interview_scheduled' %}🎯
+                            {% elif job.status == 'interviewed' %}💼
+                            {% elif job.status == 'offer_received' %}🎉
+                            {% elif job.status == 'accepted' %}✅
+                            {% elif job.status == 'rejected' %}🚫
+                            {% else %}📋
+                            {% endif %}
+                            {{ job.status|replace('_', ' ')|title if job.status else 'New' }}
                         </span>
                     </div>
                     
@@ -679,11 +1195,38 @@
                         </div>
                         {% endif %}
                         
+                        <!-- Component Scores -->
+                        {% if job.components %}
+                        <div class="component-breakdown-section">
+                            <div class="component-header">
+                                <span class="component-title">Requirements</span>
+                                <span class="component-score-badge">
+                                    <span class="component-score-earned">{{ job.score_breakdown.earned if job.score_breakdown else '?' }}</span>
+                                    <span class="component-score-total">/{{ job.score_breakdown.total_possible if job.score_breakdown else 100 }}</span>
+                                </span>
+                            </div>
+                            <div class="component-list">
+                                {% for comp in job.components %}
+                                <div class="component-item {% if comp.match_status == 'yes' %}comp-matched{% elif comp.match_status == 'partial' %}comp-partial{% else %}comp-missing{% endif %}">
+                                    <span class="comp-icon">
+                                        {% if comp.match_status == 'yes' %}✓
+                                        {% elif comp.match_status == 'partial' %}~
+                                        {% else %}✗
+                                        {% endif %}
+                                    </span>
+                                    <span class="comp-name">{{ comp.name }}</span>
+                                    <span class="comp-weight">{{ comp.weight }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
                         <!-- Score Breakdown -->
                         {% if job.score_breakdown %}
                         <div class="score-breakdown">
                             <div class="score-item">
-                                <span>Tech</span>
+                                <span>Skills</span>
                                 <div class="score-bar">
                                     <div class="score-fill {% if job.score_breakdown.component_score >= 80 %}high{% elif job.score_breakdown.component_score >= 60 %}medium{% endif %}" 
                                          style="width: {{ job.score_breakdown.component_score }}%"></div>
@@ -717,14 +1260,12 @@
                                 View Job
                             </a>
                             
-                            <form method="POST" action="{{ url_for('mark_applied', job_id=job.id) }}" style="display: inline;">
-                                <button type="submit" class="btn btn-success">
-                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    Applied
-                                </button>
-                            </form>
+                            <button class="btn btn-ghost" onclick="openStatusModal({{ job.id }}, '{{ job.status or 'new' }}', '{{ job.title|replace("'", "\\'") }}')">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                                Update Status
+                            </button>
                             
                             <button class="btn btn-ghost" onclick="rejectJob({{ job.id }})">
                                 <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -732,15 +1273,6 @@
                                 </svg>
                                 Pass
                             </button>
-                            
-                            <form method="POST" action="{{ url_for('rescore_job', job_id=job.id) }}" style="display: inline;">
-                                <button type="submit" class="btn btn-ghost">
-                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                                    </svg>
-                                    Rescore
-                                </button>
-                            </form>
                         </div>
                     </div>
                     
@@ -783,25 +1315,126 @@
         {% endif %}
     </div>
 
+    <!-- Status Update Modal -->
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Update Job Status</h3>
+                <button class="modal-close" onclick="closeStatusModal()">&times;</button>
+            </div>
+            
+            <form id="statusForm" method="POST">
+                <div class="form-group">
+                    <label class="form-label">Job</label>
+                    <div id="modalJobTitle" style="color: var(--text-secondary); font-size: 13px;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">New Status</label>
+                    <div id="statusOptions">
+                        <label class="status-option">
+                            <input type="radio" name="status" value="new">
+                            <span>📋 New - Just discovered</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="interested">
+                            <span>💚 Interested - Want to apply</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="applied">
+                            <span>📤 Applied - Application submitted</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="responded">
+                            <span>📧 Responded - Employer contacted back</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="phone_screen">
+                            <span>📞 Phone Screen - Initial call</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="interview_scheduled">
+                            <span>🎯 Interview Scheduled - Date set</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="interviewed">
+                            <span>💼 Interviewed - Completed</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="follow_up">
+                            <span>🔄 Follow-up - Waiting for response</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="offer_received">
+                            <span>🎉 Offer Received - Got job offer!</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="accepted">
+                            <span>✅ Accepted - Took the job</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="declined_offer">
+                            <span>❌ Declined Offer - Rejected offer</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="rejected">
+                            <span>🚫 Rejected - Employer rejected</span>
+                        </label>
+                        <label class="status-option">
+                            <input type="radio" name="status" value="on_hold">
+                            <span>⏸️ On Hold - Paused/deferred</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Notes (optional)</label>
+                    <textarea name="notes" class="form-textarea" placeholder="Add any notes about this status change..."></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeStatusModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-submit">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Initialize counts
         function updateCounts() {
             const jobs = document.querySelectorAll('.job-card');
             const counts = {
                 apply: 0, clarify: 0, skip: 0,
-                linkedin: 0, seek: 0, jora: 0
+                linkedin: 0, seek: 0, jora: 0,
+                new: 0, interested: 0, applied: 0, responded: 0, phone_screen: 0,
+                interview_scheduled: 0, interviewed: 0, follow_up: 0, offer_received: 0,
+                on_hold: 0, accepted: 0, declined_offer: 0, rejected: 0
             };
             
             jobs.forEach(job => {
                 const rec = job.dataset.recommendation.toLowerCase();
                 const source = job.dataset.source;
+                const status = job.dataset.status;
                 if (rec) counts[rec] = (counts[rec] || 0) + 1;
                 if (source) counts[source] = (counts[source] || 0) + 1;
+                if (status) counts[status] = (counts[status] || 0) + 1;
             });
             
             Object.keys(counts).forEach(key => {
                 const el = document.getElementById(`count-${key}`);
                 if (el) el.textContent = counts[key];
+            });
+            
+            // Hide chips with 0 count
+            document.querySelectorAll('.chip[data-filter="status"]').forEach(chip => {
+                const statusValue = chip.dataset.value;
+                const count = counts[statusValue] || 0;
+                if (count === 0) {
+                    chip.style.opacity = '0.4';
+                } else {
+                    chip.style.opacity = '1';
+                }
             });
         }
         
@@ -811,7 +1444,8 @@
         const chips = document.querySelectorAll('.chip[data-filter]');
         const activeFilters = {
             recommendation: new Set(['APPLY']), // Default: show APPLY jobs
-            platform: new Set()
+            platform: new Set(),
+            status: new Set()
         };
         
         chips.forEach(chip => {
@@ -819,12 +1453,34 @@
                 const filterType = this.dataset.filter;
                 const value = this.dataset.value;
                 
-                if (this.classList.contains('active')) {
-                    this.classList.remove('active');
-                    activeFilters[filterType].delete(value);
+                if (!filterType || !value) return;
+                
+                // For status filters, make them exclusive (only one at a time)
+                if (filterType === 'status') {
+                    // Remove "Show All" active state
+                    document.querySelector('.chip-status-all')?.classList.remove('active');
+                    
+                    // If clicking the same chip, deactivate it and show all
+                    if (activeFilters.status.has(value)) {
+                        activeFilters.status.clear();
+                        document.querySelectorAll('.chip[data-filter="status"]').forEach(c => c.classList.remove('active'));
+                        document.querySelector('.chip-status-all')?.classList.add('active');
+                    } else {
+                        // Clear all status filters and set only this one
+                        activeFilters.status.clear();
+                        document.querySelectorAll('.chip[data-filter="status"]').forEach(c => c.classList.remove('active'));
+                        activeFilters.status.add(value);
+                        this.classList.add('active');
+                    }
                 } else {
-                    this.classList.add('active');
-                    activeFilters[filterType].add(value);
+                    // For other filters (recommendation, platform), toggle normally
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        activeFilters[filterType].delete(value);
+                    } else {
+                        this.classList.add('active');
+                        activeFilters[filterType].add(value);
+                    }
                 }
                 
                 filterJobs();
@@ -842,12 +1498,14 @@
                 const text = card.textContent.toLowerCase();
                 const cardRec = card.dataset.recommendation;
                 const cardSource = card.dataset.source;
+                const cardStatus = card.dataset.status;
                 
                 const matchesSearch = !searchTerm || text.includes(searchTerm);
                 const matchesRec = activeFilters.recommendation.size === 0 || activeFilters.recommendation.has(cardRec);
                 const matchesPlatform = activeFilters.platform.size === 0 || activeFilters.platform.has(cardSource);
+                const matchesStatus = activeFilters.status.size === 0 || activeFilters.status.has(cardStatus);
                 
-                if (matchesSearch && matchesRec && matchesPlatform) {
+                if (matchesSearch && matchesRec && matchesPlatform && matchesStatus) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
@@ -872,6 +1530,87 @@
                 form.submit();
             }
         }
+        
+        // Show all statuses function
+        function showAllStatuses() {
+            // Remove active from all chips
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            document.querySelector('.chip-status-all').classList.add('active');
+            
+            // Clear status filters
+            activeFilters.status.clear();
+            filterJobs();
+        }
+        
+        // Status Modal Functions
+        let currentJobId = null;
+        
+        function openStatusModal(jobId, currentStatus, jobTitle) {
+            currentJobId = jobId;
+            document.getElementById('modalJobTitle').textContent = jobTitle;
+            document.getElementById('statusForm').action = `/job/${jobId}/status`;
+            
+            // Pre-select current status
+            const statusInputs = document.querySelectorAll('input[name="status"]');
+            statusInputs.forEach(input => {
+                if (input.value === currentStatus) {
+                    input.checked = true;
+                    input.parentElement.classList.add('selected');
+                } else {
+                    input.checked = false;
+                    input.parentElement.classList.remove('selected');
+                }
+            });
+            
+            document.getElementById('statusModal').classList.add('active');
+        }
+        
+        function closeStatusModal() {
+            document.getElementById('statusModal').classList.remove('active');
+            document.querySelector('textarea[name="notes"]').value = '';
+            currentJobId = null;
+        }
+        
+        // Status option selection styling
+        document.querySelectorAll('.status-option input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
+                if (this.checked) {
+                    this.parentElement.classList.add('selected');
+                }
+            });
+        });
+        
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeStatusModal();
+            }
+        });
+        
+        // Close modal on background click
+        document.getElementById('statusModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeStatusModal();
+            }
+        });
+        
+        // Date Filter Functions
+        const dateChips = document.querySelectorAll('.date-chip');
+        
+        dateChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                // Remove active from all date chips
+                dateChips.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Reload page with new days parameter
+                const days = this.dataset.days;
+                const url = new URL(window.location);
+                url.searchParams.set('days', days);
+                window.location = url.toString();
+            });
+        });
         
         // Initial filter (show APPLY by default)
         filterJobs();

@@ -213,11 +213,66 @@ def init_database():
         )
     ''')
     
+    # Status History table - Track all status changes
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS status_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            job_id INTEGER NOT NULL,
+            old_status TEXT,
+            new_status TEXT NOT NULL,
+            changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            notes TEXT,
+            FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE
+        )
+    ''')
+    
+    # Interview Notes table - Track interviews
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS interview_notes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            job_id INTEGER NOT NULL,
+            interview_date DATE NOT NULL,
+            interview_type TEXT,
+            interviewer_name TEXT,
+            topics_discussed TEXT,
+            questions_asked TEXT,
+            my_performance TEXT,
+            next_steps TEXT,
+            notes TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE
+        )
+    ''')
+    
     # Create indexes for performance
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_jobs_hash ON jobs(job_id_hash)')
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_jobs_search ON jobs(source_search_id)')
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_jobs_dates ON jobs(first_seen_date, is_active)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_jobs_status ON jobs(status, is_active)')
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_scores_job ON scores(job_id)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_status_history_job ON status_history(job_id, changed_at)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_interview_notes_job ON interview_notes(job_id, interview_date)')
+    
+    # Migration: Add new columns to jobs table if they don't exist
+    cursor.execute("PRAGMA table_info(jobs)")
+    existing_job_columns = {row[1] for row in cursor.fetchall()}
+    
+    new_job_columns = {
+        'interview_date': 'DATE',
+        'interview_type': 'TEXT',
+        'offer_date': 'DATE',
+        'offer_amount': 'REAL',
+        'offer_currency': 'TEXT DEFAULT "AUD"',
+        'decision_date': 'DATE',
+        'follow_up_date': 'DATE',
+        'priority': 'INTEGER DEFAULT 0',
+        'notes': 'TEXT'
+    }
+    
+    for col_name, col_type in new_job_columns.items():
+        if col_name not in existing_job_columns:
+            cursor.execute(f'ALTER TABLE jobs ADD COLUMN {col_name} {col_type}')
+            print(f"Added column {col_name} to jobs table")
     
     # Migration: Add new columns to scores table if they don't exist
     # Check and add component-based scoring columns
@@ -993,3 +1048,234 @@ def get_rejection_stats():
     
     conn.close()
     return jobs
+
+
+### ===================================================================
+### APPLICATION TRACKING SYSTEM (ATS) FUNCTIONS
+### ===================================================================
+
+def update_job_status_with_history(job_id, new_status, notes=None):
+    """
+    Update job status and log to history
+    
+    Args:
+        job_id: Job ID
+        new_status: New status (interested, applied, responded, phone_screen, etc.)
+        notes: Optional notes about the status change
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    # Get current status
+    cursor.execute('SELECT status, applied FROM jobs WHERE id = ?', (job_id,))
+    row = cursor.fetchone()
+    old_status = row['status'] if row else None
+    
+    # Update job status
+    cursor.execute('''
+        UPDATE jobs
+        SET status = ?
+        WHERE id = ?
+    ''', (new_status, job_id))
+    
+    # Log to history
+    cursor.execute('''
+        INSERT INTO status_history (job_id, old_status, new_status, notes)
+        VALUES (?, ?, ?, ?)
+    ''', (job_id, old_status, new_status, notes))
+    
+    # Update related fields based on status
+    today = get_perth_date()
+    if new_status == 'applied' and row and not row['applied']:
+        cursor.execute('UPDATE jobs SET applied = 1, applied_date = ? WHERE id = ?', (today, job_id))
+    elif new_status == 'offer_received':
+        cursor.execute('UPDATE jobs SET offer_date = ? WHERE id = ?', (today, job_id))
+    elif new_status in ['accepted', 'declined_offer', 'rejected']:
+        cursor.execute('UPDATE jobs SET decision_date = ? WHERE id = ?', (today, job_id))
+        if new_status == 'rejected':
+            cursor.execute('UPDATE jobs SET rejected = 1, rejected_date = ? WHERE id = ?', (today, job_id))
+    
+    conn.commit()
+    conn.close()
+    print(f"Updated job {job_id} status: {old_status} -> {new_status}")
+
+
+def get_status_history(job_id):
+    """Get status change history for a job"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT old_status, new_status, changed_at, notes
+        FROM status_history
+        WHERE job_id = ?
+        ORDER BY changed_at DESC
+    ''', (job_id,))
+    
+    history = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return history
+
+
+def get_jobs_by_status_filter(status):
+    """Get all jobs with specific status"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT j.*, 
+               s.score, s.reasoning, s.matched, s.not_matched, s.key_points, s.model_used,
+               s.components, s.score_breakdown, s.recommendation, 
+               s.hard_gate_failed, s.risk_profile, s.hireability_factors, 
+               s.explanation, s.scoring_method
+        FROM jobs j
+        LEFT JOIN scores s ON j.id = s.job_id
+        WHERE j.status = ? AND j.is_active = 1
+        ORDER BY s.score DESC, j.first_seen_date DESC
+    ''', (status,))
+    
+    jobs = []
+    for row in cursor.fetchall():
+        job = dict(row)
+        job = _parse_job_hybrid_fields(job)
+        jobs.append(job)
+    
+    conn.close()
+    return jobs
+
+
+def add_interview(job_id, interview_data):
+    """
+    Schedule/add interview for a job
+    
+    Args:
+        job_id: Job ID
+        interview_data: Dict with interview details
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        INSERT INTO interview_notes (
+            job_id, interview_date, interview_type, interviewer_name,
+            topics_discussed, questions_asked, my_performance, next_steps, notes
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (
+        job_id,
+        interview_data.get('interview_date'),
+        interview_data.get('interview_type'),
+        interview_data.get('interviewer_name'),
+        interview_data.get('topics_discussed'),
+        interview_data.get('questions_asked'),
+        interview_data.get('my_performance'),
+        interview_data.get('next_steps'),
+        interview_data.get('notes')
+    ))
+    
+    # Update job interview_date and interview_type
+    cursor.execute('''
+        UPDATE jobs
+        SET interview_date = ?, interview_type = ?
+        WHERE id = ?
+    ''', (interview_data.get('interview_date'), interview_data.get('interview_type'), job_id))
+    
+    conn.commit()
+    conn.close()
+    print(f"Added interview for job {job_id}")
+
+
+def get_interviews_for_job(job_id):
+    """Get all interviews for a job"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT *
+        FROM interview_notes
+        WHERE job_id = ?
+        ORDER BY interview_date DESC
+    ''', (job_id,))
+    
+    interviews = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return interviews
+
+
+def get_upcoming_interviews(days=30):
+    """Get interviews in next N days"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    today = get_perth_date()
+    future_date = today + timedelta(days=days)
+    
+    cursor.execute('''
+        SELECT i.*, j.title, j.company, j.url
+        FROM interview_notes i
+        JOIN jobs j ON i.job_id = j.id
+        WHERE i.interview_date BETWEEN ? AND ?
+        AND j.is_active = 1
+        ORDER BY i.interview_date ASC
+    ''', (today, future_date))
+    
+    interviews = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return interviews
+
+
+def set_job_priority(job_id, priority):
+    """
+    Set job priority
+    
+    Args:
+        job_id: Job ID
+        priority: 0=normal, 1=high, 2=urgent
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute('UPDATE jobs SET priority = ? WHERE id = ?', (priority, job_id))
+    
+    conn.commit()
+    conn.close()
+    print(f"Set job {job_id} priority to {priority}")
+
+
+def add_job_note(job_id, note):
+    """Add or append note to job"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT notes FROM jobs WHERE id = ?', (job_id,))
+    row = cursor.fetchone()
+    
+    existing_notes = row['notes'] if row and row['notes'] else ''
+    today = get_perth_date()
+    new_note = f"\n[{today}] {note}" if existing_notes else f"[{today}] {note}"
+    updated_notes = existing_notes + new_note
+    
+    cursor.execute('UPDATE jobs SET notes = ? WHERE id = ?', (updated_notes, job_id))
+    
+    conn.commit()
+    conn.close()
+    print(f"Added note to job {job_id}")
+
+
+def get_status_statistics():
+    """Get job counts by status for analytics"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT 
+            status,
+            COUNT(*) as count
+        FROM jobs
+        WHERE is_active = 1
+        GROUP BY status
+        ORDER BY count DESC
+    ''')
+    
+    stats = {row['status']: row['count'] for row in cursor.fetchall()}
+    conn.close()
+    return stats

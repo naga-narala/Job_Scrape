@@ -37,6 +37,43 @@ def get_perth_now():
     return datetime.now(perth_tz)
 
 
+def group_jobs_by_status(jobs):
+    """Group jobs by status"""
+    status_order = [
+        ('interested', '💚 Interested'),
+        ('applied', '📤 Applied'),
+        ('responded', '📧 Responded'),
+        ('phone_screen', '📞 Phone Screen'),
+        ('interview_scheduled', '🎯 Interview Scheduled'),
+        ('interviewed', '💼 Interviewed'),
+        ('follow_up', '🔄 Follow-up'),
+        ('offer_received', '🎉 Offer Received'),
+        ('new', '📋 New / To Review'),
+        ('on_hold', '⏸️ On Hold'),
+        ('accepted', '✅ Accepted'),
+        ('declined_offer', '❌ Declined'),
+        ('rejected', '🚫 Rejected')
+    ]
+    
+    grouped = {label: [] for _, label in status_order}
+    
+    for job in jobs:
+        status = job.get('status') or 'new'
+        
+        # Find the label for this status
+        label = None
+        for status_key, status_label in status_order:
+            if status_key == status:
+                label = status_label
+                break
+        
+        if label and label in grouped:
+            grouped[label].append(job)
+    
+    # Remove empty sections
+    return {k: v for k, v in grouped.items() if v}
+
+
 def group_jobs_by_date(jobs):
     """Group jobs by relative date labels"""
     now = get_perth_now().date()
@@ -117,8 +154,16 @@ def index():
         # Anywhere in world - remote only
         jobs = [j for j in jobs if j.get('location') and 'remote' in j['location'].lower()]
     
-    # Group by date
-    jobs_by_date = group_jobs_by_date(jobs)
+    # Determine view mode
+    view_mode = request.args.get('view', 'status')  # 'date' or 'status'
+    
+    # Group jobs
+    if view_mode == 'status':
+        jobs_by_status = group_jobs_by_status(jobs)
+        jobs_by_date = {}
+    else:
+        jobs_by_date = group_jobs_by_date(jobs)
+        jobs_by_status = {}
     
     # Calculate stats
     apply_count = sum(1 for j in jobs if j.get('recommendation') == 'APPLY')
@@ -135,6 +180,7 @@ def index():
     return render_template(
         'dashboard_hybrid.html',
         jobs_by_date=jobs_by_date,
+        jobs_by_status=jobs_by_status,
         stats=stats,
         today_date=today_date,
         current_days=days,
@@ -142,6 +188,7 @@ def index():
         show_all=False,
         location_filter=location_filter,
         region_filter=region_filter,
+        view_mode=view_mode,
         current_path=request.path,
         filter_params=build_filter_params()
     )
@@ -426,6 +473,169 @@ def rescore_job(job_id):
         
     except Exception as e:
         return f"Error rescoring job: {e}", 500
+
+
+### ===================================================================
+### APPLICATION TRACKING SYSTEM (ATS) ROUTES
+### ===================================================================
+
+@app.route('/job/<int:job_id>/status', methods=['POST'])
+def update_job_status_route(job_id):
+    """Update job status with history tracking"""
+    new_status = request.form.get('status')
+    notes = request.form.get('notes', '')
+    
+    try:
+        db.update_job_status_with_history(job_id, new_status, notes)
+        return redirect(request.referrer or url_for('index'))
+    except Exception as e:
+        return f"Error updating status: {e}", 500
+
+
+@app.route('/job/<int:job_id>/status-history')
+def job_status_history(job_id):
+    """Get status history for a job (JSON API)"""
+    try:
+        history = db.get_status_history(job_id)
+        return {'status': 'success', 'history': history}
+    except Exception as e:
+        return {'status': 'error', 'message': str(e)}, 500
+
+
+@app.route('/status/<status>')
+def jobs_by_status(status):
+    """View jobs filtered by status"""
+    jobs = db.get_jobs_by_status_filter(status)
+    
+    status_names = {
+        'new': 'New Jobs',
+        'interested': 'Interested',
+        'applied': 'Applied',
+        'responded': 'Responded',
+        'phone_screen': 'Phone Screen',
+        'interview_scheduled': 'Interview Scheduled',
+        'interviewed': 'Interviewed',
+        'follow_up': 'Follow-up',
+        'offer_received': 'Offer Received',
+        'accepted': 'Accepted',
+        'declined_offer': 'Declined Offer',
+        'rejected': 'Rejected',
+        'on_hold': 'On Hold'
+    }
+    
+    # Get Perth time for today's date
+    today_date = get_perth_now().strftime("%B %d, %Y")
+    
+    # Calculate stats
+    stats = {
+        'total_matches': len(jobs),
+        'apply_count': sum(1 for j in jobs if j.get('recommendation') == 'APPLY'),
+        'avg_score': round(sum(j.get('score', 0) for j in jobs) / len(jobs), 1) if jobs else 0,
+        'last_updated': db.get_last_run_time()
+    }
+    
+    return render_template(
+        'dashboard_hybrid.html',
+        jobs_by_date=group_jobs_by_date(jobs),
+        stats=stats,
+        today_date=today_date,
+        current_days=999,
+        threshold=0,
+        show_all=True,
+        location_filter='all',
+        region_filter='all',
+        current_status=status,
+        status_name=status_names.get(status, status.title()),
+        current_path=request.path,
+        filter_params=build_filter_params()
+    )
+
+
+@app.route('/job/<int:job_id>/interview', methods=['POST'])
+def schedule_interview(job_id):
+    """Schedule interview for job"""
+    interview_data = {
+        'interview_date': request.form.get('interview_date'),
+        'interview_type': request.form.get('interview_type'),
+        'interviewer_name': request.form.get('interviewer_name', ''),
+        'topics_discussed': request.form.get('topics_discussed', ''),
+        'questions_asked': request.form.get('questions_asked', ''),
+        'my_performance': request.form.get('my_performance', ''),
+        'next_steps': request.form.get('next_steps', ''),
+        'notes': request.form.get('notes', '')
+    }
+    
+    try:
+        db.add_interview(job_id, interview_data)
+        # Update status to interview_scheduled if not already
+        db.update_job_status_with_history(job_id, 'interview_scheduled', 'Interview scheduled')
+        return redirect(request.referrer or url_for('job_detail', job_id=job_id))
+    except Exception as e:
+        return f"Error scheduling interview: {e}", 500
+
+
+@app.route('/job/<int:job_id>/interviews')
+def job_interviews(job_id):
+    """Get interviews for a job (JSON API)"""
+    try:
+        interviews = db.get_interviews_for_job(job_id)
+        return {'status': 'success', 'interviews': interviews}
+    except Exception as e:
+        return {'status': 'error', 'message': str(e)}, 500
+
+
+@app.route('/interviews/upcoming')
+def upcoming_interviews():
+    """View upcoming interviews"""
+    days = request.args.get('days', 30, type=int)
+    interviews = db.get_upcoming_interviews(days)
+    
+    today_date = get_perth_now().strftime("%B %d, %Y")
+    
+    return render_template(
+        'interviews.html',
+        interviews=interviews,
+        today_date=today_date,
+        days=days
+    )
+
+
+@app.route('/job/<int:job_id>/priority', methods=['POST'])
+def set_priority(job_id):
+    """Set job priority"""
+    priority = request.form.get('priority', 0, type=int)
+    
+    try:
+        db.set_job_priority(job_id, priority)
+        return redirect(request.referrer or url_for('index'))
+    except Exception as e:
+        return f"Error setting priority: {e}", 500
+
+
+@app.route('/job/<int:job_id>/note', methods=['POST'])
+def add_note(job_id):
+    """Add note to job"""
+    note = request.form.get('note', '')
+    
+    try:
+        db.add_job_note(job_id, note)
+        return redirect(request.referrer or url_for('job_detail', job_id=job_id))
+    except Exception as e:
+        return f"Error adding note: {e}", 500
+
+
+@app.route('/analytics')
+def analytics():
+    """Analytics dashboard with status funnel"""
+    status_stats = db.get_status_statistics()
+    
+    today_date = get_perth_now().strftime("%B %d, %Y")
+    
+    return render_template(
+        'analytics.html',
+        status_stats=status_stats,
+        today_date=today_date
+    )
 
 
 if __name__ == "__main__":

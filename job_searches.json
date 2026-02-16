@@ -3,7 +3,7 @@
     {
       "id": "ai_engineer_linkedin_au",
       "name": "AI Engineer - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20engineer&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=ai%20engineer&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -11,7 +11,7 @@
     {
       "id": "ai_engineer_seek_au",
       "name": "AI Engineer - Seek AU",
-      "url": "https://www.seek.com.au/ai-engineer-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/ai-engineer-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -19,7 +19,7 @@
     {
       "id": "ai_engineer_jora_au",
       "name": "AI Engineer - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=ai+engineer&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=ai+engineer&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -27,7 +27,7 @@
     {
       "id": "ml_engineer_linkedin_au",
       "name": "Machine Learning Engineer - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=machine%20learning%20engineer&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=machine%20learning%20engineer&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -35,7 +35,7 @@
     {
       "id": "ml_engineer_seek_au",
       "name": "Machine Learning Engineer - Seek AU",
-      "url": "https://www.seek.com.au/machine-learning-engineer-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/machine-learning-engineer-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -43,7 +43,7 @@
     {
       "id": "ml_engineer_jora_au",
       "name": "Machine Learning Engineer - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=machine+learning+engineer&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=machine+learning+engineer&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -51,7 +51,7 @@
     {
       "id": "data_scientist_linkedin_au",
       "name": "Data Scientist - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=data%20scientist&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=data%20scientist&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -59,7 +59,7 @@
     {
       "id": "data_scientist_seek_au",
       "name": "Data Scientist - Seek AU",
-      "url": "https://www.seek.com.au/data-scientist-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/data-scientist-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -67,7 +67,7 @@
     {
       "id": "data_scientist_jora_au",
       "name": "Data Scientist - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=data+scientist&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=data+scientist&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -75,7 +75,7 @@
     {
       "id": "deep_learning_engineer_linkedin_au",
       "name": "Deep Learning Engineer - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=deep%20learning%20engineer&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=deep%20learning%20engineer&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -83,7 +83,7 @@
     {
       "id": "deep_learning_engineer_seek_au",
       "name": "Deep Learning Engineer - Seek AU",
-      "url": "https://www.seek.com.au/deep-learning-engineer-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/deep-learning-engineer-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -91,7 +91,7 @@
     {
       "id": "deep_learning_engineer_jora_au",
       "name": "Deep Learning Engineer - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=deep+learning+engineer&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=deep+learning+engineer&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -99,7 +99,7 @@
     {
       "id": "computer_vision_engineer_linkedin_au",
       "name": "Computer Vision Engineer - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=computer%20vision%20engineer&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=computer%20vision%20engineer&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -107,7 +107,7 @@
     {
       "id": "computer_vision_engineer_seek_au",
       "name": "Computer Vision Engineer - Seek AU",
-      "url": "https://www.seek.com.au/computer-vision-engineer-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/computer-vision-engineer-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -115,7 +115,7 @@
     {
       "id": "computer_vision_engineer_jora_au",
       "name": "Computer Vision Engineer - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=computer+vision+engineer&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=computer+vision+engineer&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -123,7 +123,7 @@
     {
       "id": "nlp_engineer_linkedin_au",
       "name": "NLP Engineer - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=nlp%20engineer&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=nlp%20engineer&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -131,7 +131,7 @@
     {
       "id": "nlp_engineer_seek_au",
       "name": "NLP Engineer - Seek AU",
-      "url": "https://www.seek.com.au/nlp-engineer-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/nlp-engineer-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -139,7 +139,7 @@
     {
       "id": "nlp_engineer_jora_au",
       "name": "NLP Engineer - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=nlp+engineer&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=nlp+engineer&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -147,7 +147,7 @@
     {
       "id": "genai_engineer_linkedin_au",
       "name": "Generative AI Engineer - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=generative%20ai%20engineer&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=generative%20ai%20engineer&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -155,7 +155,7 @@
     {
       "id": "genai_engineer_seek_au",
       "name": "Generative AI Engineer - Seek AU",
-      "url": "https://www.seek.com.au/generative-ai-engineer-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/generative-ai-engineer-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -163,7 +163,7 @@
     {
       "id": "genai_engineer_jora_au",
       "name": "Generative AI Engineer - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=generative+ai+engineer&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=generative+ai+engineer&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -171,7 +171,7 @@
     {
       "id": "llm_engineer_linkedin_au",
       "name": "LLM Engineer - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=llm%20engineer&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=llm%20engineer&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -179,7 +179,7 @@
     {
       "id": "llm_engineer_seek_au",
       "name": "LLM Engineer - Seek AU",
-      "url": "https://www.seek.com.au/llm-engineer-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/llm-engineer-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -187,7 +187,7 @@
     {
       "id": "llm_engineer_jora_au",
       "name": "LLM Engineer - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=llm+engineer&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=llm+engineer&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -195,7 +195,7 @@
     {
       "id": "mlops_engineer_linkedin_au",
       "name": "MLOps Engineer - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=mlops%20engineer&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=mlops%20engineer&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -203,7 +203,7 @@
     {
       "id": "mlops_engineer_seek_au",
       "name": "MLOps Engineer - Seek AU",
-      "url": "https://www.seek.com.au/mlops-engineer-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/mlops-engineer-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -211,7 +211,7 @@
     {
       "id": "mlops_engineer_jora_au",
       "name": "MLOps Engineer - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=mlops+engineer&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=mlops+engineer&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -219,7 +219,7 @@
     {
       "id": "data_analyst_linkedin_au",
       "name": "Data Analyst - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=data%20analyst&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=data%20analyst&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -227,7 +227,7 @@
     {
       "id": "data_analyst_seek_au",
       "name": "Data Analyst - Seek AU",
-      "url": "https://www.seek.com.au/data-analyst-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/data-analyst-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -235,7 +235,7 @@
     {
       "id": "data_analyst_jora_au",
       "name": "Data Analyst - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=data+analyst&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=data+analyst&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -243,7 +243,7 @@
     {
       "id": "ai_consultant_linkedin_au",
       "name": "AI Consultant - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20consultant&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=ai%20consultant&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -251,7 +251,7 @@
     {
       "id": "ai_consultant_seek_au",
       "name": "AI Consultant - Seek AU",
-      "url": "https://www.seek.com.au/ai-consultant-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/ai-consultant-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -259,7 +259,7 @@
     {
       "id": "ai_consultant_jora_au",
       "name": "AI Consultant - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=ai+consultant&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=ai+consultant&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -267,7 +267,7 @@
     {
       "id": "ai_intern_linkedin_au",
       "name": "AI Intern - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=ai%20intern&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=ai%20intern&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -275,7 +275,7 @@
     {
       "id": "ai_intern_seek_au",
       "name": "AI Intern - Seek AU",
-      "url": "https://www.seek.com.au/ai-intern-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/ai-intern-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -283,7 +283,7 @@
     {
       "id": "ai_intern_jora_au",
       "name": "AI Intern - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=ai+intern&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=ai+intern&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -291,7 +291,7 @@
     {
       "id": "ml_intern_linkedin_au",
       "name": "ML Intern - LinkedIn AU",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&geoId=101452733&keywords=machine%20learning%20intern&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&geoId=101452733&keywords=machine%20learning%20intern&refresh=true",
       "enabled": true,
       "region": "australia",
       "source": "linkedin"
@@ -299,7 +299,7 @@
     {
       "id": "ml_intern_seek_au",
       "name": "ML Intern - Seek AU",
-      "url": "https://www.seek.com.au/machine-learning-intern-jobs/in-All-Australia?daterange=7",
+      "url": "https://www.seek.com.au/machine-learning-intern-jobs/in-All-Australia?daterange=1",
       "enabled": true,
       "region": "australia",
       "source": "seek"
@@ -307,7 +307,7 @@
     {
       "id": "ml_intern_jora_au",
       "name": "ML Intern - Jora AU",
-      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=7days&q=machine+learning+intern&l=Australia",
+      "url": "https://au.jora.com/j?sp=search&trigger_source=serp&a=1day&q=machine+learning+intern&l=Australia",
       "enabled": true,
       "region": "australia",
       "source": "jora"
@@ -315,7 +315,7 @@
     {
       "id": "remote_ai_engineer_contractor_worldwide",
       "name": "Remote AI Engineer Contractor - Worldwide",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=remote%20ai%20engineer%20contractor&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=remote%20ai%20engineer%20contractor&refresh=true",
       "enabled": true,
       "region": "international",
       "source": "linkedin",
@@ -324,7 +324,7 @@
     {
       "id": "remote_ml_engineer_global_worldwide",
       "name": "Remote ML Engineer Global - Worldwide",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=remote%20machine%20learning%20engineer%20global&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=remote%20machine%20learning%20engineer%20global&refresh=true",
       "enabled": true,
       "region": "international",
       "source": "linkedin",
@@ -333,7 +333,7 @@
     {
       "id": "ai_engineer_eor_worldwide",
       "name": "AI Engineer EOR Services - Worldwide",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=ai%20engineer%20deel%20remote.com&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=ai%20engineer%20deel%20remote.com&refresh=true",
       "enabled": true,
       "region": "international",
       "source": "linkedin",
@@ -342,7 +342,7 @@
     {
       "id": "international_remote_data_scientist_worldwide",
       "name": "International Remote Data Scientist - Worldwide",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=international%20remote%20data%20scientist&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=international%20remote%20data%20scientist&refresh=true",
       "enabled": true,
       "region": "international",
       "source": "linkedin",
@@ -351,7 +351,7 @@
     {
       "id": "contractor_ml_worldwide",
       "name": "Contractor Machine Learning - Worldwide",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=contractor%20machine%20learning&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=contractor%20machine%20learning&refresh=true",
       "enabled": true,
       "region": "international",
       "source": "linkedin",
@@ -360,7 +360,7 @@
     {
       "id": "remote_ai_startup_worldwide",
       "name": "Remote AI Engineer Startup - Worldwide",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=remote%20ai%20engineer%20startup&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=remote%20ai%20engineer%20startup&refresh=true",
       "enabled": true,
       "region": "international",
       "source": "linkedin",
@@ -369,7 +369,7 @@
     {
       "id": "remote_web3_ai_worldwide",
       "name": "Remote Web3 AI Engineer - Worldwide",
-      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r604800&f_WT=2&keywords=remote%20ai%20engineer%20web3%20crypto&refresh=true",
+      "url": "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=remote%20ai%20engineer%20web3%20crypto&refresh=true",
       "enabled": true,
       "region": "international",
       "source": "linkedin",
